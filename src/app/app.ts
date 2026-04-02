@@ -11,26 +11,26 @@ import { NotificationService } from './services/notification.service';
 import { fadeIn, fadeOut } from './animations';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.css',
-    imports: [
-        NavbarComponent,
-        FooterComponent,
-        CommonModule,
-        RouterOutlet,
-        NotificationComponent,
-    ],
-    animations: [fadeIn, fadeOut]
+  selector: 'app-root',
+  templateUrl: './app.html',
+  styleUrl: './app.css',
+  imports: [
+    NavbarComponent,
+    FooterComponent,
+    CommonModule,
+    RouterOutlet,
+    NotificationComponent,
+  ],
+  animations: [fadeIn, fadeOut],
 })
-export class AppComponent implements OnInit {
+export class App implements OnInit {
   title = 'Misam';
 
   notifications$!: Observable<Notification[]>;
 
   constructor(
     private notificationService: NotificationService,
-    private analytics: Analytics
+    private analytics: Analytics,
   ) {}
 
   ngOnInit(): void {
