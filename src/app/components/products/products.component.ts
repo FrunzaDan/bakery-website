@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -14,7 +14,7 @@ import { SubscriptionService } from '../../services/subscription.service';
 import { FilterPipe } from '../../shared/filter.pipe';
 
 @Component({
-  imports: [RouterModule, FormsModule, CommonModule],
+  imports: [RouterModule, FormsModule],
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',

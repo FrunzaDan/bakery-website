@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Analytics } from '@angular/fire/analytics';
 import { RouterOutlet } from '@angular/router';
@@ -17,10 +17,10 @@ import { fadeIn, fadeOut } from './animations';
   imports: [
     NavbarComponent,
     FooterComponent,
-    CommonModule,
     RouterOutlet,
     NotificationComponent,
-  ],
+    AsyncPipe
+],
   animations: [fadeIn, fadeOut],
 })
 export class App implements OnInit {

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -13,7 +13,7 @@ import { SendEmailService } from '../../services/send-email.service';
 
 @Component({
     selector: 'app-contact',
-    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+    imports: [RouterModule, FormsModule, ReactiveFormsModule],
     templateUrl: './contact.component.html',
     styleUrl: './contact.component.css'
 })

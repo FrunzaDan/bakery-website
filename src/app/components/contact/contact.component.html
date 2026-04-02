@@ -1,112 +1,132 @@
 <div class="container-fluid my-4 px-2 pb-2">
-    <div class="row px-4">
-        <div class="col-md-7 px-4">
-            <div class="card p-2 my-2">
-                <div class="card-body">
-                    <form [formGroup]="contactMeForm" #formDirective="ngForm" id="contactForm" (ngSubmit)="onSubmit()">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Nume:</label>
-                            <input class="form-control" formControlName="name" name="name" type="text"
-                                placeholder="Numele tău" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
-                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f['name'].errors['required']">Numele este necesar.</div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Adresă de
-                                E-mail:</label>
-                            <input class="form-control" formControlName="email" name="email" type="email"
-                                placeholder="Adresa ta de E-mail"
-                                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                <div *ngIf="f['email'].errors['required']">E-mail-ul este necesar.</div>
-                                <div *ngIf="f['email'].errors['email']">Un E-mail valid este necesar.</div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="from_tel" class="form-label">Număr de
-                                telefon:</label>
-                            <input class="form-control" formControlName="from_tel" name="email" type="tel"
-                                placeholder="Numărul tău de telefon"
-                                [ngClass]="{ 'is-invalid': submitted && f.from_tel.errors }" />
-                            <div *ngIf="submitted && f.from_tel.errors" class="invalid-feedback">
-                                <div *ngIf="f['from_tel'].errors['required']">Numărul de telefon este necesar.
-                                </div>
-                                <div *ngIf="f['from_tel'].errors['pattern']">Un număr de telefon mobil valid
-                                    este
-                                    necesar.</div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="from_message" class="form-label">Mesaj:</label>
-                            <textarea class="form-control" formControlName="from_message" name="email" type="text"
-                                placeholder="Mesajul tău"
-                                [ngClass]="{ 'is-invalid': submitted && f.from_message.errors }"
-                                style="height: 10rem"></textarea>
-                            <div *ngIf="submitted && f.from_message.errors" class="invalid-feedback">
-                                <div *ngIf="f['from_message'].errors['required']">Un mesaj este necesar.</div>
-                            </div>
-                        </div>
-                        <div class="d-grid">
-                            <button class="btn btn-primary" type="submit">Trimite</button>
-                        </div>
-                    </form>
+  <div class="row px-4">
+    <div class="col-md-7 px-4">
+      <div class="card p-2 my-2">
+        <div class="card-body">
+          <form [formGroup]="contactMeForm" #formDirective="ngForm" id="contactForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nume:</label>
+              <input class="form-control" formControlName="name" name="name" type="text"
+                placeholder="Numele tău" [class.is-invalid]="submitted && f.name.errors" />
+              @if (submitted && f.name.errors) {
+                <div class="invalid-feedback">
+                  @if (f['name'].errors['required']) {
+                    <div>Numele este necesar.</div>
+                  }
                 </div>
+              }
             </div>
-        </div>
-        <div class="col-md-5 px-4">
-            <div class="card p-2 my-2">
-                <div class="card-body">
-                    <h5 class="card-title card-contact-text mt-2 mb-4">Informații Contact:</h5>
-                    <div class="mb-2">
-                        <i class="bi bi-telephone contactIconsCard me-2"></i><span
-                            class="card-subtitle mb-2 card-contact-text">Telefon:</span>
-                    </div>
-                    <p class="card-text card-contact-text mb-4"><a href="tel:+40729005160">+40729005160</a></p>
-
-                    <div class="mb-2">
-                        <i class="bi bi-envelope contactIconsCard me-2"></i><span
-                            class="card-subtitle mb-2 card-contact-text">E-mail:</span>
-                    </div>
-                    <p class="card-text card-contact-text mb-4"><a
-                            href="mailto:comenzi@misam.ro">comenzi&#64;misam.ro</a></p>
-
-                    <div class="mb-2">
-                        <i class="bi bi-facebook contactIconsCard me-2"></i><span
-                            class="card-subtitle mb-2 card-contact-text">Facebook:</span>
-                    </div>
-                    <p class="card-text card-contact-text mb-4"><a href="https://www.facebook.com/patiserie.misam"
-                            class="height-100" target="_blank" rel="nofollow"
-                            aria-label="Facebook">facebook.com/patiserie.misam</a></p>
+            <div class="mb-3">
+              <label for="email" class="form-label">Adresă de
+              E-mail:</label>
+              <input class="form-control" formControlName="email" name="email" type="email"
+                placeholder="Adresa ta de E-mail"
+                [class.is-invalid]="submitted && f.email.errors" />
+              @if (submitted && f.email.errors) {
+                <div class="invalid-feedback">
+                  @if (f['email'].errors['required']) {
+                    <div>E-mail-ul este necesar.</div>
+                  }
+                  @if (f['email'].errors['email']) {
+                    <div>Un E-mail valid este necesar.</div>
+                  }
                 </div>
+              }
             </div>
+            <div class="mb-3">
+              <label for="from_tel" class="form-label">Număr de
+              telefon:</label>
+              <input class="form-control" formControlName="from_tel" name="email" type="tel"
+                placeholder="Numărul tău de telefon"
+                [class.is-invalid]="submitted && f.from_tel.errors" />
+              @if (submitted && f.from_tel.errors) {
+                <div class="invalid-feedback">
+                  @if (f['from_tel'].errors['required']) {
+                    <div>Numărul de telefon este necesar.
+                    </div>
+                  }
+                  @if (f['from_tel'].errors['pattern']) {
+                    <div>Un număr de telefon mobil valid
+                      este
+                    necesar.</div>
+                  }
+                </div>
+              }
+            </div>
+            <div class="mb-3">
+              <label for="from_message" class="form-label">Mesaj:</label>
+              <textarea class="form-control" formControlName="from_message" name="email" type="text"
+                placeholder="Mesajul tău"
+                [class.is-invalid]="submitted && f.from_message.errors"
+              style="height: 10rem"></textarea>
+              @if (submitted && f.from_message.errors) {
+                <div class="invalid-feedback">
+                  @if (f['from_message'].errors['required']) {
+                    <div>Un mesaj este necesar.</div>
+                  }
+                </div>
+              }
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary" type="submit">Trimite</button>
+            </div>
+          </form>
         </div>
+      </div>
+    </div>
+    <div class="col-md-5 px-4">
+      <div class="card p-2 my-2">
+        <div class="card-body">
+          <h5 class="card-title card-contact-text mt-2 mb-4">Informații Contact:</h5>
+          <div class="mb-2">
+            <i class="bi bi-telephone contactIconsCard me-2"></i><span
+          class="card-subtitle mb-2 card-contact-text">Telefon:</span>
+        </div>
+        <p class="card-text card-contact-text mb-4"><a href="tel:+40729005160">+40729005160</a></p>
+
+        <div class="mb-2">
+          <i class="bi bi-envelope contactIconsCard me-2"></i><span
+        class="card-subtitle mb-2 card-contact-text">E-mail:</span>
+      </div>
+      <p class="card-text card-contact-text mb-4"><a
+      href="mailto:comenzi@misam.ro">comenzi&#64;misam.ro</a></p>
+
+      <div class="mb-2">
+        <i class="bi bi-facebook contactIconsCard me-2"></i><span
+      class="card-subtitle mb-2 card-contact-text">Facebook:</span>
+    </div>
+    <p class="card-text card-contact-text mb-4"><a href="https://www.facebook.com/patiserie.misam"
+      class="height-100" target="_blank" rel="nofollow"
+    aria-label="Facebook">facebook.com/patiserie.misam</a></p>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="row d-flex justify-content-center align-items-center px-4 my-2">
+  <div class="col my-2 px-4 text-center">
+    <div class="card p-4 width-100prc">
+      <div class="subtitle-1">Unde ne găsiți?</div>
     </div>
 
-    <div class="row d-flex justify-content-center align-items-center px-4 my-2">
-        <div class="col my-2 px-4 text-center">
-            <div class="card p-4 width-100prc">
-                <div class="subtitle-1">Unde ne găsiți?</div>
-            </div>
+  </div>
+</div>
 
-        </div>
+<div class="row d-flex justify-content-center align-items-center px-4">
+  <div class="col my-2 px-4">
+    <div class="card p-1">
+      <div class="map-responsive">
+        <iframe frameBorder="0"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d219.09474309829193!2d24.14939032659725!3d45.7846261545128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474c67870f997537%3A0x373638c87e726740!2sMisam!5e0!3m2!1sro!2sro!4v1713982225977!5m2!1sro!2sro"
+          id="googleMapsIframe" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade" class="card-img-top"></iframe>
+      </div>
+      <div class="card-lower-text py-4 px-2">
+        <p class="subtitle-2 text-center">Ne
+          găsiți în Sibiu, strada
+        Mărășești nr. 9</p>
+      </div>
     </div>
-
-    <div class="row d-flex justify-content-center align-items-center px-4">
-        <div class="col my-2 px-4">
-            <div class="card p-1">
-                <div class="map-responsive">
-                    <iframe frameBorder="0"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d219.09474309829193!2d24.14939032659725!3d45.7846261545128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474c67870f997537%3A0x373638c87e726740!2sMisam!5e0!3m2!1sro!2sro!4v1713982225977!5m2!1sro!2sro"
-                        id="googleMapsIframe" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade" class="card-img-top"></iframe>
-                </div>
-                <div class="card-lower-text py-4 px-2">
-                    <p class="subtitle-2 text-center">Ne
-                        găsiți în Sibiu, strada
-                        Mărășești nr. 9</p>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
+</div>
 </div>

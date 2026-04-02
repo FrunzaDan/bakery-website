@@ -4,134 +4,134 @@
     <div class="row justify-content-center align-items-center pt-2 mt-2">
       <span class="subtitle-2 text-center pt-2 mt-2"
         >Găsește și comandă produse:</span
-      >
-    </div>
-    <div class="row justify-content-center align-items-center p-2">
-      <div
-        class="col-md justify-content-center align-items-center text-center p-2"
-      >
-        <input
-          type="text"
-          class="form-control search-products-form-control p-2"
-          (keyup)="search($event)"
-          placeholder="caută produse"
-        />
-        <label><i class="bi bi-search search-icon"></i></label>
-      </div>
-      <div
-        class="col-md justify-content-center align-items-center text-center p-2"
-      >
-        <button
-          routerLink="../cart"
-          class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2"
         >
-          <img
-            src="../../../assets/images/cart/cart.svg"
-            alt="cart"
-            class="cart-icon"
-          />
-          <span class="ps-2"> Comanda mea </span>
+      </div>
+      <div class="row justify-content-center align-items-center p-2">
+        <div
+          class="col-md justify-content-center align-items-center text-center p-2"
+          >
+          <input
+            type="text"
+            class="form-control search-products-form-control p-2"
+            (keyup)="search($event)"
+            placeholder="caută produse"
+            />
+          <label><i class="bi bi-search search-icon"></i></label>
+        </div>
+        <div
+          class="col-md justify-content-center align-items-center text-center p-2"
+          >
+          <button
+            routerLink="../cart"
+            class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2"
+            >
+            <img
+              src="../../../assets/images/cart/cart.svg"
+              alt="cart"
+              class="cart-icon"
+              />
+            <span class="ps-2"> Comanda mea </span>
 
-          <div class="badge bg-danger">
-            Produse: {{ totalNumberOfCartProducts }}
-          </div>
-        </button>
+            <div class="badge bg-danger">
+              Produse: {{ totalNumberOfCartProducts }}
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="container-fluid mb-4 px-2">
-  <div class="card py-2 mx-4">
-    <div class="container">
-      <div class="row px-2 py-4">
-        <div class="col d-flex justify-content-center align-items-center p-2">
-          <button
-            class="btn btn-primary width-100prc h-100"
-            (click)="displayProductsContent()"
-            [ngClass]="{ 'selected-btn': selectedCategory == undefined }"
-          >
-            Toate
-          </button>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center p-2">
-          <button
-            class="btn btn-primary width-100prc h-100"
-            (click)="displayProductsContent('bakeries')"
-            [ngClass]="{ 'selected-btn': selectedCategory == 'bakeries' }"
-          >
-            Cofetărie
-          </button>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center p-2">
-          <button
-            class="btn btn-primary width-100prc h-100"
-            (click)="displayProductsContent('pastry')"
-            [ngClass]="{ 'selected-btn': selectedCategory == 'pastry' }"
-          >
-            Patiserie
-          </button>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center p-2">
-          <button
-            class="btn btn-primary width-100prc h-100"
-            (click)="displayProductsContent('sweets')"
-            [ngClass]="{ 'selected-btn': selectedCategory == 'sweets' }"
-          >
-            Torturi
-          </button>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center p-2">
-          <button
-            class="btn btn-primary width-100prc h-100"
-            (click)="displayProductsContent('basic_products')"
-            [ngClass]="{ 'selected-btn': selectedCategory == 'basic_products' }"
-          >
-            Produse de bază
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="row justify-content-center align-items-center p-2">
-      <span class="subtitle-2 text-center p-2"
-        >Categorie: {{ selectedCategory }}</span
-      >
-    </div>
-    <div class="container d-flex flex-wrap justify-content-around">
-      <ng-container *ngFor="let product of searchFilterProductsList">
-        <div class="card product-card hover-card">
-          <img
-            src="{{ product.image }}"
-            class="card-img-top"
-            alt="sample-product"
-          />
-          <div class="card-body">
-            <h5 class="card-title">{{ product.title }}</h5>
-            <p class="card-text">
-              {{ product.description }}
-            </p>
-            <p><strong>Preț:</strong> {{ product.price }} RON</p>
+  <div class="container-fluid mb-4 px-2">
+    <div class="card py-2 mx-4">
+      <div class="container">
+        <div class="row px-2 py-4">
+          <div class="col d-flex justify-content-center align-items-center p-2">
             <button
-              class="btn btn-primary width-100prc justify-content-center align-items-center text-center"
-              (click)="addToCart(product)"
-            >
-              <img
-                src="../../../assets/images/cart/cart_add.svg"
-                alt="cart"
-                class="cart-icon"
-              />
-              <div>Comandă</div>
+              class="btn btn-primary width-100prc h-100"
+              (click)="displayProductsContent()"
+              [class.selected-btn]="selectedCategory == undefined"
+              >
+              Toate
+            </button>
+          </div>
+          <div class="col d-flex justify-content-center align-items-center p-2">
+            <button
+              class="btn btn-primary width-100prc h-100"
+              (click)="displayProductsContent('bakeries')"
+              [class.selected-btn]="selectedCategory == 'bakeries'"
+              >
+              Cofetărie
+            </button>
+          </div>
+          <div class="col d-flex justify-content-center align-items-center p-2">
+            <button
+              class="btn btn-primary width-100prc h-100"
+              (click)="displayProductsContent('pastry')"
+              [class.selected-btn]="selectedCategory == 'pastry'"
+              >
+              Patiserie
+            </button>
+          </div>
+          <div class="col d-flex justify-content-center align-items-center p-2">
+            <button
+              class="btn btn-primary width-100prc h-100"
+              (click)="displayProductsContent('sweets')"
+              [class.selected-btn]="selectedCategory == 'sweets'"
+              >
+              Torturi
+            </button>
+          </div>
+          <div class="col d-flex justify-content-center align-items-center p-2">
+            <button
+              class="btn btn-primary width-100prc h-100"
+              (click)="displayProductsContent('basic_products')"
+              [class.selected-btn]="selectedCategory == 'basic_products'"
+              >
+              Produse de bază
             </button>
           </div>
         </div>
-      </ng-container>
-      <ng-container *ngIf="searchFilterProductsList.length === 0">
-        <div class="container text-center my-4 py-4">
-          Nu există produse disponibile conform filtrului aplicat. <br />
-          Încearcă să cauți altceva. <br />
+      </div>
+      <div class="row justify-content-center align-items-center p-2">
+        <span class="subtitle-2 text-center p-2"
+          >Categorie: {{ selectedCategory }}</span
+          >
         </div>
-      </ng-container>
+        <div class="container d-flex flex-wrap justify-content-around">
+          @for (product of searchFilterProductsList; track product) {
+            <div class="card product-card hover-card">
+              <img
+                src="{{ product.image }}"
+                class="card-img-top"
+                alt="sample-product"
+                />
+              <div class="card-body">
+                <h5 class="card-title">{{ product.title }}</h5>
+                <p class="card-text">
+                  {{ product.description }}
+                </p>
+                <p><strong>Preț:</strong> {{ product.price }} RON</p>
+                <button
+                  class="btn btn-primary width-100prc justify-content-center align-items-center text-center"
+                  (click)="addToCart(product)"
+                  >
+                  <img
+                    src="../../../assets/images/cart/cart_add.svg"
+                    alt="cart"
+                    class="cart-icon"
+                    />
+                  <div>Comandă</div>
+                </button>
+              </div>
+            </div>
+          }
+          @if (searchFilterProductsList.length === 0) {
+            <div class="container text-center my-4 py-4">
+              Nu există produse disponibile conform filtrului aplicat. <br />
+              Încearcă să cauți altceva. <br />
+            </div>
+          }
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="container m-4 p-4"></div>
+    <div class="container m-4 p-4"></div>

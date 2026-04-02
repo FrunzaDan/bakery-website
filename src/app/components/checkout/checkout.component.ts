@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -17,7 +17,7 @@ import { SendEmailService } from '../../services/send-email.service';
 
 @Component({
     selector: 'app-checkout',
-    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+    imports: [RouterModule, FormsModule, ReactiveFormsModule],
     templateUrl: './checkout.component.html',
     styleUrl: './checkout.component.css',
     animations: [transformIn, transformOut, fadeIn, fadeOut]

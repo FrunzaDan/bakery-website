@@ -1,111 +1,112 @@
 <div class="container p-4"></div>
-<ng-container *ngIf="cartProducts.length != 0">
-    <div class="container" style="overflow-x:auto;">
-        <div class="row">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th valign="middle">Prod.</th>
-                        <th valign="middle">Img.</th>
-                        <th valign="middle">Cant.</th>
-                        <th valign="middle">Preț
-                            <br>/produs
-                        </th>
-                        <th valign="middle">Șterge</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    <tr *ngFor="let product of cartProducts; let i = index">
-                        <td valign="middle">{{product.title}}</td>
-                        <td valign="middle"><img src="{{product.image}}" alt="product-image" class="table-product-img">
-                        </td>
-                        <td valign="middle">
-                            <span><button (click)="removeOneProduct(product)" class="btn-math">
-                                    -
-                                </button>
-                            </span>
-                            <span>{{product.quantity}}</span>
-                            <span><button (click)="addOneProduct(product)" class="btn-math">
-                                    +
-                                </button>
-                            </span>
-                        </td>
-                        <td valign="middle">{{product.price}} RON</td>
-                        <td valign="middle">
-                            <button (click)="removeFromCart(product)" class="btn btn-primary">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr style="width: 100%;">
-                        <td></td>
-                        <td></td>
-                        <td><strong>Produse: {{totalNumberOfCartProducts}}</strong></td>
-                        <td><strong>Total: {{totalPrice}} RON</strong></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+@if (cartProducts.length != 0) {
+  <div class="container" style="overflow-x:auto;">
+    <div class="row">
+      <table class="table">
+        <thead>
+          <tr>
+            <th valign="middle">Prod.</th>
+            <th valign="middle">Img.</th>
+            <th valign="middle">Cant.</th>
+            <th valign="middle">Preț
+              <br>/produs
+              </th>
+              <th valign="middle">Șterge</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            @for (product of cartProducts; track product; let i = $index) {
+              <tr>
+                <td valign="middle">{{product.title}}</td>
+                <td valign="middle"><img src="{{product.image}}" alt="product-image" class="table-product-img">
+                </td>
+                <td valign="middle">
+                  <span><button (click)="removeOneProduct(product)" class="btn-math">
+                    -
+                  </button>
+                </span>
+                <span>{{product.quantity}}</span>
+                <span><button (click)="addOneProduct(product)" class="btn-math">
+                  +
+                </button>
+              </span>
+            </td>
+            <td valign="middle">{{product.price}} RON</td>
+            <td valign="middle">
+              <button (click)="removeFromCart(product)" class="btn btn-primary">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        }
+        <tr style="width: 100%;">
+          <td></td>
+          <td></td>
+          <td><strong>Produse: {{totalNumberOfCartProducts}}</strong></td>
+          <td><strong>Total: {{totalPrice}} RON</strong></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card p-2 m-4">
+        <div class="row p-2">
+          <div class="col justify-content-center align-items-center text-center my-2">
+            <button routerLink="/products" class="btn btn-primary width-100prc p-2 h-100">
+              <img src="../../../assets/images/cart/cart_add.svg" alt="cart" class="cart-icon">
+              <div>
+                Continuă
+                cumpărăturile
+              </div>
+            </button>
+          </div>
+          <div class="col justify-content-center align-items-center text-center my-2">
+            <button (click)="emptyCart()" class="btn btn-primary width-100prc p-2 h-100">
+              <img src="../../../assets/images/cart/cart_empty.svg" alt="cart" class="cart-icon">
+              <div>
+                Golește
+                coșul
+              </div>
+            </button>
+          </div>
+          <div class="col justify-content-center align-items-center text-center my-2">
+            <button routerLink="/checkout" class="btn btn-primary width-100prc p-2 h-100">
+              <img src="../../../assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
+              <div>
+                Către
+                detalii livrare
+              </div>
+            </button>
+          </div>
         </div>
-
-        <div class="row">
-            <div class="col">
-                <div class="card p-2 m-4">
-                    <div class="row p-2">
-                        <div class="col justify-content-center align-items-center text-center my-2">
-                            <button routerLink="/products" class="btn btn-primary width-100prc p-2 h-100">
-                                <img src="../../../assets/images/cart/cart_add.svg" alt="cart" class="cart-icon">
-                                <div>
-                                    Continuă
-                                    cumpărăturile
-                                </div>
-                            </button>
-                        </div>
-                        <div class="col justify-content-center align-items-center text-center my-2">
-                            <button (click)="emptyCart()" class="btn btn-primary width-100prc p-2 h-100">
-                                <img src="../../../assets/images/cart/cart_empty.svg" alt="cart" class="cart-icon">
-                                <div>
-                                    Golește
-                                    coșul
-                                </div>
-                            </button>
-                        </div>
-                        <div class="col justify-content-center align-items-center text-center my-2">
-                            <button routerLink="/checkout" class="btn btn-primary width-100prc p-2 h-100">
-                                <img src="../../../assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
-                                <div>
-                                    Către
-                                    detalii livrare
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</ng-container>
+  </div>
+</div>
+}
 
 
-<ng-container *ngIf="cartProducts.length == 0">
-    <div class="container">
-        <div class="card empty-cart-card">
-            <div class="row d-flex justify-content-center align-items-center text-center">
-                <div class="col">
-                    <h5 class="card-title m-2">Comanda mea</h5>
-                    <img src="../../../assets/images/empty_cart.svg" style="width: 14rem;" class="cart-img p-2 m-4"
-                        alt="">
-                    <h4>Comanda ta este goală</h4>
-                    <h6>Adaugă produse la comandă</h6>
-                    <button routerLink="/products" class="btn btn-primary p-3 m-4">
-                        <img src="../../../assets/images/cart/cart_add.svg" alt="cart" class="cart-icon">
-                        <div>
-                            Caută produse
-                        </div>
-                    </button>
-                </div>
+@if (cartProducts.length == 0) {
+  <div class="container">
+    <div class="card empty-cart-card">
+      <div class="row d-flex justify-content-center align-items-center text-center">
+        <div class="col">
+          <h5 class="card-title m-2">Comanda mea</h5>
+          <img src="../../../assets/images/empty_cart.svg" style="width: 14rem;" class="cart-img p-2 m-4"
+            alt="">
+          <h4>Comanda ta este goală</h4>
+          <h6>Adaugă produse la comandă</h6>
+          <button routerLink="/products" class="btn btn-primary p-3 m-4">
+            <img src="../../../assets/images/cart/cart_add.svg" alt="cart" class="cart-icon">
+            <div>
+              Caută produse
             </div>
+          </button>
         </div>
+      </div>
     </div>
-</ng-container>
+  </div>
+}
 <div class="container m-4 p-4"></div>

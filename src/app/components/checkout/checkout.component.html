@@ -1,130 +1,166 @@
 <div class="container p-4"></div>
 <div class="container-fluid mb-4 px-2">
-    <div class="card px-2 mx-4">
-        <div class="row align-items-center p-2 p-sm-4 mx-sm-4">
-            <h2 class="text-center p-4">
-                Plasează comanda ta de {{totalNumberOfCartProducts}} produs(e) în valoare totală de {{totalPrice}} RON
-                și
-                te vom contacta noi. Pentru a intra în legătură cu tine, avem nevoie de datele tale de contact și de
-                adresa de livrare:
-            </h2>
-            <form [formGroup]="checkOutForm" (ngSubmit)="onSubmit()">
-                <div class="mb-4">
-                    <label for="name" class="form-label">Nume:</label>
-                    <input class="form-control" formControlName="name" name="name" type="text" placeholder="Numele tău"
-                        autocomplete="on" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
-                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                        <div *ngIf="f['name'].errors['required']">Numele este necesar.</div>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="email" class="form-label">E-mail:</label>
-                    <input class="form-control" formControlName="email" name="email" type="text"
-                        placeholder="Adresa ta de E-mail" autocomplete="on"
-                        [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                        <div *ngIf="f['email'].errors['required']">E-mail-ul este necesar.</div>
-                        <div *ngIf="f['email'].errors['email']">Un E-mail valid este necesar.</div>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="phone" class="form-label">Telefon:</label>
-                    <input class="form-control" formControlName="phone" name="phone" type="text"
-                        placeholder="Numărul tău de telefon" autocomplete="on"
-                        [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
-                    <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
-                        <div *ngIf="f['phone'].errors['required']">Numărul de telefon este necesar.
-                        </div>
-                        <div *ngIf="f['phone'].errors['pattern']">Un număr de telefon mobil valid
-                            este
-                            necesar.</div>
-                    </div>
-                </div>
-                <div class="mb-1">
-                    <label for="address" class="form-label">Adresă de livrare:</label>
-                </div>
-                <div class="mb-1">
-                    <label for="town" class="form-label">Oraș/localitate din jurul Sibiului:</label>
-                    <input class="form-control" formControlName="town" name="town" type="text"
-                        placeholder="Localitate livrare" autocomplete="on"
-                        [ngClass]="{ 'is-invalid': submitted && f.town.errors }" />
-                    <div *ngIf="submitted && f.town.errors" class="invalid-feedback">
-                        <div *ngIf="f['town'].errors['required']">Localitatea este necesară.</div>
-                    </div>
-                </div>
-                <div class="mb-1">
-                    <label for="address_line1" class="form-label">Stradă:</label>
-                    <input class="form-control" formControlName="address_line1" name="address_line1" type="text"
-                        placeholder="Strada adresei de livrare" autocomplete="on"
-                        [ngClass]="{ 'is-invalid': submitted && f.address_line1.errors }" />
-                    <div *ngIf="submitted && f.address_line1.errors" class="invalid-feedback">
-                        <div *ngIf="f['address_line1'].errors['required']">Strada este necesară.</div>
-                    </div>
-                </div>
-                <div class="mb-1">
-                    <label for="address_line2" class="form-label">Număr:</label>
-                    <input class="form-control" formControlName="address_line2" name="address_line2" type="text"
-                        placeholder="Numărul adresei de livrare" autocomplete="on"
-                        [ngClass]="{ 'is-invalid': submitted && f.address_line2.errors }" />
-                    <div *ngIf="submitted && f.address_line2.errors" class="invalid-feedback">
-                        <div *ngIf="f['address_line2'].errors['required']">Numărul străzii este necesar.</div>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label for="zip" class="form-label">Cod poștal:</label>
-                    <input class="form-control" formControlName="zip" name="zip" type="text"
-                        placeholder="Codul poștal al adresei de livrare" autocomplete="on"
-                        [ngClass]="{ 'is-invalid': submitted && f.zip.errors }" />
-                    <div *ngIf="submitted && f.zip.errors" class="invalid-feedback">
-                        <div *ngIf="f['zip'].errors['required']">Codul poștal este necesar.</div>
-                    </div>
-                    <div class="form-text text-muted text-color-white">Nu îți stocăm nicăieri numărul de
-                        telefon,
-                        E-mailul sau adresa.</div>
-                </div>
-                <div class="row">
-                    <div class="col-sm justify-content-center align-items-center text-center my-2">
-                        <button (click)="handleBackToCartClick($event)" class="btn btn-primary width-100prc p-2 h-100">
-                            <img src="../../../assets/images/cart/cart.svg" alt="cart" class="cart-icon">
-                            <div>
-                                Înapoi la comanda mea detaliată
-                            </div>
-                        </button>
-                    </div>
-                    <div class="col-sm justify-content-center align-items-center text-center my-2">
-                        <button type="submit" class="btn btn-primary width-100prc p-2 h-100">
-                            <img src="../../../assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
-                            <div>
-                                Plasează comanda
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </form>
+  <div class="card px-2 mx-4">
+    <div class="row align-items-center p-2 p-sm-4 mx-sm-4">
+      <h2 class="text-center p-4">
+        Plasează comanda ta de {{totalNumberOfCartProducts}} produs(e) în valoare totală de {{totalPrice}} RON
+        și
+        te vom contacta noi. Pentru a intra în legătură cu tine, avem nevoie de datele tale de contact și de
+        adresa de livrare:
+      </h2>
+      <form [formGroup]="checkOutForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <label for="name" class="form-label">Nume:</label>
+          <input class="form-control" formControlName="name" name="name" type="text" placeholder="Numele tău"
+            autocomplete="on" [class.is-invalid]="submitted && f.name.errors" />
+          @if (submitted && f.name.errors) {
+            <div class="invalid-feedback">
+              @if (f['name'].errors['required']) {
+                <div>Numele este necesar.</div>
+              }
+            </div>
+          }
         </div>
+        <div class="mb-4">
+          <label for="email" class="form-label">E-mail:</label>
+          <input class="form-control" formControlName="email" name="email" type="text"
+            placeholder="Adresa ta de E-mail" autocomplete="on"
+            [class.is-invalid]="submitted && f.email.errors" />
+          @if (submitted && f.email.errors) {
+            <div class="invalid-feedback">
+              @if (f['email'].errors['required']) {
+                <div>E-mail-ul este necesar.</div>
+              }
+              @if (f['email'].errors['email']) {
+                <div>Un E-mail valid este necesar.</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="mb-4">
+          <label for="phone" class="form-label">Telefon:</label>
+          <input class="form-control" formControlName="phone" name="phone" type="text"
+            placeholder="Numărul tău de telefon" autocomplete="on"
+            [class.is-invalid]="submitted && f.phone.errors" />
+          @if (submitted && f.phone.errors) {
+            <div class="invalid-feedback">
+              @if (f['phone'].errors['required']) {
+                <div>Numărul de telefon este necesar.
+                </div>
+              }
+              @if (f['phone'].errors['pattern']) {
+                <div>Un număr de telefon mobil valid
+                  este
+                necesar.</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="mb-1">
+          <label for="address" class="form-label">Adresă de livrare:</label>
+        </div>
+        <div class="mb-1">
+          <label for="town" class="form-label">Oraș/localitate din jurul Sibiului:</label>
+          <input class="form-control" formControlName="town" name="town" type="text"
+            placeholder="Localitate livrare" autocomplete="on"
+            [class.is-invalid]="submitted && f.town.errors" />
+          @if (submitted && f.town.errors) {
+            <div class="invalid-feedback">
+              @if (f['town'].errors['required']) {
+                <div>Localitatea este necesară.</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="mb-1">
+          <label for="address_line1" class="form-label">Stradă:</label>
+          <input class="form-control" formControlName="address_line1" name="address_line1" type="text"
+            placeholder="Strada adresei de livrare" autocomplete="on"
+            [class.is-invalid]="submitted && f.address_line1.errors" />
+          @if (submitted && f.address_line1.errors) {
+            <div class="invalid-feedback">
+              @if (f['address_line1'].errors['required']) {
+                <div>Strada este necesară.</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="mb-1">
+          <label for="address_line2" class="form-label">Număr:</label>
+          <input class="form-control" formControlName="address_line2" name="address_line2" type="text"
+            placeholder="Numărul adresei de livrare" autocomplete="on"
+            [class.is-invalid]="submitted && f.address_line2.errors" />
+          @if (submitted && f.address_line2.errors) {
+            <div class="invalid-feedback">
+              @if (f['address_line2'].errors['required']) {
+                <div>Numărul străzii este necesar.</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="mb-4">
+          <label for="zip" class="form-label">Cod poștal:</label>
+          <input class="form-control" formControlName="zip" name="zip" type="text"
+            placeholder="Codul poștal al adresei de livrare" autocomplete="on"
+            [class.is-invalid]="submitted && f.zip.errors" />
+          @if (submitted && f.zip.errors) {
+            <div class="invalid-feedback">
+              @if (f['zip'].errors['required']) {
+                <div>Codul poștal este necesar.</div>
+              }
+            </div>
+          }
+          <div class="form-text text-muted text-color-white">Nu îți stocăm nicăieri numărul de
+            telefon,
+          E-mailul sau adresa.</div>
+        </div>
+        <div class="row">
+          <div class="col-sm justify-content-center align-items-center text-center my-2">
+            <button (click)="handleBackToCartClick($event)" class="btn btn-primary width-100prc p-2 h-100">
+              <img src="../../../assets/images/cart/cart.svg" alt="cart" class="cart-icon">
+              <div>
+                Înapoi la comanda mea detaliată
+              </div>
+            </button>
+          </div>
+          <div class="col-sm justify-content-center align-items-center text-center my-2">
+            <button type="submit" class="btn btn-primary width-100prc p-2 h-100">
+              <img src="../../../assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
+              <div>
+                Plasează comanda
+              </div>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 <div class="container m-4 p-4"></div>
 
-<div class="full-view-background" *ngIf="showConfirmCheckout" @fadeIn @fadeOut></div>
-<div id="confirm-checkout-modal" *ngIf="showConfirmCheckout" @transformIn @transformOut>
+@if (showConfirmCheckout) {
+  <div class="full-view-background" @fadeIn @fadeOut></div>
+}
+@if (showConfirmCheckout) {
+  <div id="confirm-checkout-modal" @transformIn @transformOut>
     <div class="subtitle-2 text-color-red text-center p-2">Comanda mea:</div>
     <div id="order-content">
-        <p>{{order}}</p>
+      <p>{{order}}</p>
     </div>
     <p class="text-center pt-4 pb-1">Confirmați plasarea comenzii?</p>
     <div class="row justify-content-center align-items-center width-100prc p-2">
-        <div class="col-sm align-items-center text-center width-100prc p-2">
-            <button (click)="handleCloseConfirmCheckoutClick($event)"
-                class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
-                Înapoi
-            </button>
-        </div>
-        <div class="col-sm align-items-center text-center width-100prc p-2">
-            <button (click)="handleCloseConfirmCheckoutClick($event)"
-                class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
-                Confirm
-            </button>
-        </div>
+      <div class="col-sm align-items-center text-center width-100prc p-2">
+        <button (click)="handleCloseConfirmCheckoutClick($event)"
+          class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
+          Înapoi
+        </button>
+      </div>
+      <div class="col-sm align-items-center text-center width-100prc p-2">
+        <button (click)="handleCloseConfirmCheckoutClick($event)"
+          class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
+          Confirm
+        </button>
+      </div>
     </div>
-</div>
+  </div>
+}

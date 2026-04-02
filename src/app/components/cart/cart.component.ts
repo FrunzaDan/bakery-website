@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Notification } from '../../interfaces/notification';
@@ -8,7 +8,7 @@ import { NotificationService } from '../../services/notification.service';
 
 @Component({
     selector: 'app-cart',
-    imports: [CommonModule, RouterModule],
+    imports: [RouterModule],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.css'
 })
