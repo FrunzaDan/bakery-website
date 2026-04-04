@@ -7,6 +7,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/internal/operators/tap';
 import { Product } from '../interfaces/product';
 import { SessionStorageService } from './session-storage.service';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
   providedIn: 'root',
@@ -15,64 +16,54 @@ export class FetchProductsService {
   constructor(
     private http: HttpClient,
     private firebaseRealtimeDB: AngularFireDatabase,
-    private sessionStorageService: SessionStorageService
+    private sessionStorageService: SessionStorageService,
   ) {}
 
   fetchProducts(): Observable<Product[]> {
-    try {
-      let sessionProductsList: Product[] =
-        this.sessionStorageService.getProductsSession();
+    let sessionProductsList: Product[] =
+      this.sessionStorageService.getProductsSession();
 
-      if (sessionProductsList.length != 0) {
-        return of(sessionProductsList);
-      } else {
-        let firebaseProductsList: Observable<Product[]> =
-          this.fetchProductsFromFirebaseRealtimeDB();
-        return firebaseProductsList;
-      }
-    } catch {
-      console.error('Fetch error!');
-      let defaultProductsList: Observable<Product[]> =
-        this.fetchProductsFromNG();
-      return defaultProductsList;
+    if (sessionProductsList.length !== 0) {
+      return of(sessionProductsList);
     }
+
+    return this.fetchProductsFromFirebaseRealtimeDB().pipe(
+      catchError((error) => {
+        console.error('Firebase DB error!', error);
+        return this.fetchProductsFromNG(); // 👈 fallback
+      }),
+    );
   }
 
   fetchProductsFromFirebaseRealtimeDB(): Observable<Product[]> {
-    try {
-      let productsListObservable: Observable<Product[]> =
+    return new Observable<Product[]>((subscriber) => {
+      try {
         this.firebaseRealtimeDB
           .list<Product>('products')
           .valueChanges()
           .pipe(
             tap({
-              next: (products: Product[]): void => {
+              next: (products: Product[]) => {
                 try {
                   this.sessionStorageService.setProductsSession(products);
                 } catch {
                   console.error('Session storage error!');
                 }
               },
-              error: (error) => {
-                console.error(error);
-              },
-            })
-          );
-      if (productsListObservable) {
-        return productsListObservable;
-      } else {
-        return of([]);
+            }),
+          )
+          .subscribe(subscriber); // 👈 forward to outer subscriber
+      } catch (error) {
+        subscriber.error(error); // 👈 turn the sync throw into a stream error
       }
-    } catch {
-      console.error('Firebase DB error!');
-      return of([]);
-    }
+    });
   }
 
   fetchProductsFromNG(): Observable<Product[]> {
     try {
+      console.log('Fetching sample products from NG...');
       return this.http
-        .get<{ products: Product[] }>('../../assets/products.json')
+        .get<{ products: Product[] }>('/assets/products.json')
         .pipe(map((data: { products: Product[] }): Product[] => data.products));
     } catch {
       console.error('NG storage error!');

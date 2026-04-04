@@ -1,0 +1,373 @@
+{
+  "products": [
+    {
+      "category": "bakeries",
+      "description": "Test Description 1",
+      "id": 1,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 5.99,
+      "quantity": 0,
+      "title": "product 21"
+    },
+    {
+      "category": "pastry",
+      "description": "Test Description 2",
+      "id": 2,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 12"
+    },
+    {
+      "category": "sweets",
+      "description": "Test Description 3",
+      "id": 3,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "sweets",
+      "description": "Test Description 1",
+      "id": 4,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 2.99,
+      "quantity": 0,
+      "title": "product 1"
+    },
+    {
+      "category": "pastry",
+      "description": "Test Description 2",
+      "id": 5,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 2"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 6,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 11.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 1",
+      "id": 7,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 1"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 2",
+      "id": 8,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 2"
+    },
+    {
+      "category": "sweets",
+      "description": "Test Description 3",
+      "id": 9,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 10,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 11,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 12,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 13,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 14,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 15,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 16,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 17,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 18,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 19,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 20,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 21,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 22,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 23,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 24,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 25,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 26,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 27,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 28,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 29,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 30,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 31,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 32,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 33,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 34,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 35,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 36,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 37,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 38,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 39,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 40,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    },
+    {
+      "category": "bakeries",
+      "description": "Test Description 3",
+      "id": 41,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.99,
+      "quantity": 0,
+      "title": "product 3"
+    }
+  ]
+}

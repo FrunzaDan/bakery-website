@@ -29,6 +29,12 @@
   width: 50rem;
 }
 
+.background-image-1,
+.background-image-2 {
+  filter: blur(10px);
+  opacity: 0.6;
+}
+
 @media screen and (min-width: 1000px) and (max-width: 1200px) {
   .background-image-1 {
     bottom: 0rem;
