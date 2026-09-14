@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 517" font-family="Arial, Helvetica, sans-serif">
+  <ellipse cx="500" cy="258.5" rx="495" ry="250" fill="#d9251c"/>
+
+  <path id="topArc" d="M 110 242 A 430 330 0 0 1 890 242" fill="none"/>
+  <text fill="#ffffff" font-size="34" font-weight="700" letter-spacing="2">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">LABORATOR COFETĂRIE PATISERIE</textPath>
+  </text>
+
+  <path id="bottomArc" d="M 110 292 A 430 330 0 0 0 890 292" fill="none"/>
+  <text fill="#ffffff" font-size="34" font-weight="700" letter-spacing="3">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">ITI INDULCESTE VIATA</textPath>
+  </text>
+
+  <text x="500" y="300" fill="#ffffff" font-size="120" font-weight="800"
+    text-anchor="middle" letter-spacing="0">TestBakery</text>
+
+  <path d="M 70 220 A 130 130 0 0 0 70 300" fill="none" stroke="#ffffff" stroke-width="6"/>
+  <path d="M 930 220 A 130 130 0 0 1 930 300" fill="none" stroke="#ffffff" stroke-width="6"/>
+</svg>

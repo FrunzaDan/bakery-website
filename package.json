@@ -1,5 +1,5 @@
 {
-  "name": "misam-website",
+  "name": "testbakery-website",
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "watch": "ng build --watch --configuration development",
-    "serve:ssr:Misam_Website": "node dist/misam-website/server/server.mjs"
+    "serve:ssr:TestBakery_Website": "node dist/testbakery-website/server/server.mjs"
   },
   "private": true,
   "dependencies": {

@@ -18,6 +18,6 @@ export class App {
   // Keeps Firebase Analytics active for the app's lifetime.
   private readonly analytics = inject(Analytics);
 
-  readonly title = 'Misam';
+  readonly title = 'TestBakery';
   readonly notifications = this.notificationService.notifications;
 }
