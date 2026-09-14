@@ -9,6 +9,8 @@ import { FetchProductsService } from '../../services/fetch-products.service';
 import { NotificationService } from '../../services/notification.service';
 import { FilterPipe } from '../../shared/filter.pipe';
 
+type SortOption = 'title-asc' | 'title-desc' | 'price-asc' | 'price-desc';
+
 @Component({
   imports: [RouterModule, FormsModule],
   selector: 'app-products',
@@ -35,21 +37,49 @@ export class ProductsComponent {
     this.categoryService.selectedCategory()
   );
   readonly searchString = signal('');
+  readonly sortOption = signal<SortOption | undefined>(undefined);
 
   readonly searchFilterProductsList = computed((): Product[] => {
     const searchString: string = this.searchString();
-    if (searchString) {
-      return this.filter.transform(this.productsList(), searchString, 'title');
-    }
+    const filteredProducts: Product[] = searchString
+      ? this.filter.transform(this.productsList(), searchString, 'title')
+      : this.filterByCategory();
 
-    const category: string | undefined = this.selectedCategory();
-    return category
-      ? this.productsList().filter((product: Product): boolean => product.category === category)
-      : this.productsList();
+    return this.sortProducts(filteredProducts);
   });
 
   displayProductsContent(category?: string): void {
     this.selectedCategory.set(category);
+  }
+
+  setSortOption(sortOption: SortOption): void {
+    this.sortOption.set(sortOption);
+  }
+
+  private filterByCategory(): Product[] {
+    const category: string | undefined = this.selectedCategory();
+    return category
+      ? this.productsList().filter((product: Product): boolean => product.category === category)
+      : this.productsList();
+  }
+
+  private sortProducts(products: Product[]): Product[] {
+    const sortOption: SortOption | undefined = this.sortOption();
+    if (!sortOption) {
+      return products;
+    }
+
+    const sortedProducts: Product[] = [...products];
+    switch (sortOption) {
+      case 'title-asc':
+        return sortedProducts.sort((a: Product, b: Product): number => a.title.localeCompare(b.title));
+      case 'title-desc':
+        return sortedProducts.sort((a: Product, b: Product): number => b.title.localeCompare(a.title));
+      case 'price-asc':
+        return sortedProducts.sort((a: Product, b: Product): number => a.price - b.price);
+      case 'price-desc':
+        return sortedProducts.sort((a: Product, b: Product): number => b.price - a.price);
+    }
   }
 
   addToCart(product: Product): void {

@@ -21,6 +21,45 @@
         <div
           class="col-md justify-content-center align-items-center text-center p-2"
           >
+          <div class="dropdown width-100prc">
+            <button
+              class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              >
+              <i class="bi bi-sort-down ps-2"></i>
+              <span class="ps-2"> Sortează </span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end width-100prc">
+              <li>
+                <button class="dropdown-item" type="button" (click)="setSortOption('title-asc')">
+                  Nume: A - Z
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button" (click)="setSortOption('title-desc')">
+                  Nume: Z - A
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button" (click)="setSortOption('price-desc')">
+                  Preț: mare - mic
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button" (click)="setSortOption('price-asc')">
+                  Preț: mic - mare
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center p-2">
+        <div
+          class="col-md justify-content-center align-items-center text-center p-2"
+          >
           <button
             routerLink="../cart"
             class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2"

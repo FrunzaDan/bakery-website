@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Injector, runInInjectionContext } from '@angular/core';
 import { Database, listVal, ref } from '@angular/fire/database';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
@@ -18,6 +18,7 @@ export class FetchProductsService {
   private readonly http = inject(HttpClient);
   private readonly database = inject(Database);
   private readonly sessionStorageService = inject(SessionStorageService);
+  private readonly injector = inject(Injector);
 
   fetchProducts(): Observable<Product[]> {
     const sessionProductsList: Product[] =
@@ -42,7 +43,9 @@ export class FetchProductsService {
   }
 
   fetchProductsFromFirebaseRealtimeDB(): Observable<Product[]> {
-    return listVal<Product>(ref(this.database, 'products')).pipe(
+    return runInInjectionContext(this.injector, () =>
+      listVal<Product>(ref(this.database, 'products')),
+    ).pipe(
       timeout(5000),
       tap((products: Product[]): void => {
         if (products.length === 0) {
