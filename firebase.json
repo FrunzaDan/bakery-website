@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "/dist/testbakery-website/browser",
+    "public": "dist/testbakery-website/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
