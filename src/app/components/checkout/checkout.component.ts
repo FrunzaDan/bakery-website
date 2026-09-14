@@ -10,7 +10,6 @@ import { Router, RouterModule } from '@angular/router';
 import { CheckOutForm } from '../../interfaces/check-out-form';
 import { Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
-import { LocalStorageService } from '../../services/local-storage.service';
 import { SendEmailService } from '../../services/send-email.service';
 
 @Component({
@@ -24,7 +23,6 @@ export class CheckoutComponent {
   private readonly cartService = inject(CartService);
   private readonly router = inject(Router);
   private readonly sendEmailService = inject(SendEmailService);
-  private readonly localStorageService = inject(LocalStorageService);
 
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
   readonly totalPrice = this.cartService.totalPrice;
@@ -105,9 +103,8 @@ export class CheckoutComponent {
     orderString += '\n' + customer_contact_info;
 
     let productString: string = 'Produse: ';
-    let customer_ordered_products: Product[] | null =
-      this.localStorageService.getCartProductsLocal();
-    if (customer_ordered_products) {
+    const customer_ordered_products: Product[] = this.cartService.cartProducts();
+    if (customer_ordered_products.length !== 0) {
       for (let product of customer_ordered_products) {
         productString +=
           '\n' +

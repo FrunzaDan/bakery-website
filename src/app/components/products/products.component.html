@@ -98,38 +98,44 @@
           >
         </div>
         <div class="container d-flex flex-wrap justify-content-around">
-          @for (product of searchFilterProductsList(); track product.id) {
-            <div class="card product-card hover-card">
-              <img
-                src="{{ product.image }}"
-                class="card-img-top"
-                alt="{{ product.title }}"
-                />
-              <div class="card-body">
-                <h5 class="card-title">{{ product.title }}</h5>
-                <p class="card-text">
-                  {{ product.description }}
-                </p>
-                <p><strong>Preț:</strong> {{ product.price }} RON</p>
-                <button
-                  class="btn btn-primary width-100prc justify-content-center align-items-center text-center"
-                  (click)="addToCart(product)"
-                  >
-                  <img
-                    src="../../../assets/images/cart/cart_add.svg"
-                    alt="cart"
-                    class="cart-icon"
-                    />
-                  <div>Comandă</div>
-                </button>
-              </div>
-            </div>
-          }
-          @if (searchFilterProductsList().length === 0) {
+          @if (isLoadingProducts()) {
             <div class="container text-center my-4 py-4">
-              Nu există produse disponibile conform filtrului aplicat. <br />
-              Încearcă să cauți altceva. <br />
+              Loading...
             </div>
+          } @else {
+            @for (product of searchFilterProductsList(); track product.id) {
+              <div class="card product-card hover-card">
+                <img
+                  src="{{ product.image }}"
+                  class="card-img-top"
+                  alt="{{ product.title }}"
+                  />
+                <div class="card-body">
+                  <h5 class="card-title">{{ product.title }}</h5>
+                  <p class="card-text">
+                    {{ product.description }}
+                  </p>
+                  <p><strong>Preț:</strong> {{ product.price }} RON</p>
+                  <button
+                    class="btn btn-primary width-100prc justify-content-center align-items-center text-center"
+                    (click)="addToCart(product)"
+                    >
+                    <img
+                      src="../../../assets/images/cart/cart_add.svg"
+                      alt="cart"
+                      class="cart-icon"
+                      />
+                    <div>Comandă</div>
+                  </button>
+                </div>
+              </div>
+            }
+            @if (searchFilterProductsList().length === 0) {
+              <div class="container text-center my-4 py-4">
+                Nu există produse disponibile conform filtrului aplicat. <br />
+                Încearcă să cauți altceva. <br />
+              </div>
+            }
           }
         </div>
       </div>

@@ -29,6 +29,7 @@ export class ProductsComponent {
     stream: () => this.fetchProductsService.fetchProducts(),
   });
   readonly productsList = computed((): Product[] => this.productsResource.value() ?? []);
+  readonly isLoadingProducts = this.productsResource.isLoading;
 
   readonly selectedCategory = signal<string | undefined>(
     this.categoryService.selectedCategory()
