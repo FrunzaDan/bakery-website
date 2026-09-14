@@ -2,372 +2,372 @@
   "products": [
     {
       "category": "bakeries",
-      "description": "Test Description 1",
+      "description": "Pâine cu maia coaptă proaspăt, cu coajă crocantă și miez moale și aerat.",
       "id": 1,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 12.5,
+      "quantity": 0,
+      "title": "Pâine cu Maia"
+    },
+    {
+      "category": "pastry",
+      "description": "Croissant fraged și crocant, preparat din aluat laminat timp de 72 de ore.",
+      "id": 2,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 8.99,
+      "quantity": 0,
+      "title": "Croissant cu Unt"
+    },
+    {
+      "category": "sweets",
+      "description": "Tort bogat de ciocolată neagră cu umplutură de ganache și glazură de cacao.",
+      "id": 3,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 18.99,
+      "quantity": 0,
+      "title": "Tort de Ciocolată"
+    },
+    {
+      "category": "sweets",
+      "description": "Prăjitură românească clasică cu foi fragede, cremă de vanilie și caramel.",
+      "id": 4,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 22.0,
+      "quantity": 0,
+      "title": "Cremșnit"
+    },
+    {
+      "category": "pastry",
+      "description": "Plăcintă foietată cu brânză dulce de vaci și stafide, rumenită perfect la cuptor.",
+      "id": 5,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 7.5,
+      "quantity": 0,
+      "title": "Brânzoaică"
+    },
+    {
+      "category": "bakeries",
+      "description": "Chifle moi din aluat cu lapte, cu coajă aurie ușoară, perfecte pentru micul dejun.",
+      "id": 6,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 6.99,
+      "quantity": 0,
+      "title": "Chifle cu Lapte"
+    },
+    {
+      "category": "bakeries",
+      "description": "Cozonac tradițional românesc împletit, presărat cu semințe de susan.",
+      "id": 7,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 14.0,
+      "quantity": 0,
+      "title": "Cozonac Împletit"
+    },
+    {
+      "category": "bakeries",
+      "description": "Pâine rustică din făină integrală cu semințe de floarea-soarelui și dovleac.",
+      "id": 8,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 13.5,
+      "quantity": 0,
+      "title": "Pâine cu Semințe"
+    },
+    {
+      "category": "sweets",
+      "description": "Blat pufos de vanilie cu frișcă și căpșuni proaspete, stratificat cu grijă.",
+      "id": 9,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 24.99,
+      "quantity": 0,
+      "title": "Tort cu Frișcă și Căpșuni"
+    },
+    {
+      "category": "bakeries",
+      "description": "Baghetă crocantă la exterior și pufoasă la interior, coaptă în stil franțuzesc.",
+      "id": 10,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 5.5,
+      "quantity": 0,
+      "title": "Baghetă Franțuzească"
+    },
+    {
+      "category": "bakeries",
+      "description": "Pâine plată moale unsă cu unt de usturoi și pătrunjel proaspăt.",
+      "id": 11,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 7.0,
+      "quantity": 0,
+      "title": "Lipie cu Usturoi"
+    },
+    {
+      "category": "pastry",
+      "description": "Plăcintă foietată cu carne tocată condimentată și ceapă călită.",
+      "id": 12,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 9.5,
+      "quantity": 0,
+      "title": "Plăcintă cu Carne"
+    },
+    {
+      "category": "pastry",
+      "description": "Plăcintă crocantă din foi de plăcintă cu telemea cremoasă și mărar proaspăt.",
+      "id": 13,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 8.5,
+      "quantity": 0,
+      "title": "Plăcintă cu Telemea și Mărar"
+    },
+    {
+      "category": "sweets",
+      "description": "Gogoși românești pufoase, pudrate cu zahăr și umplute cu gem de caise.",
+      "id": 14,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 4.99,
+      "quantity": 0,
+      "title": "Gogoși cu Gem"
+    },
+    {
+      "category": "pastry",
+      "description": "Spirale din aluat foietaj cu zahăr și scorțișoară, glazurate deasupra.",
+      "id": 15,
+      "image": "../assets/images/products/sample_img.webp",
+      "price": 6.5,
+      "quantity": 0,
+      "title": "Melc cu Scorțișoară"
+    },
+    {
+      "category": "sweets",
+      "description": "Macarons cu coajă crocantă și interior moale, umplute cu ganache de zmeură.",
+      "id": 16,
       "image": "../assets/images/products/sample_img.webp",
       "price": 5.99,
       "quantity": 0,
-      "title": "product 21"
-    },
-    {
-      "category": "pastry",
-      "description": "Test Description 2",
-      "id": 2,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 12"
-    },
-    {
-      "category": "sweets",
-      "description": "Test Description 3",
-      "id": 3,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "sweets",
-      "description": "Test Description 1",
-      "id": 4,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 2.99,
-      "quantity": 0,
-      "title": "product 1"
-    },
-    {
-      "category": "pastry",
-      "description": "Test Description 2",
-      "id": 5,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 2"
+      "title": "Macaron cu Zmeură"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 6,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 11.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 1",
-      "id": 7,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 1"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 2",
-      "id": 8,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 2"
-    },
-    {
-      "category": "sweets",
-      "description": "Test Description 3",
-      "id": 9,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 10,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 11,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 12,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 13,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 14,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 15,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
-      "id": 16,
-      "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
-      "quantity": 0,
-      "title": "product 3"
-    },
-    {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Pâine densă din secară, ușor acrișoară, perfectă cu mezeluri și brânzeturi.",
       "id": 17,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 11.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Pâine de Secară"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Ecler din aluat choux umplut cu cremă de vanilie și glazurat cu ciocolată.",
       "id": 18,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 7.99,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Ecler cu Ciocolată"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Strudel fin cu mere, scorțișoară, nuci și o notă de rom.",
       "id": 19,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 10.5,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Strudel cu Mere"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Tartă cu lămâie mătăsoasă pe bază de aluat fraged, cu coajă de lămâie confiată.",
       "id": 20,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 16.99,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Tartă cu Lămâie"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Covrigi moi presărați cu sare grunjoasă, copți proaspăt în fiecare zi.",
       "id": 21,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 6.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Covrigi cu Sare"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Aluat foietaj răsucit cu umplutură de mac și coajă de portocală.",
       "id": 22,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 8.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Răsucită cu Mac"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Tort Medovik în straturi cu foi de miere și cremă de smântână — un clasic.",
       "id": 23,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 26.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Tort Medovik"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Focaccia cu roșii cherry, măsline, rozmarin și sare de mare.",
       "id": 24,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 12.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Focaccia cu Rozmarin"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Baklava cu nuci caramelizate, însiropată cu miere și apă de trandafiri.",
       "id": 25,
       "image": "../assets/images/products/sample_img.webp",
       "price": 9.99,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Baklava cu Nuci"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Tarte mici din aluat fraged umplute cu gem de fructe de pădure de sezon.",
       "id": 26,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 7.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Tartelete cu Fructe de Pădure"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Prăjitură moale din griș însiropată, cu aromă de vanilie și cocos.",
       "id": 27,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 11.5,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Prăjitură cu Griș și Sirop"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Chifle mici de ciabatta cu miez poros și coajă aurie, ideale pentru sandvișuri.",
       "id": 28,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 5.99,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Chifle Ciabatta"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Pătrate din aluat foietaj umplute cu cremă de dovleac și scorțișoară.",
       "id": 29,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 8.5,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Plăcintă cu Dovleac"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Tiramisu clasic cu mascarpone, pișcoturi înmuiate în espresso și pudră de cacao.",
       "id": 30,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 19.99,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Tiramisu în Pahar"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Pâine pufoasă cu mozzarella, cheddar și unt de arpagic, ruptă în bucăți.",
       "id": 31,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 15.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Pâine cu Brânză și Smântână"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Felie delicată de foietaj cu cremă fină de vanilie și glazură lucioasă.",
       "id": 32,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 7.5,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Felie cu Cremă de Vanilie"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Tort umed de morcovi cu glazură de cremă de brânză și nuci caramelizate.",
       "id": 33,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 20.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Tort de Morcovi cu Nuci"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Pâine de sandwich multicereale, moale și ușoară, potrivită pentru uz zilnic.",
       "id": 34,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 10.5,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Pâine Multicereale"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Rulou savuros copt la cuptor cu ceapă caramelizată și brânză gruyère.",
       "id": 35,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 9.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Rulou cu Ceapă și Gruyère"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Brownies moi cu bucăți de ciocolată neagră și glazură de caramel sărat.",
       "id": 36,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 13.99,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Brownies cu Caramel Sărat"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Pâine împletită îmbogățită cu ouă și miere, moale și aurie.",
       "id": 37,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 14.5,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Pâine cu Miere Împletită"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Aluat de croissant rulat cu ciocolată neagră și cremă de espresso.",
       "id": 38,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 10.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Rulou Croissant cu Mocha"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "sweets",
+      "description": "Pavlova pufoasă cu frișcă, kiwi și fructul pasiunii, ușoară și răcoritoare.",
       "id": 39,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 21.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Pavlova cu Fructe Tropicale"
     },
     {
       "category": "bakeries",
-      "description": "Test Description 3",
+      "description": "Pâine cu blat subțire, roșii, mozzarella și busuioc proaspăt.",
       "id": 40,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 16.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Pâine Pizza"
     },
     {
-      "category": "bakeries",
-      "description": "Test Description 3",
+      "category": "pastry",
+      "description": "Rulou din aluat dulce cu umplutură de nuci, cacao și o notă de rom.",
       "id": 41,
       "image": "../assets/images/products/sample_img.webp",
-      "price": 9.99,
+      "price": 11.0,
       "quantity": 0,
-      "title": "product 3"
+      "title": "Rulou cu Nucă și Cacao"
     }
   ]
 }
