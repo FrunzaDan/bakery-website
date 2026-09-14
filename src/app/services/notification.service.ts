@@ -1,35 +1,29 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Injectable, signal } from '@angular/core';
 import { Notification } from '../interfaces/notification';
+
+let nextNotificationId = 0;
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  private maxNotifications: number = 1;
-  private notificationsSubject: BehaviorSubject<Notification[]> =
-    new BehaviorSubject<Notification[]>([]);
+  private readonly maxNotifications: number = 1;
+  private readonly notificationsSignal = signal<Notification[]>([]);
 
-  get notifications$(): BehaviorSubject<Notification[]> {
-    return this.notificationsSubject;
-  }
+  readonly notifications = this.notificationsSignal.asReadonly();
 
-  addNotification(notification: Notification): void {
-    const currentNotifications: Notification[] = this.notificationsSubject
-      .getValue()
+  addNotification(notification: Omit<Notification, 'id'>): void {
+    const currentNotifications: Notification[] = this.notificationsSignal()
       .slice(0, this.maxNotifications - 1);
-    this.notificationsSubject.next([...currentNotifications, notification]);
+    this.notificationsSignal.set([
+      ...currentNotifications,
+      { ...notification, id: nextNotificationId++ },
+    ]);
   }
 
   removeNotification(notification: Notification): void {
-    const index: number = this.notificationsSubject
-      .getValue()
-      .findIndex((n: Notification): boolean => n === notification);
-    if (index !== -1) {
-      this.notificationsSubject.next([
-        ...this.notificationsSubject.getValue().slice(0, index),
-        ...this.notificationsSubject.getValue().slice(index + 1),
-      ]);
-    }
+    this.notificationsSignal.update((notifications: Notification[]): Notification[] =>
+      notifications.filter((n: Notification): boolean => n.id !== notification.id)
+    );
   }
 }

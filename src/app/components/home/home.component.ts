@@ -1,21 +1,20 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoryService } from '../../services/cathegory.service';
 
 @Component({
     selector: 'app-home',
+    imports: [],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  constructor(
-    private router: Router,
-    private categoryService: CategoryService
-  ) {}
+  private readonly router = inject(Router);
+  private readonly categoryService = inject(CategoryService);
 
   onCategoryCardClick(clickedCathegory: string): void {
-    this.router.navigate(['/products']);
     this.categoryService.setSelectedCategory(clickedCathegory);
+    this.router.navigate(['/products']);
   }
 }

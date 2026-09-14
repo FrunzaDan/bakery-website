@@ -1,39 +1,23 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Analytics } from '@angular/fire/analytics';
 import { RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NotificationComponent } from './components/notification/notification.component';
-import { Notification } from './interfaces/notification';
 import { NotificationService } from './services/notification.service';
-import { fadeIn, fadeOut } from './animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
-  imports: [
-    NavbarComponent,
-    FooterComponent,
-    RouterOutlet,
-    NotificationComponent,
-    AsyncPipe
-],
-  animations: [fadeIn, fadeOut],
+  imports: [NavbarComponent, FooterComponent, RouterOutlet, NotificationComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App implements OnInit {
-  title = 'Misam';
+export class App {
+  private readonly notificationService = inject(NotificationService);
+  // Keeps Firebase Analytics active for the app's lifetime.
+  private readonly analytics = inject(Analytics);
 
-  notifications$!: Observable<Notification[]>;
-
-  constructor(
-    private notificationService: NotificationService,
-    private analytics: Analytics,
-  ) {}
-
-  ngOnInit(): void {
-    this.notifications$ = this.notificationService.notifications$;
-  }
+  readonly title = 'Misam';
+  readonly notifications = this.notificationService.notifications;
 }

@@ -1,24 +1,14 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  private selectedCategorySubject: BehaviorSubject<string | undefined> =
-    new BehaviorSubject<string | undefined>(undefined);
-  public selectedCategory$: Observable<string | undefined>;
+  private readonly selectedCategorySignal = signal<string | undefined>(undefined);
 
-  constructor() {
-    this.selectedCategory$ = this.selectedCategorySubject.asObservable();
-  }
+  readonly selectedCategory = this.selectedCategorySignal.asReadonly();
 
   setSelectedCategory(category: string): void {
-    this.selectedCategorySubject.next(category);
-  }
-
-  getSelectedCategory(): Observable<string | undefined> {
-    return this.selectedCategory$;
+    this.selectedCategorySignal.set(category);
   }
 }

@@ -1,6 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
+import { afterNextRender, computed, inject, Injectable, signal } from '@angular/core';
 import { Product } from '../interfaces/product';
 import { LocalStorageService } from './local-storage.service';
 
@@ -8,39 +6,64 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root',
 })
 export class CartService {
-  public cartProductsList: Product[] = [];
-  public cartProductsListBehaviorSubject: BehaviorSubject<Product[]> =
-    new BehaviorSubject<Product[]>([]);
+  private readonly localStorageService = inject(LocalStorageService);
 
-  private localStorageService: LocalStorageService;
+  // Starts empty so server and client render the same initial state; the
+  // client-only cart stored in localStorage is applied after hydration to
+  // avoid an SSR/CSR content mismatch (localStorage doesn't exist on the server).
+  private readonly cartProductsSignal = signal<Product[]>([]);
 
-  constructor(localStorageService: LocalStorageService) {
-    this.localStorageService = localStorageService;
-    this.loadCartProductsFromLocalStorage();
+  readonly cartProducts = this.cartProductsSignal.asReadonly();
+
+  constructor() {
+    afterNextRender((): void => {
+      const storedCartProducts: Product[] | null =
+        this.localStorageService.getCartProductsLocal();
+      if (storedCartProducts) {
+        this.cartProductsSignal.set(storedCartProducts);
+      }
+    });
   }
 
-  getProductsForCartObservable(): Observable<Product[]> {
-    return this.cartProductsListBehaviorSubject.asObservable();
-  }
+  readonly totalNumberOfProducts = computed((): number =>
+    this.cartProductsSignal().reduce(
+      (totalQuantity: number, product: Product): number =>
+        totalQuantity + product.quantity,
+      0
+    )
+  );
+
+  readonly totalPrice = computed((): number => {
+    const total: number = this.cartProductsSignal().reduce(
+      (acc: number, product: Product): number =>
+        acc + product.price * product.quantity,
+      0
+    );
+    return Math.round(total * 100) / 100;
+  });
 
   addProductToCart(product: Product): boolean {
-    const existingProductIndex: number = this.cartProductsList.findIndex(
+    const cartProducts: Product[] = this.cartProductsSignal();
+    const existingProductIndex: number = cartProducts.findIndex(
       (item: Product): boolean => item.id === product.id
     );
 
-    if (existingProductIndex !== -1) {
-      this.cartProductsList[existingProductIndex].quantity++;
-    } else {
-      product.quantity = 1;
-      this.cartProductsList.push(product);
-    }
+    const updatedCartProducts: Product[] =
+      existingProductIndex !== -1
+        ? cartProducts.map((item: Product, index: number): Product =>
+            index === existingProductIndex
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        : [...cartProducts, { ...product, quantity: 1 }];
 
-    this.updateCartStateAndStorage();
+    this.updateCartStateAndStorage(updatedCartProducts);
     return true;
   }
 
   removeProductFromCart(product: Product): boolean {
-    const productIndex: number = this.cartProductsList.findIndex(
+    const cartProducts: Product[] = this.cartProductsSignal();
+    const productIndex: number = cartProducts.findIndex(
       (item: Product): boolean => item.id === product.id
     );
 
@@ -49,85 +72,44 @@ export class CartService {
       return false;
     }
 
-    this.cartProductsList[productIndex].quantity--;
-    if (this.cartProductsList[productIndex].quantity <= 0) {
-      this.cartProductsList.splice(productIndex, 1);
-    }
+    const existingProduct: Product = cartProducts[productIndex];
+    const updatedCartProducts: Product[] =
+      existingProduct.quantity - 1 <= 0
+        ? cartProducts.filter((_, index: number): boolean => index !== productIndex)
+        : cartProducts.map((item: Product, index: number): Product =>
+            index === productIndex
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          );
 
-    this.updateCartStateAndStorage();
+    this.updateCartStateAndStorage(updatedCartProducts);
     return true;
   }
 
   removeProductsFromCart(product: Product): boolean {
-    const productIndex: number = this.cartProductsList.findIndex(
+    const cartProducts: Product[] = this.cartProductsSignal();
+    const productIndex: number = cartProducts.findIndex(
       (item: Product): boolean => item.id === product.id
     );
 
-    if (productIndex !== -1) {
-      this.cartProductsList.splice(productIndex, 1);
-      this.updateCartStateAndStorage();
-      return true;
+    if (productIndex === -1) {
+      return false;
     }
-    return false;
-  }
 
-  private calculateTotalPrice(cartProducts: Product[]): number {
-    return cartProducts.reduce(
-      (acc: number, product: Product): number =>
-        acc + product.price * product.quantity,
-      0
+    const updatedCartProducts: Product[] = cartProducts.filter(
+      (_, index: number): boolean => index !== productIndex
     );
-  }
-
-  getTotalPrice(): BehaviorSubject<number> {
-    const totalPriceBehaviorSubject = new BehaviorSubject<number>(0);
-
-    this.getProductsForCartObservable().subscribe(
-      (cartProductsList: Product[]): void => {
-        const totalPrice: number = this.calculateTotalPrice(cartProductsList);
-        totalPriceBehaviorSubject.next(Math.round(totalPrice * 100) / 100);
-      }
-    );
-
-    return totalPriceBehaviorSubject;
-  }
-
-  getNumberOfProductsForCart(): BehaviorSubject<number> {
-    const cartProductNumberBehaviorSubject = new BehaviorSubject<number>(0);
-    this.getProductsForCartObservable().subscribe(
-      (cartProductsList: Product[]): void => {
-        if (!cartProductsList || cartProductsList.length === 0) {
-          cartProductNumberBehaviorSubject.next(0);
-          return;
-        }
-        const totalItemsInCart: number = cartProductsList.reduce(
-          (totalQuantity: number, cartProduct: Product): number =>
-            totalQuantity + cartProduct.quantity,
-          0
-        );
-        cartProductNumberBehaviorSubject.next(totalItemsInCart);
-      }
-    );
-    return cartProductNumberBehaviorSubject;
-  }
-
-  removeAllCart(): boolean {
-    this.cartProductsList = [];
-    this.updateCartStateAndStorage();
+    this.updateCartStateAndStorage(updatedCartProducts);
     return true;
   }
 
-  private updateCartStateAndStorage(): void {
-    this.cartProductsListBehaviorSubject.next(this.cartProductsList.slice());
-    this.localStorageService.setCartProductsLocal(this.cartProductsList);
+  removeAllCart(): boolean {
+    this.updateCartStateAndStorage([]);
+    return true;
   }
 
-  private loadCartProductsFromLocalStorage(): void {
-    const products: Product[] | null =
-      this.localStorageService.getCartProductsLocal();
-    if (products) {
-      this.cartProductsList = products;
-      this.cartProductsListBehaviorSubject.next(this.cartProductsList);
-    }
+  private updateCartStateAndStorage(cartProducts: Product[]): void {
+    this.cartProductsSignal.set(cartProducts);
+    this.localStorageService.setCartProductsLocal(cartProducts);
   }
 }

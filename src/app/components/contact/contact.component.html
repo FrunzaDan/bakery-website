@@ -7,8 +7,8 @@
             <div class="mb-3">
               <label for="name" class="form-label">Nume:</label>
               <input class="form-control" formControlName="name" name="name" type="text"
-                placeholder="Numele tău" [class.is-invalid]="submitted && f.name.errors" />
-              @if (submitted && f.name.errors) {
+                placeholder="Numele tău" [class.is-invalid]="submitted() && f.name.errors" />
+              @if (submitted() && f.name.errors) {
                 <div class="invalid-feedback">
                   @if (f['name'].errors['required']) {
                     <div>Numele este necesar.</div>
@@ -21,8 +21,8 @@
               E-mail:</label>
               <input class="form-control" formControlName="email" name="email" type="email"
                 placeholder="Adresa ta de E-mail"
-                [class.is-invalid]="submitted && f.email.errors" />
-              @if (submitted && f.email.errors) {
+                [class.is-invalid]="submitted() && f.email.errors" />
+              @if (submitted() && f.email.errors) {
                 <div class="invalid-feedback">
                   @if (f['email'].errors['required']) {
                     <div>E-mail-ul este necesar.</div>
@@ -38,8 +38,8 @@
               telefon:</label>
               <input class="form-control" formControlName="from_tel" name="email" type="tel"
                 placeholder="Numărul tău de telefon"
-                [class.is-invalid]="submitted && f.from_tel.errors" />
-              @if (submitted && f.from_tel.errors) {
+                [class.is-invalid]="submitted() && f.from_tel.errors" />
+              @if (submitted() && f.from_tel.errors) {
                 <div class="invalid-feedback">
                   @if (f['from_tel'].errors['required']) {
                     <div>Numărul de telefon este necesar.
@@ -57,9 +57,9 @@
               <label for="from_message" class="form-label">Mesaj:</label>
               <textarea class="form-control" formControlName="from_message" name="email" type="text"
                 placeholder="Mesajul tău"
-                [class.is-invalid]="submitted && f.from_message.errors"
+                [class.is-invalid]="submitted() && f.from_message.errors"
               style="height: 10rem"></textarea>
-              @if (submitted && f.from_message.errors) {
+              @if (submitted() && f.from_message.errors) {
                 <div class="invalid-feedback">
                   @if (f['from_message'].errors['required']) {
                     <div>Un mesaj este necesar.</div>

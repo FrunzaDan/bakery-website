@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Product } from '../interfaces/product';
 
 @Injectable({
@@ -6,34 +7,35 @@ import { Product } from '../interfaces/product';
 })
 export class LocalStorageService {
   private readonly cartProductsKey = 'cartProductsLocal';
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   getCartProductsLocal(): Product[] | null {
-    if (typeof window !== 'undefined') {
-      try {
-        const cartProductsJson = localStorage.getItem(this.cartProductsKey);
-        if (!cartProductsJson) {
-          return null;
-        }
-        return JSON.parse(cartProductsJson) as Product[];
-      } catch (parseError: unknown) {
-        console.error(
-          'Error parsing cart products from local storage:',
-          parseError
-        );
+    if (!this.isBrowser) {
+      return null;
+    }
+    try {
+      const cartProductsJson = localStorage.getItem(this.cartProductsKey);
+      if (!cartProductsJson) {
         return null;
       }
-    } else {
+      return JSON.parse(cartProductsJson) as Product[];
+    } catch (parseError: unknown) {
+      console.error(
+        'Error parsing cart products from local storage:',
+        parseError
+      );
       return null;
     }
   }
 
   setCartProductsLocal(products: Product[]): void {
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem(this.cartProductsKey, JSON.stringify(products));
-      } catch (parseError: unknown) {
-        console.error('Error setting products to local storage:', parseError);
-      }
+    if (!this.isBrowser) {
+      return;
+    }
+    try {
+      localStorage.setItem(this.cartProductsKey, JSON.stringify(products));
+    } catch (parseError: unknown) {
+      console.error('Error setting products to local storage:', parseError);
     }
   }
 }

@@ -1,5 +1,4 @@
-
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,7 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { fadeIn, fadeOut, transformIn, transformOut } from '../../animations';
 import { CheckOutForm } from '../../interfaces/check-out-form';
 import { Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
@@ -16,26 +14,23 @@ import { LocalStorageService } from '../../services/local-storage.service';
 import { SendEmailService } from '../../services/send-email.service';
 
 @Component({
-    selector: 'app-checkout',
-    imports: [RouterModule, FormsModule, ReactiveFormsModule],
-    templateUrl: './checkout.component.html',
-    styleUrl: './checkout.component.css',
-    animations: [transformIn, transformOut, fadeIn, fadeOut]
+  selector: 'app-checkout',
+  imports: [RouterModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './checkout.component.html',
+  styleUrl: './checkout.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutComponent implements OnInit {
-  public totalNumberOfCartProducts!: number;
-  public totalPrice!: number;
-  public showConfirmCheckout: boolean = false;
-  public order?: string;
+export class CheckoutComponent {
+  private readonly cartService = inject(CartService);
+  private readonly router = inject(Router);
+  private readonly sendEmailService = inject(SendEmailService);
+  private readonly localStorageService = inject(LocalStorageService);
 
-  constructor(
-    private cartService: CartService,
-    private router: Router,
-    private sendEmailService: SendEmailService,
-    private localStorageService: LocalStorageService
-  ) {}
-
-  submitted: boolean = false;
+  readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
+  readonly totalPrice = this.cartService.totalPrice;
+  readonly showConfirmCheckout = signal(false);
+  readonly order = signal<string | undefined>(undefined);
+  readonly submitted = signal(false);
 
   checkOutForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -54,27 +49,6 @@ export class CheckoutComponent implements OnInit {
     return this.checkOutForm.controls;
   }
 
-  ngOnInit(): void {
-    this.displayTotalNumberOfCartProducts();
-    this.displayTotalPrice();
-  }
-
-  displayTotalPrice(): void {
-    this.cartService
-      .getTotalPrice()
-      .subscribe((totalPriceCalculated: number): void => {
-        this.totalPrice = totalPriceCalculated;
-      });
-  }
-
-  displayTotalNumberOfCartProducts(): void {
-    this.cartService
-      .getNumberOfProductsForCart()
-      .subscribe((totalNumberOfProducts: number): void => {
-        this.totalNumberOfCartProducts = totalNumberOfProducts;
-      });
-  }
-
   handleBackToCartClick(event: Event): void {
     event.preventDefault();
     this.router.navigate(['/cart']);
@@ -82,23 +56,22 @@ export class CheckoutComponent implements OnInit {
 
   handleCloseConfirmCheckoutClick(event: Event): void {
     event.preventDefault();
-    this.showConfirmCheckout = false;
+    this.showConfirmCheckout.set(false);
   }
 
   onSubmit(): void {
-    this.submitted = true;
+    this.submitted.set(true);
     if (this.checkOutForm.invalid) {
       return;
     }
 
-    let checkOutFormData: CheckOutForm = this.checkOutForm
-      .value as CheckOutForm;
-    this.order = this.buildOrder(checkOutFormData);
+    const checkOutFormData: CheckOutForm = this.checkOutForm.value as CheckOutForm;
+    const order: string = this.buildOrder(checkOutFormData);
 
-    if (this.order) {
-      this.showConfirmCheckout = true;
+    if (order) {
+      this.order.set(order);
+      this.showConfirmCheckout.set(true);
     }
-    // this.resetForm(checkOutFormData);
   }
 
   buildOrder(checkOutForm: CheckOutForm): string {
@@ -150,26 +123,15 @@ export class CheckoutComponent implements OnInit {
         '--------------------' +
         '\n' +
         'Număr produse: ' +
-        this.totalNumberOfCartProducts +
+        this.totalNumberOfCartProducts() +
         ' buc.' +
         '\n' +
         'Preț total: ' +
-        this.totalPrice +
+        this.totalPrice() +
         ' RON';
     }
 
     let order: string = orderString + productString;
     return order.trim();
-  }
-
-  resetForm(checkOutForm: CheckOutForm): void {
-    this.checkOutForm.reset();
-    this.checkOutForm.controls.name.setErrors(null);
-    this.checkOutForm.controls.email.setErrors(null);
-    this.checkOutForm.controls.phone.setErrors(null);
-    this.checkOutForm.controls.town.setErrors(null);
-    this.checkOutForm.controls.address_line1.setErrors(null);
-    this.checkOutForm.controls.address_line2.setErrors(null);
-    this.checkOutForm.controls.zip.setErrors(null);
   }
 }

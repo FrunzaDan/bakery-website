@@ -13,11 +13,11 @@
 <app-footer></app-footer>
 
 <div class="notifications-container">
-  @for (notification of notifications$ | async; track notification) {
+  @for (notification of notifications(); track notification.id) {
     <app-notification
       [notification]="notification"
-      @fadeIn
-      @fadeOut
+      animate.enter="fade-in"
+      animate.leave="fade-out"
     ></app-notification>
   }
 </div>

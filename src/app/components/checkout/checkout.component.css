@@ -2,6 +2,32 @@ label {
     font-size: 1.8rem;
 }
 
+.fade-in {
+    transition: opacity 400ms ease-in;
+
+    @starting-style {
+        opacity: 0;
+    }
+}
+
+.fade-out {
+    transition: opacity 600ms ease-out;
+    opacity: 0;
+}
+
+.modal-enter {
+    transition: transform 300ms ease-in;
+
+    @starting-style {
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+.modal-leave {
+    transition: transform 300ms ease-out;
+    transform: translate(-50%, -50%) scale(0);
+}
+
 #confirm-checkout-modal {
     position: fixed;
     top: 50%;

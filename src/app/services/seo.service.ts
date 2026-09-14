@@ -1,12 +1,13 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SEOService {
-  constructor(@Inject(DOCUMENT) private doc: Document, private meta: Meta) {}
+  private readonly doc = inject(DOCUMENT);
+  private readonly meta = inject(Meta);
 
   updateMetaDescription(metaDescription: string): void {
     this.meta.updateTag({

@@ -33,7 +33,7 @@
             <span class="ps-2"> Comanda mea </span>
 
             <div class="badge bg-danger">
-              Produse: {{ totalNumberOfCartProducts }}
+              Produse: {{ totalNumberOfCartProducts() }}
             </div>
           </button>
         </div>
@@ -49,7 +49,7 @@
             <button
               class="btn btn-primary width-100prc h-100"
               (click)="displayProductsContent()"
-              [class.selected-btn]="selectedCategory == undefined"
+              [class.selected-btn]="selectedCategory() == undefined"
               >
               Toate
             </button>
@@ -58,7 +58,7 @@
             <button
               class="btn btn-primary width-100prc h-100"
               (click)="displayProductsContent('bakeries')"
-              [class.selected-btn]="selectedCategory == 'bakeries'"
+              [class.selected-btn]="selectedCategory() == 'bakeries'"
               >
               Cofetărie
             </button>
@@ -67,7 +67,7 @@
             <button
               class="btn btn-primary width-100prc h-100"
               (click)="displayProductsContent('pastry')"
-              [class.selected-btn]="selectedCategory == 'pastry'"
+              [class.selected-btn]="selectedCategory() == 'pastry'"
               >
               Patiserie
             </button>
@@ -76,7 +76,7 @@
             <button
               class="btn btn-primary width-100prc h-100"
               (click)="displayProductsContent('sweets')"
-              [class.selected-btn]="selectedCategory == 'sweets'"
+              [class.selected-btn]="selectedCategory() == 'sweets'"
               >
               Torturi
             </button>
@@ -85,7 +85,7 @@
             <button
               class="btn btn-primary width-100prc h-100"
               (click)="displayProductsContent('basic_products')"
-              [class.selected-btn]="selectedCategory == 'basic_products'"
+              [class.selected-btn]="selectedCategory() == 'basic_products'"
               >
               Produse de bază
             </button>
@@ -94,16 +94,16 @@
       </div>
       <div class="row justify-content-center align-items-center p-2">
         <span class="subtitle-2 text-center p-2"
-          >Categorie: {{ selectedCategory }}</span
+          >Categorie: {{ selectedCategory() }}</span
           >
         </div>
         <div class="container d-flex flex-wrap justify-content-around">
-          @for (product of searchFilterProductsList; track product) {
+          @for (product of searchFilterProductsList(); track product.id) {
             <div class="card product-card hover-card">
               <img
                 src="{{ product.image }}"
                 class="card-img-top"
-                alt="sample-product"
+                alt="{{ product.title }}"
                 />
               <div class="card-body">
                 <h5 class="card-title">{{ product.title }}</h5>
@@ -125,7 +125,7 @@
               </div>
             </div>
           }
-          @if (searchFilterProductsList.length === 0) {
+          @if (searchFilterProductsList().length === 0) {
             <div class="container text-center my-4 py-4">
               Nu există produse disponibile conform filtrului aplicat. <br />
               Încearcă să cauți altceva. <br />

@@ -1,20 +1,16 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
-  importProvidersFrom,
   provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection,
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { AngularFireModule } from '@angular/fire/compat';
 import { provideDatabase } from '@angular/fire/database';
 import {
   provideClientHydration,
   withEventReplay,
 } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   provideRouter,
   withInMemoryScrolling,
@@ -27,7 +23,6 @@ import { FilterPipe } from './shared/filter.pipe';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(
       routes,
@@ -44,9 +39,6 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAnalytics(() => getAnalytics()),
     provideDatabase(() => getDatabase()),
-    importProvidersFrom([
-      AngularFireModule.initializeApp(environment.firebaseConfig),
-    ]),
     provideZonelessChangeDetection(),
   ],
 };

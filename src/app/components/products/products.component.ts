@@ -1,16 +1,12 @@
-
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { take } from 'rxjs/internal/operators/take';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { Notification } from '../../interfaces/notification';
 import { Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { CategoryService } from '../../services/cathegory.service';
 import { FetchProductsService } from '../../services/fetch-products.service';
 import { NotificationService } from '../../services/notification.service';
-import { SubscriptionService } from '../../services/subscription.service';
 import { FilterPipe } from '../../shared/filter.pipe';
 
 @Component({
@@ -18,101 +14,54 @@ import { FilterPipe } from '../../shared/filter.pipe';
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductsComponent implements OnInit, OnDestroy {
-  public productsList: Product[] = [];
-  public totalNumberOfCartProducts: number = 0;
-  public totalPrice: number = 0;
-  public searchString: string = '';
-  public searchFilterProductsList: Product[] = [];
-  public selectedCategory: string | undefined;
-  public currentNotifications: Notification | null = null;
-  public notifications: Notification[] = [];
+export class ProductsComponent {
+  private readonly fetchProductsService = inject(FetchProductsService);
+  private readonly cartService = inject(CartService);
+  private readonly filter = inject(FilterPipe);
+  private readonly notificationService = inject(NotificationService);
+  private readonly categoryService = inject(CategoryService);
 
-  private productSubscription?: Subscription;
-  private getCathegorySubscription?: Subscription;
-  private cartSubscription?: Subscription;
+  readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
 
-  constructor(
-    private fetchProductsService: FetchProductsService,
-    private cartService: CartService,
-    private filter: FilterPipe,
-    private notificationService: NotificationService,
-    private categoryService: CategoryService,
-    private subscriptionService: SubscriptionService
-  ) {}
+  private readonly productsResource = rxResource({
+    stream: () => this.fetchProductsService.fetchProducts(),
+  });
+  readonly productsList = computed((): Product[] => this.productsResource.value() ?? []);
 
-  ngOnInit(): void {
-    this.getProductCathegory();
-    this.displayProductsContent(this.selectedCategory);
-    this.displayNumberOfProductsForCart();
-  }
+  readonly selectedCategory = signal<string | undefined>(
+    this.categoryService.selectedCategory()
+  );
+  readonly searchString = signal('');
 
-  async displayProductsContent(selectedCategory?: string): Promise<void> {
-    this.selectedCategory = selectedCategory;
-    if (!selectedCategory) {
-      this.selectedCategory = undefined;
-    }
-    if (this.productsList.length == 0) {
-      this.productSubscription = this.fetchProductsService
-        .fetchProducts()
-        .subscribe((productList: Product[]): void => {
-          this.productsList = productList;
-          this.searchFilterProductsList = this.productsList;
-        });
+  readonly searchFilterProductsList = computed((): Product[] => {
+    const searchString: string = this.searchString();
+    if (searchString) {
+      return this.filter.transform(this.productsList(), searchString, 'title');
     }
 
-    if (selectedCategory) {
-      this.searchFilterProductsList = this.productsList.filter(
-        (product: Product): boolean => product.category === selectedCategory
-      );
-    } else {
-      this.searchFilterProductsList = this.productsList;
-    }
-    this.searchFilterProductsList.forEach((a: Product): void => {
-      Object.assign(a, { quantity: a.quantity, total: a.price });
-    });
-  }
+    const category: string | undefined = this.selectedCategory();
+    return category
+      ? this.productsList().filter((product: Product): boolean => product.category === category)
+      : this.productsList();
+  });
 
-  getProductCathegory(): void {
-    this.getCathegorySubscription = this.categoryService
-      .getSelectedCategory()
-      .pipe(take(1))
-      .subscribe((response: string | undefined): void => {
-        this.selectedCategory = response;
-      });
-  }
-
-  displayNumberOfProductsForCart(): void {
-    this.cartSubscription = this.cartService
-      .getNumberOfProductsForCart()
-      .subscribe((totalNumberOfProducts: number): void => {
-        this.totalNumberOfCartProducts = totalNumberOfProducts;
-      });
+  displayProductsContent(category?: string): void {
+    this.selectedCategory.set(category);
   }
 
   addToCart(product: Product): void {
-    let isSuccessful: boolean = this.cartService.addProductToCart(product);
+    const isSuccessful: boolean = this.cartService.addProductToCart(product);
     if (isSuccessful) {
-      let notification: Notification = {
+      this.notificationService.addNotification({
         message: `"${product.title}" a fost adăugat!`,
-      };
-      this.notificationService.addNotification(notification);
+      });
     }
   }
 
   search(keyboardEvent: Event): void {
-    this.selectedCategory = undefined;
-    const searchString: string = (keyboardEvent.target as HTMLInputElement)
-      .value;
-    this.searchFilterProductsList = searchString
-      ? this.filter.transform(this.productsList, searchString, 'title')
-      : this.productsList;
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptionService.unsubscribeIfActive(this.productSubscription);
-    this.subscriptionService.unsubscribeIfActive(this.getCathegorySubscription);
-    this.subscriptionService.unsubscribeIfActive(this.cartSubscription);
+    this.selectedCategory.set(undefined);
+    this.searchString.set((keyboardEvent.target as HTMLInputElement).value);
   }
 }

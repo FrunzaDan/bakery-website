@@ -1,5 +1,4 @@
-
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -15,12 +14,13 @@ import { SendEmailService } from '../../services/send-email.service';
     selector: 'app-contact',
     imports: [RouterModule, FormsModule, ReactiveFormsModule],
     templateUrl: './contact.component.html',
-    styleUrl: './contact.component.css'
+    styleUrl: './contact.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContactComponent implements OnInit {
-  constructor(private sendEmailService: SendEmailService) {}
+export class ContactComponent {
+  private readonly sendEmailService = inject(SendEmailService);
 
-  submitted: boolean = false;
+  readonly submitted = signal(false);
 
   contactMeForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -36,10 +36,8 @@ export class ContactComponent implements OnInit {
     return this.contactMeForm.controls;
   }
 
-  ngOnInit(): void {}
-
   onSubmit(): void {
-    this.submitted = true;
+    this.submitted.set(true);
     if (this.contactMeForm.invalid) {
       return;
     }
@@ -54,7 +52,6 @@ export class ContactComponent implements OnInit {
         this.contactMeForm.controls.email.setErrors(null);
         this.contactMeForm.controls.from_tel.setErrors(null);
         this.contactMeForm.controls.from_message.setErrors(null);
-      } else {
       }
     });
   }

@@ -1,5 +1,5 @@
 <div class="container p-4"></div>
-@if (cartProducts.length != 0) {
+@if (cartProducts().length != 0) {
   <div class="container" style="overflow-x:auto;">
     <div class="row">
       <table class="table">
@@ -15,10 +15,10 @@
             </tr>
           </thead>
           <tbody class="table-group-divider">
-            @for (product of cartProducts; track product; let i = $index) {
+            @for (product of cartProducts(); track product.id) {
               <tr>
                 <td valign="middle">{{product.title}}</td>
-                <td valign="middle"><img src="{{product.image}}" alt="product-image" class="table-product-img">
+                <td valign="middle"><img src="{{product.image}}" alt="{{product.title}}" class="table-product-img">
                 </td>
                 <td valign="middle">
                   <span><button (click)="removeOneProduct(product)" class="btn-math">
@@ -42,8 +42,8 @@
         <tr style="width: 100%;">
           <td></td>
           <td></td>
-          <td><strong>Produse: {{totalNumberOfCartProducts}}</strong></td>
-          <td><strong>Total: {{totalPrice}} RON</strong></td>
+          <td><strong>Produse: {{totalNumberOfCartProducts()}}</strong></td>
+          <td><strong>Total: {{totalPrice()}} RON</strong></td>
           <td></td>
         </tr>
       </tbody>
@@ -88,14 +88,14 @@
 }
 
 
-@if (cartProducts.length == 0) {
+@if (cartProducts().length == 0) {
   <div class="container">
     <div class="card empty-cart-card">
       <div class="row d-flex justify-content-center align-items-center text-center">
         <div class="col">
           <h5 class="card-title m-2">Comanda mea</h5>
           <img src="../../../assets/images/empty_cart.svg" style="width: 14rem;" class="cart-img p-2 m-4"
-            alt="">
+            alt="Coș de cumpărături gol">
           <h4>Comanda ta este goală</h4>
           <h6>Adaugă produse la comandă</h6>
           <button routerLink="/products" class="btn btn-primary p-3 m-4">
