@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Analytics } from '@angular/fire/analytics';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -15,8 +14,6 @@ import { NotificationService } from './services/notification.service';
 })
 export class App {
   private readonly notificationService = inject(NotificationService);
-  // Keeps Firebase Analytics active for the app's lifetime.
-  private readonly analytics = inject(Analytics);
 
   readonly title = 'TestBakery';
   readonly notifications = this.notificationService.notifications;

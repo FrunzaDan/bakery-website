@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, Injector, runInInjectionContext } from '@angular/core';
-import { Database, listVal, ref } from '@angular/fire/database';
+import { inject, Injectable } from '@angular/core';
+import { get, getDatabase, ref } from 'firebase/database';
+import { from } from 'rxjs/internal/observable/from';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
@@ -9,6 +10,7 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { tap } from 'rxjs/internal/operators/tap';
 import { timeout } from 'rxjs/internal/operators/timeout';
 import { Product } from '../interfaces/product';
+import { firebaseApp } from '../firebase';
 import { SessionStorageService } from './session-storage.service';
 
 @Injectable({
@@ -16,9 +18,8 @@ import { SessionStorageService } from './session-storage.service';
 })
 export class FetchProductsService {
   private readonly http = inject(HttpClient);
-  private readonly database = inject(Database);
+  private readonly database = getDatabase(firebaseApp);
   private readonly sessionStorageService = inject(SessionStorageService);
-  private readonly injector = inject(Injector);
 
   fetchProducts(): Observable<Product[]> {
     const sessionProductsList: Product[] =
@@ -43,9 +44,14 @@ export class FetchProductsService {
   }
 
   fetchProductsFromFirebaseRealtimeDB(): Observable<Product[]> {
-    return runInInjectionContext(this.injector, () =>
-      listVal<Product>(ref(this.database, 'products')),
-    ).pipe(
+    return from(get(ref(this.database, 'products'))).pipe(
+      map((snapshot): Product[] => {
+        const products: Product[] = [];
+        snapshot.forEach((child) => {
+          products.push(child.val());
+        });
+        return products;
+      }),
       timeout(5000),
       tap((products: Product[]): void => {
         if (products.length === 0) {
