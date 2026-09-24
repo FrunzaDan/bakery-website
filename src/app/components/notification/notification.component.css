@@ -17,3 +17,16 @@
         font-size: 1.2rem;
     }
 }
+
+.fade-in {
+  transition: opacity 400ms ease-in;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  transition: opacity 600ms ease-out;
+  opacity: 0;
+}

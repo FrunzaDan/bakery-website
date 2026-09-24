@@ -21,21 +21,21 @@ export class CartComponent {
 
   removeOneProduct(product: Product): void {
     this.cartService.removeProductFromCart(product);
-    this.notificationService.addNotification({ message: `"${product.title}" - 1` });
+    this.notificationService.show(`"${product.title}" - 1`);
   }
 
   addOneProduct(product: Product): void {
     this.cartService.addProductToCart(product);
-    this.notificationService.addNotification({ message: `"${product.title}" + 1` });
+    this.notificationService.show(`"${product.title}" + 1`);
   }
 
   removeFromCart(product: Product): void {
     this.cartService.removeProductsFromCart(product);
-    this.notificationService.addNotification({ message: `"${product.title}" a fost șters!` });
+    this.notificationService.show(`"${product.title}" a fost șters!`);
   }
 
   emptyCart(): void {
     this.cartService.removeAllCart();
-    this.notificationService.addNotification({ message: `Coșul a fost golit!` });
+    this.notificationService.show('Coșul a fost golit!');
   }
 }

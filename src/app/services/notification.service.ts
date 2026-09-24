@@ -1,28 +1,26 @@
 import { Injectable, signal } from '@angular/core';
 import { Notification } from '../interfaces/notification';
 
-let nextNotificationId = 0;
+const DEFAULT_DURATION_MS = 4000;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class NotificationService {
-  private readonly maxNotifications = 1;
-  private readonly notificationsSignal = signal<Notification[]>([]);
+  private readonly _notifications = signal<readonly Notification[]>([]);
+  readonly notifications = this._notifications.asReadonly();
 
-  readonly notifications = this.notificationsSignal.asReadonly();
+  private nextId = 0;
 
-  addNotification(notification: Omit<Notification, 'id'>): void {
-    const currentNotifications = this.notificationsSignal().slice(0, this.maxNotifications - 1);
-    this.notificationsSignal.set([
-      ...currentNotifications,
-      { ...notification, id: nextNotificationId++ },
-    ]);
+  /** Shows a notification, replacing the one on screen, and hides it after `durationMs`. */
+  show(message: string, durationMs = DEFAULT_DURATION_MS): void {
+    const id = ++this.nextId;
+    this._notifications.set([{ id, message }]);
+
+    if (durationMs > 0) {
+      setTimeout(() => this.dismiss(id), durationMs);
+    }
   }
 
-  removeNotification(notification: Notification): void {
-    this.notificationsSignal.update((notifications) =>
-      notifications.filter((n) => n.id !== notification.id),
-    );
+  dismiss(id: number): void {
+    this._notifications.update((list) => list.filter((n) => n.id !== id));
   }
 }

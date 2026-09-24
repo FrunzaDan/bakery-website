@@ -5,57 +5,65 @@ describe('NotificationService', () => {
   let service: NotificationService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    vi.useFakeTimers();
     service = TestBed.inject(NotificationService);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('starts with no notifications', () => {
     expect(service.notifications()).toEqual([]);
   });
 
-  it('adds a notification with an assigned id', () => {
-    service.addNotification({ message: 'Hello' });
+  it('shows a notification with an assigned id', () => {
+    service.show('Hello');
 
-    const notifications = service.notifications();
-    expect(notifications.length).toBe(1);
-    expect(notifications[0].message).toBe('Hello');
-    expect(notifications[0].id).toBeTypeOf('number');
+    expect(service.notifications()).toEqual([{ id: expect.any(Number), message: 'Hello' }]);
   });
 
-  it('caps the number of visible notifications at 1', () => {
-    service.addNotification({ message: 'First' });
-    service.addNotification({ message: 'Second' });
+  it('replaces the notification on screen with the newest one', () => {
+    service.show('First');
+    service.show('Second');
 
-    const notifications = service.notifications();
-    expect(notifications.length).toBe(1);
-    expect(notifications[0].message).toBe('Second');
+    expect(service.notifications().map((n) => n.message)).toEqual(['Second']);
   });
 
-  it('assigns increasing ids to successive notifications', () => {
-    service.addNotification({ message: 'First' });
-    const firstId = service.notifications()[0].id;
+  it('hides a notification after 4 seconds', () => {
+    service.show('Hello');
 
-    service.addNotification({ message: 'Second' });
-    const secondId = service.notifications()[0].id;
+    vi.advanceTimersByTime(3999);
+    expect(service.notifications().length).toBe(1);
 
-    expect(secondId).toBeGreaterThan(firstId);
-  });
-
-  it('removes a notification by id', () => {
-    service.addNotification({ message: 'Only' });
-    const notification = service.notifications()[0];
-
-    service.removeNotification(notification);
-
+    vi.advanceTimersByTime(1);
     expect(service.notifications()).toEqual([]);
   });
 
-  it('does nothing when removing a notification that is not present', () => {
-    service.addNotification({ message: 'Kept' });
-    const kept = service.notifications()[0];
+  it('keeps the newest notification when the replaced one times out', () => {
+    service.show('First');
+    vi.advanceTimersByTime(3000);
+    service.show('Second');
 
-    service.removeNotification({ id: -1, message: 'Unknown' });
+    vi.advanceTimersByTime(1000);
+    expect(service.notifications().map((n) => n.message)).toEqual(['Second']);
+  });
 
-    expect(service.notifications()).toEqual([kept]);
+  it('keeps a notification with a zero duration until it is dismissed', () => {
+    service.show('Sticky', 0);
+    vi.advanceTimersByTime(60_000);
+    expect(service.notifications().length).toBe(1);
+
+    service.dismiss(service.notifications()[0].id);
+    expect(service.notifications()).toEqual([]);
+  });
+
+  it('does nothing when dismissing a notification that is not present', () => {
+    service.show('Kept');
+    const kept = service.notifications();
+
+    service.dismiss(-1);
+
+    expect(service.notifications()).toEqual(kept);
   });
 });

@@ -158,8 +158,6 @@ export class ProductsComponent {
 
   addToCart(product: Product): void {
     this.cartService.addProductToCart(product);
-    this.notificationService.addNotification({
-      message: `"${product.title}" a fost adăugat!`,
-    });
+    this.notificationService.show(`"${product.title}" a fost adăugat!`);
   }
 }

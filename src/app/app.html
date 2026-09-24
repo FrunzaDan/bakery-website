@@ -12,12 +12,4 @@
 <router-outlet></router-outlet>
 <app-footer></app-footer>
 
-<div class="notifications-container">
-  @for (notification of notifications(); track notification.id) {
-    <app-notification
-      [notification]="notification"
-      animate.enter="fade-in"
-      animate.leave="fade-out"
-    ></app-notification>
-  }
-</div>
+<app-notification></app-notification>
