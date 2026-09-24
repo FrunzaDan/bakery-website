@@ -11,12 +11,13 @@
           class="col-md justify-content-center align-items-center text-center p-2"
           >
           <input
-            type="text"
+            type="search"
             class="form-control search-products-form-control p-2"
-            (keyup)="search($event)"
+            [formField]="searchForm.term"
             placeholder="caută produse"
+            aria-label="Caută produse după nume"
             />
-          <label><i class="bi bi-search search-icon"></i></label>
+          <i class="bi bi-search search-icon" aria-hidden="true"></i>
         </div>
         <div
           class="col-md justify-content-center align-items-center text-center p-2"
@@ -32,26 +33,20 @@
               <span class="ps-2"> Sortează </span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end width-100prc">
-              <li>
-                <button class="dropdown-item" type="button" (click)="setSortOption('title-asc')">
-                  Nume: A - Z
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" type="button" (click)="setSortOption('title-desc')">
-                  Nume: Z - A
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" type="button" (click)="setSortOption('price-desc')">
-                  Preț: mare - mic
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" type="button" (click)="setSortOption('price-asc')">
-                  Preț: mic - mare
-                </button>
-              </li>
+              @for (choice of sortChoices; track choice.value) {
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="."
+                    [queryParams]="{ sort: choice.value }"
+                    queryParamsHandling="merge"
+                    [class.active]="sort() === choice.value"
+                    [attr.aria-current]="sort() === choice.value ? 'true' : null"
+                    >
+                    {{ choice.label }}
+                  </a>
+                </li>
+              }
             </ul>
           </div>
         </div>
@@ -84,65 +79,35 @@
     <div class="card py-2 mx-4">
       <div class="container">
         <div class="row px-2 py-4">
-          <div class="col d-flex justify-content-center align-items-center p-2">
-            <button
-              class="btn btn-primary width-100prc h-100"
-              (click)="displayProductsContent()"
-              [class.selected-btn]="selectedCategory() == undefined"
-              >
-              Toate
-            </button>
-          </div>
-          <div class="col d-flex justify-content-center align-items-center p-2">
-            <button
-              class="btn btn-primary width-100prc h-100"
-              (click)="displayProductsContent('bakeries')"
-              [class.selected-btn]="selectedCategory() == 'bakeries'"
-              >
-              Cofetărie
-            </button>
-          </div>
-          <div class="col d-flex justify-content-center align-items-center p-2">
-            <button
-              class="btn btn-primary width-100prc h-100"
-              (click)="displayProductsContent('pastry')"
-              [class.selected-btn]="selectedCategory() == 'pastry'"
-              >
-              Patiserie
-            </button>
-          </div>
-          <div class="col d-flex justify-content-center align-items-center p-2">
-            <button
-              class="btn btn-primary width-100prc h-100"
-              (click)="displayProductsContent('sweets')"
-              [class.selected-btn]="selectedCategory() == 'sweets'"
-              >
-              Torturi
-            </button>
-          </div>
-          <div class="col d-flex justify-content-center align-items-center p-2">
-            <button
-              class="btn btn-primary width-100prc h-100"
-              (click)="displayProductsContent('basic_products')"
-              [class.selected-btn]="selectedCategory() == 'basic_products'"
-              >
-              Produse de bază
-            </button>
-          </div>
+          @for (option of categories; track option.label) {
+            <div class="col d-flex justify-content-center align-items-center p-2">
+              <a
+                class="btn btn-primary width-100prc h-100 d-flex justify-content-center align-items-center"
+                routerLink="."
+                [queryParams]="{ category: option.value ?? null }"
+                queryParamsHandling="merge"
+                [class.selected-btn]="category() === option.value"
+                [attr.aria-current]="category() === option.value ? 'true' : null"
+                >
+                {{ option.label }}
+              </a>
+            </div>
+          }
         </div>
       </div>
       <div class="row justify-content-center align-items-center p-2">
         <span class="subtitle-2 text-center p-2"
-          >Categorie: {{ selectedCategory() }}</span
+          >Categorie: {{ selectedCategoryLabel() }}</span
           >
         </div>
+        <p class="visually-hidden" aria-live="polite">{{ resultsAnnouncement() }}</p>
         <div class="container d-flex flex-wrap justify-content-around">
           @if (isLoadingProducts()) {
             <div class="container text-center my-4 py-4">
               Loading...
             </div>
           } @else {
-            @for (product of searchFilterProductsList(); track product.id) {
+            @for (product of visibleProducts(); track product.id) {
               <div class="card product-card hover-card">
                 <img
                   src="{{ product.image }}"
@@ -168,10 +133,13 @@
                   </button>
                 </div>
               </div>
-            }
-            @if (searchFilterProductsList().length === 0) {
+            } @empty {
               <div class="container text-center my-4 py-4">
-                Nu există produse disponibile conform filtrului aplicat. <br />
+                @if (q()) {
+                  Nu există produse care să conțină „{{ q() }}”. <br />
+                } @else {
+                  Nu există produse disponibile conform filtrului aplicat. <br />
+                }
                 Încearcă să cauți altceva. <br />
               </div>
             }

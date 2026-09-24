@@ -10,11 +10,11 @@ import {
 } from '@angular/platform-browser';
 import {
   provideRouter,
+  withComponentInputBinding,
   withInMemoryScrolling,
   withViewTransitions,
 } from '@angular/router';
 import { routes } from './app.routes';
-import { FilterPipe } from './shared/filter.pipe';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,11 +26,11 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled',
       }),
       withViewTransitions(),
+      withComponentInputBinding(),
     ),
 
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
-    FilterPipe,
     provideZonelessChangeDetection(),
   ],
 };
