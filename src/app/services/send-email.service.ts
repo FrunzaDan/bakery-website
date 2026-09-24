@@ -7,33 +7,21 @@ import { ContactMeForm } from '../interfaces/contact-me-form';
   providedIn: 'root',
 })
 export class SendEmailService {
-  constructor() {}
-
-  sendEmailJS(contactMeForm: ContactMeForm): Promise<number> {
-    let responseCode = 500;
-    var params = {
+  /** Resolves once EmailJS accepted the message and rejects with its error otherwise. */
+  async sendEmailJS(contactMeForm: ContactMeForm): Promise<void> {
+    // The keys are the variable names used by the EmailJS template.
+    const templateParams = {
       name: contactMeForm.name,
       email: contactMeForm.email,
-      from_tel: contactMeForm.from_tel,
-      from_message: contactMeForm.from_message,
+      from_tel: contactMeForm.phone,
+      from_message: contactMeForm.message,
     };
 
-    return emailjs
-      .send(
-        environment.emailJSConfig.serviceID,
-        environment.emailJSConfig.templateID,
-        params,
-        environment.emailJSConfig.publicKey
-      )
-      .then(
-        (success) => {
-          responseCode = success.status;
-          return responseCode;
-        },
-        (error) => {
-          responseCode = error.status;
-          return responseCode;
-        }
-      );
+    await emailjs.send(
+      environment.emailJSConfig.serviceID,
+      environment.emailJSConfig.templateID,
+      templateParams,
+      environment.emailJSConfig.publicKey,
+    );
   }
 }

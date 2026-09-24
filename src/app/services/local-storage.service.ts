@@ -1,41 +1,38 @@
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Product } from '../interfaces/product';
+import { CartItem } from '../interfaces/cart-item';
+import { parseCartItems } from '../shared/parsers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageService {
-  private readonly cartProductsKey = 'cartProductsLocal';
+  // The key predates carts holding only product references; `parseCartItems`
+  // still reads carts saved in the old shape.
+  private readonly cartItemsKey = 'cartProductsLocal';
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  getCartProductsLocal(): Product[] | null {
+  getCartItems(): CartItem[] {
     if (!this.isBrowser) {
-      return null;
+      return [];
     }
     try {
-      const cartProductsJson = localStorage.getItem(this.cartProductsKey);
-      if (!cartProductsJson) {
-        return null;
-      }
-      return JSON.parse(cartProductsJson) as Product[];
+      const cartItemsJson = localStorage.getItem(this.cartItemsKey);
+      return cartItemsJson ? parseCartItems(JSON.parse(cartItemsJson)) : [];
     } catch (parseError: unknown) {
-      console.error(
-        'Error parsing cart products from local storage:',
-        parseError
-      );
-      return null;
+      console.error('Error parsing cart items from local storage:', parseError);
+      return [];
     }
   }
 
-  setCartProductsLocal(products: Product[]): void {
+  setCartItems(cartItems: readonly CartItem[]): void {
     if (!this.isBrowser) {
       return;
     }
     try {
-      localStorage.setItem(this.cartProductsKey, JSON.stringify(products));
-    } catch (parseError: unknown) {
-      console.error('Error setting products to local storage:', parseError);
+      localStorage.setItem(this.cartItemsKey, JSON.stringify(cartItems));
+    } catch (storageError: unknown) {
+      console.error('Error setting cart items to local storage:', storageError);
     }
   }
 }

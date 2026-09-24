@@ -60,7 +60,7 @@
             class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2"
             >
             <img
-              src="../../../assets/images/cart/cart.svg"
+              src="/assets/images/cart/cart.svg"
               alt="cart"
               class="cart-icon"
               />
@@ -119,13 +119,13 @@
                   <p class="card-text">
                     {{ product.description }}
                   </p>
-                  <p><strong>Preț:</strong> {{ product.price }} RON</p>
+                  <p><strong>Preț:</strong> {{ product.price | ron }}</p>
                   <button
                     class="btn btn-primary width-100prc justify-content-center align-items-center text-center"
                     (click)="addToCart(product)"
                     >
                     <img
-                      src="../../../assets/images/cart/cart_add.svg"
+                      src="/assets/images/cart/cart_add.svg"
                       alt="cart"
                       class="cart-icon"
                       />

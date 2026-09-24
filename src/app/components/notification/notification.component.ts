@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
   input,
@@ -14,7 +13,6 @@ import { NotificationService } from '../../services/notification.service';
   imports: [],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationComponent implements OnInit, OnDestroy {
   private readonly notificationService = inject(NotificationService);

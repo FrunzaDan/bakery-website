@@ -11,6 +11,7 @@ import { tap } from 'rxjs/internal/operators/tap';
 import { timeout } from 'rxjs/internal/operators/timeout';
 import { Product } from '../interfaces/product';
 import { firebaseApp } from '../firebase';
+import { parseProducts } from '../shared/parsers';
 import { SessionStorageService } from './session-storage.service';
 
 @Injectable({
@@ -22,15 +23,14 @@ export class FetchProductsService {
   private readonly sessionStorageService = inject(SessionStorageService);
 
   fetchProducts(): Observable<Product[]> {
-    const sessionProductsList: Product[] =
-      this.sessionStorageService.getProductsSession();
+    const sessionProductsList = this.sessionStorageService.getProductsSession();
 
     if (sessionProductsList.length !== 0) {
       return of(sessionProductsList);
     }
 
     return this.fetchProductsFromFirebaseRealtimeDB().pipe(
-      switchMap((products: Product[]): Observable<Product[]> => {
+      switchMap((products): Observable<Product[]> => {
         if (products.length === 0) {
           return this.fetchProductsFromNG();
         }
@@ -46,14 +46,14 @@ export class FetchProductsService {
   fetchProductsFromFirebaseRealtimeDB(): Observable<Product[]> {
     return from(get(ref(this.database, 'products'))).pipe(
       map((snapshot): Product[] => {
-        const products: Product[] = [];
+        const values: unknown[] = [];
         snapshot.forEach((child) => {
-          products.push(child.val());
+          values.push(child.val());
         });
-        return products;
+        return parseProducts(values);
       }),
       timeout(5000),
-      tap((products: Product[]): void => {
+      tap((products): void => {
         if (products.length === 0) {
           return;
         }
@@ -69,7 +69,7 @@ export class FetchProductsService {
   fetchProductsFromNG(): Observable<Product[]> {
     console.log('Fetching sample products from NG...');
     return this.http
-      .get<{ products: Product[] }>('/assets/products.json')
-      .pipe(map((data: { products: Product[] }): Product[] => data.products));
+      .get<{ products?: unknown } | null>('/assets/products.json')
+      .pipe(map((data): Product[] => parseProducts(data?.products)));
   }
 }

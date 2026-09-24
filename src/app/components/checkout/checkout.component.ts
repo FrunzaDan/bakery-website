@@ -1,134 +1,70 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { CheckOutForm } from '../../interfaces/check-out-form';
-import { Product } from '../../interfaces/product';
+import { Component, inject, signal } from '@angular/core';
+import { FormField, FormRoot, form } from '@angular/forms/signals';
+import { RouterModule } from '@angular/router';
+import { CheckoutForm } from '../../interfaces/checkout-form';
 import { CartService } from '../../services/cart.service';
-import { SendEmailService } from '../../services/send-email.service';
+import { reportInvalidFields } from '../../shared/invalid-summary';
+import { RonPipe } from '../../shared/ron.pipe';
+import { checkoutFormSchema, emptyCheckoutForm } from './checkout-form';
 
 @Component({
   selector: 'app-checkout',
-  imports: [RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule, FormField, FormRoot, RonPipe],
+  providers: [RonPipe],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutComponent {
   private readonly cartService = inject(CartService);
-  private readonly router = inject(Router);
-  private readonly sendEmailService = inject(SendEmailService);
+  private readonly ron = inject(RonPipe);
 
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
   readonly totalPrice = this.cartService.totalPrice;
   readonly showConfirmCheckout = signal(false);
   readonly order = signal<string | undefined>(undefined);
-  readonly submitted = signal(false);
+  readonly invalidSummary = signal<string | null>(null);
 
-  checkOutForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[0-9]{9,12}$'),
-    ]),
-    town: new FormControl('', [Validators.required]),
-    address_line1: new FormControl('', [Validators.required]),
-    address_line2: new FormControl('', [Validators.required]),
-    zip: new FormControl('', [Validators.required]),
+  readonly model = signal<CheckoutForm>(emptyCheckoutForm());
+  readonly checkoutForm = form(this.model, checkoutFormSchema, {
+    submission: {
+      action: async () => {
+        this.invalidSummary.set(null);
+        this.order.set(this.buildOrder(this.model()));
+        this.showConfirmCheckout.set(true);
+      },
+      onInvalid: (field) => this.invalidSummary.set(reportInvalidFields(field)),
+    },
   });
 
-  get f() {
-    return this.checkOutForm.controls;
-  }
-
-  handleBackToCartClick(event: Event): void {
-    event.preventDefault();
-    this.router.navigate(['/cart']);
-  }
-
-  handleCloseConfirmCheckoutClick(event: Event): void {
-    event.preventDefault();
+  closeConfirmCheckout(): void {
     this.showConfirmCheckout.set(false);
   }
 
-  onSubmit(): void {
-    this.submitted.set(true);
-    if (this.checkOutForm.invalid) {
-      return;
-    }
+  buildOrder(checkoutForm: CheckoutForm): string {
+    const customerContactInfo = [
+      `Nume client: ${checkoutForm.name}`,
+      `E-mail client: ${checkoutForm.email}`,
+      `Telefon client: ${checkoutForm.phone}`,
+      'Adresă livrare client: ',
+      `Localitate: ${checkoutForm.town}`,
+      `Stradă: ${checkoutForm.street}`,
+      `Număr: ${checkoutForm.streetNumber}`,
+      `Cod poștal: ${checkoutForm.zip}`,
+      '--------------------',
+    ].join('\n');
 
-    const checkOutFormData: CheckOutForm = this.checkOutForm.value as CheckOutForm;
-    const order: string = this.buildOrder(checkOutFormData);
-
-    if (order) {
-      this.order.set(order);
-      this.showConfirmCheckout.set(true);
-    }
-  }
-
-  buildOrder(checkOutForm: CheckOutForm): string {
-    let orderString: string = 'Comanda: \n';
-    let customer_contact_info: string =
-      'Nume client: ' +
-      checkOutForm.name +
-      '\n' +
-      'E-mail client: ' +
-      checkOutForm.email +
-      '\n' +
-      'Telefon client: ' +
-      checkOutForm.phone +
-      '\n' +
-      'Adresă livrare client: \n' +
-      'Localitate: ' +
-      checkOutForm.town +
-      '\n' +
-      'Stradă: ' +
-      checkOutForm.address_line1 +
-      '\n' +
-      'Număr: ' +
-      checkOutForm.address_line2 +
-      '\n' +
-      'Cod poștal: ' +
-      checkOutForm.zip +
-      '\n' +
-      '--------------------' +
-      '\n';
-
-    orderString += '\n' + customer_contact_info;
-
-    let productString: string = 'Produse: ';
-    const customer_ordered_products: Product[] = this.cartService.cartProducts();
-    if (customer_ordered_products.length !== 0) {
-      for (let product of customer_ordered_products) {
-        productString +=
-          '\n' +
-          product.title +
-          ': ' +
-          product.price +
-          ' RON x ' +
-          product.quantity +
-          ' buc.';
+    let productString = 'Produse: ';
+    const cartLines = this.cartService.cartLines();
+    if (cartLines.length !== 0) {
+      for (const { product, quantity } of cartLines) {
+        productString += `\n${product.title}: ${this.ron.transform(product.price)} x ${quantity} buc.`;
       }
       productString +=
-        '\n' +
-        '--------------------' +
-        '\n' +
-        'Număr produse: ' +
-        this.totalNumberOfCartProducts() +
-        ' buc.' +
-        '\n' +
-        'Preț total: ' +
-        this.totalPrice() +
-        ' RON';
+        '\n--------------------' +
+        `\nNumăr produse: ${this.totalNumberOfCartProducts()} buc.` +
+        `\nPreț total: ${this.ron.transform(this.totalPrice())}`;
     }
 
-    let order: string = orderString + productString;
-    return order.trim();
+    return `Comanda: \n\n${customerContactInfo}\n${productString}`.trim();
   }
 }

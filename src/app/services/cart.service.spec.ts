@@ -1,13 +1,16 @@
+import { computed, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { CartService } from './cart.service';
 import { LocalStorageService } from './local-storage.service';
+import { ProductCatalogService } from './product-catalog.service';
 import { Product } from '../interfaces/product';
 
 describe('CartService', () => {
   let service: CartService;
+  let catalogProducts: ReturnType<typeof signal<Product[]>>;
   let localStorageServiceSpy: {
-    getCartProductsLocal: ReturnType<typeof vi.fn>;
-    setCartProductsLocal: ReturnType<typeof vi.fn>;
+    getCartItems: ReturnType<typeof vi.fn>;
+    setCartItems: ReturnType<typeof vi.fn>;
   };
 
   const makeProduct = (overrides: Partial<Product> = {}): Product => ({
@@ -16,21 +19,30 @@ describe('CartService', () => {
     price: 9.99,
     description: '',
     image: '',
-    category: 'widgets',
-    quantity: 1,
+    category: 'pastry',
     ...overrides,
   });
 
+  const productA = makeProduct({ id: 1, price: 10 });
+  const productB = makeProduct({ id: 2, price: 5 });
+
   beforeEach(() => {
+    catalogProducts = signal([productA, productB]);
     localStorageServiceSpy = {
-      getCartProductsLocal: vi.fn().mockReturnValue(null),
-      setCartProductsLocal: vi.fn(),
+      getCartItems: vi.fn().mockReturnValue([]),
+      setCartItems: vi.fn(),
     };
 
     TestBed.configureTestingModule({
       providers: [
         CartService,
         { provide: LocalStorageService, useValue: localStorageServiceSpy },
+        {
+          provide: ProductCatalogService,
+          useValue: {
+            productsById: computed(() => new Map(catalogProducts().map((p) => [p.id, p]))),
+          },
+        },
       ],
     });
 
@@ -38,47 +50,40 @@ describe('CartService', () => {
   });
 
   it('starts with an empty cart', () => {
-    expect(service.cartProducts()).toEqual([]);
+    expect(service.cartLines()).toEqual([]);
     expect(service.totalNumberOfProducts()).toBe(0);
     expect(service.totalPrice()).toBe(0);
   });
 
-  it('adds a new product to the cart with quantity 1', () => {
-    const product = makeProduct();
+  it('adds a new product to the cart with quantity 1 and stores only its id', () => {
+    service.addProductToCart(productA);
 
-    const result = service.addProductToCart(product);
-
-    expect(result).toBe(true);
-    expect(service.cartProducts()).toEqual([{ ...product, quantity: 1 }]);
-    expect(localStorageServiceSpy.setCartProductsLocal).toHaveBeenCalledWith([
-      { ...product, quantity: 1 },
+    expect(service.cartLines()).toEqual([{ product: productA, quantity: 1 }]);
+    expect(localStorageServiceSpy.setCartItems).toHaveBeenCalledWith([
+      { productId: 1, quantity: 1 },
     ]);
   });
 
   it('increments the quantity when adding the same product again', () => {
-    const product = makeProduct();
+    service.addProductToCart(productA);
+    service.addProductToCart(productA);
 
-    service.addProductToCart(product);
-    service.addProductToCart(product);
-
-    expect(service.cartProducts()).toEqual([{ ...product, quantity: 2 }]);
+    expect(service.cartLines()).toEqual([{ product: productA, quantity: 2 }]);
     expect(service.totalNumberOfProducts()).toBe(2);
   });
 
   it('keeps distinct products separate in the cart', () => {
-    const productA = makeProduct({ id: 1, price: 10 });
-    const productB = makeProduct({ id: 2, price: 5 });
-
     service.addProductToCart(productA);
     service.addProductToCart(productB);
 
-    expect(service.cartProducts().map((p) => p.id)).toEqual([1, 2]);
+    expect(service.cartLines().map((line) => line.product.id)).toEqual([1, 2]);
     expect(service.totalNumberOfProducts()).toBe(2);
     expect(service.totalPrice()).toBe(15);
   });
 
   it('rounds the total price to two decimals', () => {
-    const product = makeProduct({ price: 10.005 });
+    const product = makeProduct({ id: 3, price: 10.005 });
+    catalogProducts.set([product]);
 
     service.addProductToCart(product);
     service.addProductToCart(product);
@@ -87,61 +92,57 @@ describe('CartService', () => {
     expect(service.totalPrice()).toBe(30.02);
   });
 
+  it('takes titles and prices from the current catalog, not from when the product was added', () => {
+    service.addProductToCart(productA);
+    catalogProducts.set([{ ...productA, title: 'Renamed', price: 12 }, productB]);
+
+    expect(service.cartLines()[0].product.title).toBe('Renamed');
+    expect(service.totalPrice()).toBe(12);
+  });
+
+  it('leaves out items whose product is no longer in the catalog', () => {
+    service.addProductToCart(productA);
+    service.addProductToCart(productB);
+    catalogProducts.set([productB]);
+
+    expect(service.cartLines()).toEqual([{ product: productB, quantity: 1 }]);
+    expect(service.totalNumberOfProducts()).toBe(1);
+  });
+
   it('decrements the quantity when removing a product with quantity > 1', () => {
-    const product = makeProduct();
-    service.addProductToCart(product);
-    service.addProductToCart(product);
+    service.addProductToCart(productA);
+    service.addProductToCart(productA);
 
-    const result = service.removeProductFromCart(product);
+    service.removeProductFromCart(productA);
 
-    expect(result).toBe(true);
-    expect(service.cartProducts()).toEqual([{ ...product, quantity: 1 }]);
+    expect(service.cartLines()).toEqual([{ product: productA, quantity: 1 }]);
   });
 
   it('removes the product entirely when its quantity drops to 0', () => {
-    const product = makeProduct();
-    service.addProductToCart(product);
+    service.addProductToCart(productA);
 
-    const result = service.removeProductFromCart(product);
+    service.removeProductFromCart(productA);
 
-    expect(result).toBe(true);
-    expect(service.cartProducts()).toEqual([]);
-  });
-
-  it('returns false when trying to remove a product not in the cart', () => {
-    const product = makeProduct();
-
-    const result = service.removeProductFromCart(product);
-
-    expect(result).toBe(false);
-    expect(localStorageServiceSpy.setCartProductsLocal).not.toHaveBeenCalled();
+    expect(service.cartLines()).toEqual([]);
   });
 
   it('removeProductsFromCart deletes the entire line regardless of quantity', () => {
-    const product = makeProduct();
-    service.addProductToCart(product);
-    service.addProductToCart(product);
+    service.addProductToCart(productA);
+    service.addProductToCart(productA);
+    service.addProductToCart(productB);
 
-    const result = service.removeProductsFromCart(product);
+    service.removeProductsFromCart(productA);
 
-    expect(result).toBe(true);
-    expect(service.cartProducts()).toEqual([]);
-  });
-
-  it('removeProductsFromCart returns false for a product not in the cart', () => {
-    const product = makeProduct();
-
-    expect(service.removeProductsFromCart(product)).toBe(false);
+    expect(service.cartLines()).toEqual([{ product: productB, quantity: 1 }]);
   });
 
   it('removeAllCart empties the cart and persists it', () => {
-    service.addProductToCart(makeProduct({ id: 1 }));
-    service.addProductToCart(makeProduct({ id: 2 }));
+    service.addProductToCart(productA);
+    service.addProductToCart(productB);
 
-    const result = service.removeAllCart();
+    service.removeAllCart();
 
-    expect(result).toBe(true);
-    expect(service.cartProducts()).toEqual([]);
-    expect(localStorageServiceSpy.setCartProductsLocal).toHaveBeenLastCalledWith([]);
+    expect(service.cartLines()).toEqual([]);
+    expect(localStorageServiceSpy.setCartItems).toHaveBeenLastCalledWith([]);
   });
 });

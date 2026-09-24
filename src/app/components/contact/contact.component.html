@@ -3,93 +3,92 @@
     <div class="col-md-7 px-4">
       <div class="card p-2 my-2">
         <div class="card-body">
-          <form
-            [formGroup]="contactMeForm"
-            #formDirective="ngForm"
-            id="contactForm"
-            (ngSubmit)="onSubmit()"
-          >
+          <form [formRoot]="contactForm" id="contactForm">
+            @if (sendError(); as error) {
+              <div class="alert alert-danger" role="alert">{{ error }}</div>
+            }
+            @if (invalidSummary(); as summary) {
+              <div class="alert alert-danger" role="alert">{{ summary }}</div>
+            }
+            @let name = contactForm.name();
+            @let nameError = name.touched() && name.invalid();
             <div class="mb-3">
               <label for="name" class="form-label">Nume:</label>
               <input
+                id="name"
                 class="form-control"
-                formControlName="name"
-                name="name"
                 type="text"
                 placeholder="Numele tău"
-                [class.is-invalid]="submitted() && f.name.errors"
+                autocomplete="name"
+                [formField]="contactForm.name"
+                [class.is-invalid]="nameError"
+                [attr.aria-invalid]="nameError"
+                [attr.aria-describedby]="nameError ? 'name-error' : null"
               />
-              @if (submitted() && f.name.errors) {
-                <div class="invalid-feedback">
-                  @if (f['name'].errors['required']) {
-                    <div>Numele este necesar.</div>
-                  }
-                </div>
+              @if (nameError) {
+                <div class="invalid-feedback" id="name-error">{{ name.errors()[0].message }}</div>
               }
             </div>
+            @let email = contactForm.email();
+            @let emailError = email.touched() && email.invalid();
             <div class="mb-3">
               <label for="email" class="form-label">Adresă de E-mail:</label>
               <input
+                id="email"
                 class="form-control"
-                formControlName="email"
-                name="email"
                 type="email"
                 placeholder="Adresa ta de E-mail"
-                [class.is-invalid]="submitted() && f.email.errors"
+                autocomplete="email"
+                [formField]="contactForm.email"
+                [class.is-invalid]="emailError"
+                [attr.aria-invalid]="emailError"
+                [attr.aria-describedby]="emailError ? 'email-error' : null"
               />
-              @if (submitted() && f.email.errors) {
-                <div class="invalid-feedback">
-                  @if (f['email'].errors['required']) {
-                    <div>E-mail-ul este necesar.</div>
-                  }
-                  @if (f['email'].errors['email']) {
-                    <div>Un E-mail valid este necesar.</div>
-                  }
-                </div>
+              @if (emailError) {
+                <div class="invalid-feedback" id="email-error">{{ email.errors()[0].message }}</div>
               }
             </div>
+            @let phone = contactForm.phone();
+            @let phoneError = phone.touched() && phone.invalid();
             <div class="mb-3">
-              <label for="from_tel" class="form-label">Număr de telefon:</label>
+              <label for="phone" class="form-label">Număr de telefon:</label>
               <input
+                id="phone"
                 class="form-control"
-                formControlName="from_tel"
-                name="email"
                 type="tel"
                 placeholder="Numărul tău de telefon"
-                [class.is-invalid]="submitted() && f.from_tel.errors"
+                autocomplete="tel"
+                [formField]="contactForm.phone"
+                [class.is-invalid]="phoneError"
+                [attr.aria-invalid]="phoneError"
+                [attr.aria-describedby]="phoneError ? 'phone-error' : null"
               />
-              @if (submitted() && f.from_tel.errors) {
-                <div class="invalid-feedback">
-                  @if (f['from_tel'].errors['required']) {
-                    <div>Numărul de telefon este necesar.</div>
-                  }
-                  @if (f['from_tel'].errors['pattern']) {
-                    <div>Un număr de telefon mobil valid este necesar.</div>
-                  }
-                </div>
+              @if (phoneError) {
+                <div class="invalid-feedback" id="phone-error">{{ phone.errors()[0].message }}</div>
               }
             </div>
+            @let message = contactForm.message();
+            @let messageError = message.touched() && message.invalid();
             <div class="mb-3">
-              <label for="from_message" class="form-label">Mesaj:</label>
+              <label for="message" class="form-label">Mesaj:</label>
               <textarea
+                id="message"
                 class="form-control"
-                formControlName="from_message"
-                name="email"
-                type="text"
                 placeholder="Mesajul tău"
-                [class.is-invalid]="submitted() && f.from_message.errors"
+                [formField]="contactForm.message"
+                [class.is-invalid]="messageError"
+                [attr.aria-invalid]="messageError"
+                [attr.aria-describedby]="messageError ? 'message-error' : null"
                 style="height: 10rem"
               ></textarea>
-              @if (submitted() && f.from_message.errors) {
-                <div class="invalid-feedback">
-                  @if (f['from_message'].errors['required']) {
-                    <div>Un mesaj este necesar.</div>
-                  }
-                </div>
+              @if (messageError) {
+                <div class="invalid-feedback" id="message-error">{{ message.errors()[0].message }}</div>
               }
             </div>
             <div class="d-grid">
-              <button class="btn btn-primary" type="submit">Trimite</button>
+              <button class="btn btn-primary" type="submit" [disabled]="contactForm().submitting()">
+                Trimite
+              </button>
             </div>
           </form>
         </div>

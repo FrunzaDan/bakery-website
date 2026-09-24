@@ -1,58 +1,40 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormField, FormRoot, form } from '@angular/forms/signals';
 import { RouterModule } from '@angular/router';
 import { ContactMeForm } from '../../interfaces/contact-me-form';
 import { SendEmailService } from '../../services/send-email.service';
+import { reportInvalidFields } from '../../shared/invalid-summary';
+import { contactFormSchema, emptyContactForm } from './contact-form';
 
 @Component({
     selector: 'app-contact',
-    imports: [RouterModule, FormsModule, ReactiveFormsModule],
+    imports: [RouterModule, FormField, FormRoot],
     templateUrl: './contact.component.html',
     styleUrl: './contact.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactComponent {
   private readonly sendEmailService = inject(SendEmailService);
 
-  readonly submitted = signal(false);
+  readonly invalidSummary = signal<string | null>(null);
+  readonly sendError = signal<string | null>(null);
 
-  contactMeForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    from_tel: new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[0-9]{9,12}$'),
-    ]),
-    from_message: new FormControl('', [Validators.required]),
+  readonly model = signal<ContactMeForm>(emptyContactForm());
+  readonly contactForm = form(this.model, contactFormSchema, {
+    submission: {
+      action: () => this.send(),
+      onInvalid: (field) => this.invalidSummary.set(reportInvalidFields(field)),
+    },
   });
 
-  get f() {
-    return this.contactMeForm.controls;
-  }
-
-  onSubmit(): void {
-    this.submitted.set(true);
-    if (this.contactMeForm.invalid) {
-      return;
+  private async send(): Promise<void> {
+    this.invalidSummary.set(null);
+    this.sendError.set(null);
+    try {
+      await this.sendEmailService.sendEmailJS(this.model());
+      this.contactForm().reset(emptyContactForm());
+    } catch (error: unknown) {
+      console.error('Error sending the contact message:', error);
+      this.sendError.set('Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.');
     }
-    let responseCodePromise: Promise<number> =
-      this.sendEmailService.sendEmailJS(
-        this.contactMeForm.value as ContactMeForm
-      );
-    responseCodePromise.then((responseCode: number): void => {
-      if (responseCode === 200) {
-        this.contactMeForm.reset();
-        this.contactMeForm.controls.name.setErrors(null);
-        this.contactMeForm.controls.email.setErrors(null);
-        this.contactMeForm.controls.from_tel.setErrors(null);
-        this.contactMeForm.controls.from_message.setErrors(null);
-      }
-    });
   }
 }

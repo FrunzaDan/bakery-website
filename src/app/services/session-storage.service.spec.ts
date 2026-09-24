@@ -12,8 +12,7 @@ describe('SessionStorageService', () => {
     price: 10,
     description: '',
     image: '',
-    category: 'widgets',
-    quantity: 2,
+    category: 'pastry',
   };
 
   beforeEach(() => {
@@ -30,6 +29,13 @@ describe('SessionStorageService', () => {
 
   it('round-trips products through storage', () => {
     service.setProductsSession([product]);
+
+    expect(service.getProductsSession()).toEqual([product]);
+  });
+
+  it('drops stored products that are malformed', () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    sessionStorage.setItem('productsSession', JSON.stringify([product, { id: 'x' }]));
 
     expect(service.getProductsSession()).toEqual([product]);
   });

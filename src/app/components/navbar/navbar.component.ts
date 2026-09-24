@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -6,6 +6,5 @@ import { RouterModule } from '@angular/router';
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrl: './navbar.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {}

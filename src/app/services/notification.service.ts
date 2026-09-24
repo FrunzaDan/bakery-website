@@ -7,14 +7,13 @@ let nextNotificationId = 0;
   providedIn: 'root',
 })
 export class NotificationService {
-  private readonly maxNotifications: number = 1;
+  private readonly maxNotifications = 1;
   private readonly notificationsSignal = signal<Notification[]>([]);
 
   readonly notifications = this.notificationsSignal.asReadonly();
 
   addNotification(notification: Omit<Notification, 'id'>): void {
-    const currentNotifications: Notification[] = this.notificationsSignal()
-      .slice(0, this.maxNotifications - 1);
+    const currentNotifications = this.notificationsSignal().slice(0, this.maxNotifications - 1);
     this.notificationsSignal.set([
       ...currentNotifications,
       { ...notification, id: nextNotificationId++ },
@@ -22,8 +21,8 @@ export class NotificationService {
   }
 
   removeNotification(notification: Notification): void {
-    this.notificationsSignal.update((notifications: Notification[]): Notification[] =>
-      notifications.filter((n: Notification): boolean => n.id !== notification.id)
+    this.notificationsSignal.update((notifications) =>
+      notifications.filter((n) => n.id !== notification.id),
     );
   }
 }

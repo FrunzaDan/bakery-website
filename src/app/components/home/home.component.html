@@ -20,62 +20,18 @@
     </div>
   </div>
   <div class="row p-4">
-    <div class="col-lg-3 col-sm-6 p-4">
-      <a
-        class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-reset text-decoration-none"
-        routerLink="/products"
-        [queryParams]="{ category: 'bakeries' }"
-      >
-        <img
-          src="../../../assets/images/cofetarie.svg"
-          class="img-fluid"
-          alt="Categorie produse cofetărie"
-        />
-        Produse cofetărie
-      </a>
-    </div>
-    <div class="col-lg-3 col-sm-6 p-4">
-      <a
-        class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-reset text-decoration-none"
-        routerLink="/products"
-        [queryParams]="{ category: 'pastry' }"
-      >
-        <img
-          src="../../../assets/images/patiserie.svg"
-          class="img-fluid"
-          alt="Categorie produse patiserie"
-        />
-        Produse patiserie
-      </a>
-    </div>
-    <div class="col-lg-3 col-sm-6 p-4">
-      <a
-        class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-reset text-decoration-none"
-        routerLink="/products"
-        [queryParams]="{ category: 'sweets' }"
-      >
-        <img
-          src="../../../assets/images/torturi.svg"
-          class="img-fluid"
-          alt="Categorie torturi"
-        />
-        Torturi
-      </a>
-    </div>
-    <div class="col-lg-3 col-sm-6 p-4">
-      <a
-        class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-reset text-decoration-none"
-        routerLink="/products"
-        [queryParams]="{ category: 'basic_products' }"
-      >
-        <img
-          src="../../../assets/images/prod-baza.svg"
-          class="img-fluid"
-          alt="Categorie produse de bază"
-        />
-        Produse bază
-      </a>
-    </div>
+    @for (card of categoryCards; track card.category) {
+      <div class="col-lg-3 col-sm-6 p-4">
+        <a
+          class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-reset text-decoration-none"
+          routerLink="/products"
+          [queryParams]="{ category: card.category }"
+        >
+          <img [src]="card.image" class="img-fluid" [alt]="'Categorie ' + card.label" />
+          {{ card.label }}
+        </a>
+      </div>
+    }
   </div>
   <div class="row px-4">
     <div

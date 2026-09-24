@@ -4,7 +4,7 @@ import { Router, provideRouter, withComponentInputBinding } from '@angular/route
 import { RouterTestingHarness } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { ProductsComponent } from './products.component';
-import { Product } from '../../interfaces/product';
+import { Product, ProductCategory } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { FetchProductsService } from '../../services/fetch-products.service';
 
@@ -13,14 +13,13 @@ describe('ProductsComponent', () => {
   let component: ProductsComponent;
   let router: Router;
 
-  const product = (id: number, title: string, price: number, category: string): Product => ({
+  const product = (id: number, title: string, price: number, category: ProductCategory): Product => ({
     id,
     title,
     price,
     category,
     description: '',
     image: '',
-    quantity: 1,
   });
 
   const products: Product[] = [

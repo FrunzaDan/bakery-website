@@ -3,121 +3,155 @@
   <div class="card px-2 mx-4">
     <div class="row align-items-center p-2 p-sm-4 mx-sm-4">
       <h2 class="text-center p-4">
-        Plasează comanda ta de {{totalNumberOfCartProducts()}} produs(e) în valoare totală de {{totalPrice()}} RON
+        Plasează comanda ta de {{totalNumberOfCartProducts()}} produs(e) în valoare totală de {{totalPrice() | ron}}
         și
         te vom contacta noi. Pentru a intra în legătură cu tine, avem nevoie de datele tale de contact și de
         adresa de livrare:
       </h2>
-      <form [formGroup]="checkOutForm" (ngSubmit)="onSubmit()">
-        <div class="mb-4">
+      <form [formRoot]="checkoutForm">
+        @if (invalidSummary(); as summary) {
+          <div class="alert alert-danger" role="alert">{{ summary }}</div>
+        }
+        @let name = checkoutForm.name();
+        @let nameError = name.touched() && name.invalid();
+        <div class="mb-3">
           <label for="name" class="form-label">Nume:</label>
-          <input class="form-control" formControlName="name" name="name" type="text" placeholder="Numele tău"
-            autocomplete="on" [class.is-invalid]="submitted() && f.name.errors" />
-          @if (submitted() && f.name.errors) {
-            <div class="invalid-feedback">
-              @if (f['name'].errors['required']) {
-                <div>Numele este necesar.</div>
-              }
-            </div>
+          <input
+            id="name"
+            class="form-control"
+            type="text"
+            placeholder="Numele tău"
+            autocomplete="name"
+            [formField]="checkoutForm.name"
+            [class.is-invalid]="nameError"
+            [attr.aria-invalid]="nameError"
+            [attr.aria-describedby]="nameError ? 'name-error' : null"
+          />
+          @if (nameError) {
+            <div class="invalid-feedback" id="name-error">{{ name.errors()[0].message }}</div>
           }
         </div>
-        <div class="mb-4">
+        @let email = checkoutForm.email();
+        @let emailError = email.touched() && email.invalid();
+        <div class="mb-3">
           <label for="email" class="form-label">E-mail:</label>
-          <input class="form-control" formControlName="email" name="email" type="text"
-            placeholder="Adresa ta de E-mail" autocomplete="on"
-            [class.is-invalid]="submitted() && f.email.errors" />
-          @if (submitted() && f.email.errors) {
-            <div class="invalid-feedback">
-              @if (f['email'].errors['required']) {
-                <div>E-mail-ul este necesar.</div>
-              }
-              @if (f['email'].errors['email']) {
-                <div>Un E-mail valid este necesar.</div>
-              }
-            </div>
+          <input
+            id="email"
+            class="form-control"
+            type="email"
+            placeholder="Adresa ta de E-mail"
+            autocomplete="email"
+            [formField]="checkoutForm.email"
+            [class.is-invalid]="emailError"
+            [attr.aria-invalid]="emailError"
+            [attr.aria-describedby]="emailError ? 'email-error' : null"
+          />
+          @if (emailError) {
+            <div class="invalid-feedback" id="email-error">{{ email.errors()[0].message }}</div>
           }
         </div>
-        <div class="mb-4">
+        @let phone = checkoutForm.phone();
+        @let phoneError = phone.touched() && phone.invalid();
+        <div class="mb-3">
           <label for="phone" class="form-label">Telefon:</label>
-          <input class="form-control" formControlName="phone" name="phone" type="text"
-            placeholder="Numărul tău de telefon" autocomplete="on"
-            [class.is-invalid]="submitted() && f.phone.errors" />
-          @if (submitted() && f.phone.errors) {
-            <div class="invalid-feedback">
-              @if (f['phone'].errors['required']) {
-                <div>Numărul de telefon este necesar.
-                </div>
-              }
-              @if (f['phone'].errors['pattern']) {
-                <div>Un număr de telefon mobil valid
-                  este
-                necesar.</div>
-              }
-            </div>
+          <input
+            id="phone"
+            class="form-control"
+            type="tel"
+            placeholder="Numărul tău de telefon"
+            autocomplete="tel"
+            [formField]="checkoutForm.phone"
+            [class.is-invalid]="phoneError"
+            [attr.aria-invalid]="phoneError"
+            [attr.aria-describedby]="phoneError ? 'phone-error' : null"
+          />
+          @if (phoneError) {
+            <div class="invalid-feedback" id="phone-error">{{ phone.errors()[0].message }}</div>
           }
         </div>
-        <div class="mb-1">
-          <label for="address" class="form-label">Adresă de livrare:</label>
-        </div>
-        <div class="mb-1">
+        <p class="form-label mb-1">Adresă de livrare:</p>
+        @let town = checkoutForm.town();
+        @let townError = town.touched() && town.invalid();
+        <div class="mb-3">
           <label for="town" class="form-label">Oraș/localitate din jurul Sibiului:</label>
-          <input class="form-control" formControlName="town" name="town" type="text"
-            placeholder="Localitate livrare" autocomplete="on"
-            [class.is-invalid]="submitted() && f.town.errors" />
-          @if (submitted() && f.town.errors) {
-            <div class="invalid-feedback">
-              @if (f['town'].errors['required']) {
-                <div>Localitatea este necesară.</div>
-              }
-            </div>
+          <input
+            id="town"
+            class="form-control"
+            type="text"
+            placeholder="Localitate livrare"
+            autocomplete="address-level2"
+            [formField]="checkoutForm.town"
+            [class.is-invalid]="townError"
+            [attr.aria-invalid]="townError"
+            [attr.aria-describedby]="townError ? 'town-error' : null"
+          />
+          @if (townError) {
+            <div class="invalid-feedback" id="town-error">{{ town.errors()[0].message }}</div>
           }
         </div>
-        <div class="mb-1">
-          <label for="address_line1" class="form-label">Stradă:</label>
-          <input class="form-control" formControlName="address_line1" name="address_line1" type="text"
-            placeholder="Strada adresei de livrare" autocomplete="on"
-            [class.is-invalid]="submitted() && f.address_line1.errors" />
-          @if (submitted() && f.address_line1.errors) {
-            <div class="invalid-feedback">
-              @if (f['address_line1'].errors['required']) {
-                <div>Strada este necesară.</div>
-              }
-            </div>
+        @let street = checkoutForm.street();
+        @let streetError = street.touched() && street.invalid();
+        <div class="mb-3">
+          <label for="street" class="form-label">Stradă:</label>
+          <input
+            id="street"
+            class="form-control"
+            type="text"
+            placeholder="Strada adresei de livrare"
+            autocomplete="address-line1"
+            [formField]="checkoutForm.street"
+            [class.is-invalid]="streetError"
+            [attr.aria-invalid]="streetError"
+            [attr.aria-describedby]="streetError ? 'street-error' : null"
+          />
+          @if (streetError) {
+            <div class="invalid-feedback" id="street-error">{{ street.errors()[0].message }}</div>
           }
         </div>
-        <div class="mb-1">
-          <label for="address_line2" class="form-label">Număr:</label>
-          <input class="form-control" formControlName="address_line2" name="address_line2" type="text"
-            placeholder="Numărul adresei de livrare" autocomplete="on"
-            [class.is-invalid]="submitted() && f.address_line2.errors" />
-          @if (submitted() && f.address_line2.errors) {
-            <div class="invalid-feedback">
-              @if (f['address_line2'].errors['required']) {
-                <div>Numărul străzii este necesar.</div>
-              }
-            </div>
+        @let streetNumber = checkoutForm.streetNumber();
+        @let streetNumberError = streetNumber.touched() && streetNumber.invalid();
+        <div class="mb-3">
+          <label for="streetNumber" class="form-label">Număr:</label>
+          <input
+            id="streetNumber"
+            class="form-control"
+            type="text"
+            placeholder="Numărul adresei de livrare"
+            autocomplete="address-line2"
+            [formField]="checkoutForm.streetNumber"
+            [class.is-invalid]="streetNumberError"
+            [attr.aria-invalid]="streetNumberError"
+            [attr.aria-describedby]="streetNumberError ? 'streetNumber-error' : null"
+          />
+          @if (streetNumberError) {
+            <div class="invalid-feedback" id="streetNumber-error">{{ streetNumber.errors()[0].message }}</div>
           }
         </div>
-        <div class="mb-4">
+        @let zip = checkoutForm.zip();
+        @let zipError = zip.touched() && zip.invalid();
+        <div class="mb-3">
           <label for="zip" class="form-label">Cod poștal:</label>
-          <input class="form-control" formControlName="zip" name="zip" type="text"
-            placeholder="Codul poștal al adresei de livrare" autocomplete="on"
-            [class.is-invalid]="submitted() && f.zip.errors" />
-          @if (submitted() && f.zip.errors) {
-            <div class="invalid-feedback">
-              @if (f['zip'].errors['required']) {
-                <div>Codul poștal este necesar.</div>
-              }
-            </div>
+          <input
+            id="zip"
+            class="form-control"
+            type="text"
+            placeholder="Codul poștal al adresei de livrare"
+            autocomplete="postal-code"
+            [formField]="checkoutForm.zip"
+            [class.is-invalid]="zipError"
+            [attr.aria-invalid]="zipError"
+            [attr.aria-describedby]="zipError ? 'zip-error' : null"
+          />
+          @if (zipError) {
+            <div class="invalid-feedback" id="zip-error">{{ zip.errors()[0].message }}</div>
           }
-          <div class="form-text text-muted text-color-white">Nu îți stocăm nicăieri numărul de
-            telefon,
-          E-mailul sau adresa.</div>
         </div>
+        <div class="form-text text-muted text-color-white mb-4">Nu îți stocăm nicăieri numărul de
+          telefon, E-mailul sau adresa.</div>
         <div class="row">
           <div class="col-sm justify-content-center align-items-center text-center my-2">
-            <button (click)="handleBackToCartClick($event)" class="btn btn-primary width-100prc p-2 h-100">
-              <img src="../../../assets/images/cart/cart.svg" alt="cart" class="cart-icon">
+            <button type="button" routerLink="/cart" class="btn btn-primary width-100prc p-2 h-100">
+              <img src="/assets/images/cart/cart.svg" alt="cart" class="cart-icon">
               <div>
                 Înapoi la comanda mea detaliată
               </div>
@@ -125,7 +159,7 @@
           </div>
           <div class="col-sm justify-content-center align-items-center text-center my-2">
             <button type="submit" class="btn btn-primary width-100prc p-2 h-100">
-              <img src="../../../assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
+              <img src="/assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
               <div>
                 Plasează comanda
               </div>
@@ -150,13 +184,13 @@
     <p class="text-center pt-4 pb-1">Confirmați plasarea comenzii?</p>
     <div class="row justify-content-center align-items-center width-100prc p-2">
       <div class="col-sm align-items-center text-center width-100prc p-2">
-        <button (click)="handleCloseConfirmCheckoutClick($event)"
+        <button type="button" (click)="closeConfirmCheckout()"
           class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
           Înapoi
         </button>
       </div>
       <div class="col-sm align-items-center text-center width-100prc p-2">
-        <button (click)="handleCloseConfirmCheckoutClick($event)"
+        <button type="button" (click)="closeConfirmCheckout()"
           class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
           Confirm
         </button>

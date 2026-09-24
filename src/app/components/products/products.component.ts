@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -8,32 +7,37 @@ import {
   linkedSignal,
   untracked,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { FormField, debounce, form } from '@angular/forms/signals';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Product } from '../../interfaces/product';
+import {
+  PRODUCT_CATEGORIES,
+  PRODUCT_CATEGORY_LABELS,
+  Product,
+  ProductCategory,
+} from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
-import { FetchProductsService } from '../../services/fetch-products.service';
 import { NotificationService } from '../../services/notification.service';
+import { ProductCatalogService } from '../../services/product-catalog.service';
+import { RonPipe } from '../../shared/ron.pipe';
 
 type SortOption = 'title-asc' | 'title-desc' | 'price-asc' | 'price-desc';
 
 interface CategoryOption {
-  value: string | undefined;
-  label: string;
+  readonly value: ProductCategory | undefined;
+  readonly label: string;
 }
 
 interface SortChoice {
-  value: SortOption;
-  label: string;
+  readonly value: SortOption;
+  readonly label: string;
 }
 
 const CATEGORIES: readonly CategoryOption[] = [
   { value: undefined, label: 'Toate' },
-  { value: 'bakeries', label: 'Cofetărie' },
-  { value: 'pastry', label: 'Patiserie' },
-  { value: 'sweets', label: 'Torturi' },
-  { value: 'basic_products', label: 'Produse de bază' },
+  ...PRODUCT_CATEGORIES.map((category) => ({
+    value: category,
+    label: PRODUCT_CATEGORY_LABELS[category],
+  })),
 ];
 
 const SORT_CHOICES: readonly SortChoice[] = [
@@ -52,8 +56,8 @@ const SORT_COMPARATORS: Record<SortOption, (a: Product, b: Product) => number> =
   'price-desc': (a, b) => b.price - a.price,
 };
 
-function toCategory(value: string | undefined): string | undefined {
-  return CATEGORIES.some((category) => category.value === value) ? value : undefined;
+function toCategory(value: string | undefined): ProductCategory | undefined {
+  return PRODUCT_CATEGORIES.find((category) => category === value);
 }
 
 function toSortOption(value: string | undefined): SortOption | undefined {
@@ -67,14 +71,13 @@ function toSortOption(value: string | undefined): SortOption | undefined {
  * and restored with the browser's back/forward buttons.
  */
 @Component({
-  imports: [RouterModule, FormField],
+  imports: [RouterModule, FormField, RonPipe],
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsComponent {
-  private readonly fetchProductsService = inject(FetchProductsService);
+  private readonly catalog = inject(ProductCatalogService);
   private readonly cartService = inject(CartService);
   private readonly notificationService = inject(NotificationService);
   private readonly router = inject(Router);
@@ -85,13 +88,9 @@ export class ProductsComponent {
 
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
 
-  private readonly productsResource = rxResource({
-    stream: () => this.fetchProductsService.fetchProducts(),
-  });
-  private readonly productsList = computed((): Product[] => this.productsResource.value() ?? []);
-  readonly isLoadingProducts = this.productsResource.isLoading;
+  readonly isLoadingProducts = this.catalog.isLoading;
 
-  readonly category = input<string | undefined, string | undefined>(undefined, {
+  readonly category = input<ProductCategory | undefined, string | undefined>(undefined, {
     transform: toCategory,
   });
   readonly q = input('', { transform: (value: string | undefined) => value?.trim() ?? '' });
@@ -99,9 +98,10 @@ export class ProductsComponent {
     transform: toSortOption,
   });
 
-  readonly selectedCategoryLabel = computed(
-    () => CATEGORIES.find((category) => category.value === this.category())?.label,
-  );
+  readonly selectedCategoryLabel = computed(() => {
+    const category = this.category();
+    return category ? PRODUCT_CATEGORY_LABELS[category] : 'Toate';
+  });
 
   // The search box edits a local copy of `q`, pushed to the URL once typing pauses.
   // It only follows the URL when the URL holds a different term (e.g. back/forward),
@@ -115,12 +115,12 @@ export class ProductsComponent {
     debounce(path.term, SEARCH_DEBOUNCE_MS);
   });
 
-  readonly visibleProducts = computed((): Product[] => {
+  readonly visibleProducts = computed((): readonly Product[] => {
     const category = this.category();
     const term = this.q().toLowerCase();
     const sortOption = this.sort();
 
-    const filtered = this.productsList().filter(
+    const filtered = this.catalog.products().filter(
       (product) =>
         (!category || product.category === category) &&
         (!term || product.title.toLowerCase().includes(term)),
@@ -157,11 +157,9 @@ export class ProductsComponent {
   }
 
   addToCart(product: Product): void {
-    const isSuccessful: boolean = this.cartService.addProductToCart(product);
-    if (isSuccessful) {
-      this.notificationService.addNotification({
-        message: `"${product.title}" a fost adăugat!`,
-      });
-    }
+    this.cartService.addProductToCart(product);
+    this.notificationService.addNotification({
+      message: `"${product.title}" a fost adăugat!`,
+    });
   }
 }

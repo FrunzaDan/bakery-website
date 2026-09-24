@@ -18,7 +18,7 @@ export class SEOService {
 
   createLinkForCanonicalURL(href?: string): void {
     this.removeExistingCanonicalLink();
-    let link: HTMLLinkElement = this.doc.createElement('link');
+    const link = this.doc.createElement('link');
     link.setAttribute('rel', 'canonical');
     this.doc.head.appendChild(link);
 
@@ -26,12 +26,6 @@ export class SEOService {
   }
 
   private removeExistingCanonicalLink(): void {
-    const existingLinks: NodeListOf<Element> = this.doc.head.querySelectorAll(
-      'link[rel="canonical"]'
-    );
-
-    for (let i: number = 0; i < existingLinks.length; i++) {
-      this.doc.head.removeChild(existingLinks[i]);
-    }
+    this.doc.head.querySelectorAll('link[rel="canonical"]').forEach((link) => link.remove());
   }
 }

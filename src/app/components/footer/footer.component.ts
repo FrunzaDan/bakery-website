@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -6,6 +6,5 @@ import { RouterModule } from '@angular/router';
     imports: [RouterModule],
     templateUrl: './footer.component.html',
     styleUrl: './footer.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent {}

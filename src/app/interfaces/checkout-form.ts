@@ -1,9 +1,9 @@
-export interface CheckOutForm {
+export interface CheckoutForm {
   name: string;
   email: string;
   phone: string;
   town: string;
-  address_line1: string;
-  address_line2: string;
+  street: string;
+  streetNumber: string;
   zip: string;
 }

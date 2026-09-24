@@ -7,6 +7,7 @@ import {
 import {
   provideClientHydration,
   withEventReplay,
+  withNoIncrementalHydration,
 } from '@angular/platform-browser';
 import {
   provideRouter,
@@ -29,7 +30,7 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
     ),
 
-    provideClientHydration(withEventReplay()),
+    provideClientHydration(withEventReplay(), withNoIncrementalHydration()),
     provideHttpClient(withFetch()),
     provideZonelessChangeDetection(),
   ],

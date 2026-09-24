@@ -2,114 +2,116 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ContactComponent } from './contact.component';
 import { SendEmailService } from '../../services/send-email.service';
+import { ContactMeForm } from '../../interfaces/contact-me-form';
 
 describe('ContactComponent', () => {
   let component: ContactComponent;
   let fixture: ComponentFixture<ContactComponent>;
   let sendEmailServiceSpy: { sendEmailJS: ReturnType<typeof vi.fn> };
 
+  const validForm: ContactMeForm = {
+    name: 'Jane Doe',
+    email: 'jane@example.com',
+    phone: '123456789',
+    message: 'Hello there',
+  };
+
+  const submitForm = async (): Promise<void> => {
+    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
+    await fixture.whenStable();
+  };
+
   beforeEach(async () => {
     sendEmailServiceSpy = { sendEmailJS: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [ContactComponent],
-      providers: [
-        provideRouter([]),
-        { provide: SendEmailService, useValue: sendEmailServiceSpy },
-      ],
+      providers: [provideRouter([]), { provide: SendEmailService, useValue: sendEmailServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContactComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('is invalid when all fields are empty', () => {
-    expect(component.contactMeForm.valid).toBe(false);
-    expect(component.f.name.errors?.['required']).toBe(true);
-    expect(component.f.email.errors?.['required']).toBe(true);
-    expect(component.f.from_tel.errors?.['required']).toBe(true);
-    expect(component.f.from_message.errors?.['required']).toBe(true);
+  it('requires every field', () => {
+    expect(component.contactForm().invalid()).toBe(true);
+    expect(component.contactForm.name().errors()[0].message).toBe('Numele este necesar.');
+    expect(component.contactForm.email().errors()[0].message).toBe('E-mail-ul este necesar.');
+    expect(component.contactForm.phone().errors()[0].message).toBe(
+      'Numărul de telefon este necesar.',
+    );
+    expect(component.contactForm.message().errors()[0].message).toBe('Un mesaj este necesar.');
   });
 
   it('flags an email without an @ as invalid', () => {
-    component.f.email.setValue('not-an-email');
-    expect(component.f.email.errors?.['email']).toBe(true);
+    component.model.set({ ...validForm, email: 'not-an-email' });
+    expect(component.contactForm.email().errors()[0].message).toBe('Un E-mail valid este necesar.');
   });
 
   it('accepts a well-formed email', () => {
-    component.f.email.setValue('someone@example.com');
-    expect(component.f.email.errors).toBeNull();
+    component.model.set(validForm);
+    expect(component.contactForm.email().errors()).toEqual([]);
   });
 
   it.each(['12345678', '1234567890123', 'abcdefghi'])(
     'rejects a phone number that does not match the pattern: %s',
     (phone) => {
-      component.f.from_tel.setValue(phone);
-      expect(component.f.from_tel.errors?.['pattern']).toBeTruthy();
+      component.model.set({ ...validForm, phone });
+      expect(component.contactForm.phone().invalid()).toBe(true);
     },
   );
 
-  it.each(['123456789', '123456789012'])(
-    'accepts a 9-to-12-digit phone number: %s',
-    (phone) => {
-      component.f.from_tel.setValue(phone);
-      expect(component.f.from_tel.errors).toBeNull();
-    },
-  );
+  it.each(['123456789', '123456789012'])('accepts a 9-to-12-digit phone number: %s', (phone) => {
+    component.model.set({ ...validForm, phone });
+    expect(component.contactForm.phone().valid()).toBe(true);
+  });
 
-  it('marks submitted but does not call the email service when the form is invalid', () => {
-    component.onSubmit();
+  it('writes what is typed into the model', async () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('#name');
+    input.value = 'Jane';
+    input.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
 
-    expect(component.submitted()).toBe(true);
+    expect(component.model().name).toBe('Jane');
+  });
+
+  it('does not call the email service when the form is invalid, and reports why', async () => {
+    await submitForm();
+
     expect(sendEmailServiceSpy.sendEmailJS).not.toHaveBeenCalled();
+    expect(component.invalidSummary()).toBe(
+      'Formularul are 4 erori. Te rugăm să corectezi câmpurile marcate.',
+    );
   });
 
-  function fillValidForm(): void {
-    component.f.name.setValue('Jane Doe');
-    component.f.email.setValue('jane@example.com');
-    component.f.from_tel.setValue('123456789');
-    component.f.from_message.setValue('Hello there');
-  }
+  it('sends the form values and then resets the form', async () => {
+    component.model.set(validForm);
+    sendEmailServiceSpy.sendEmailJS.mockResolvedValue(undefined);
 
-  it('sends the email with the form values when the form is valid', () => {
-    fillValidForm();
-    sendEmailServiceSpy.sendEmailJS.mockReturnValue(new Promise(() => {}));
+    await submitForm();
 
-    component.onSubmit();
-
-    expect(sendEmailServiceSpy.sendEmailJS).toHaveBeenCalledWith({
-      name: 'Jane Doe',
-      email: 'jane@example.com',
-      from_tel: '123456789',
-      from_message: 'Hello there',
-    });
+    expect(sendEmailServiceSpy.sendEmailJS).toHaveBeenCalledWith(validForm);
+    expect(component.model()).toEqual({ name: '', email: '', phone: '', message: '' });
+    expect(component.contactForm().touched()).toBe(false);
+    expect(component.sendError()).toBeNull();
   });
 
-  it('resets the form after a successful (200) response', async () => {
-    fillValidForm();
-    sendEmailServiceSpy.sendEmailJS.mockResolvedValue(200);
+  it('keeps the form filled in and shows an error when the send fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    component.model.set(validForm);
+    sendEmailServiceSpy.sendEmailJS.mockRejectedValue({ status: 500 });
 
-    component.onSubmit();
-    await fixture.whenStable();
+    await submitForm();
 
-    expect(component.f.name.value).toBeNull();
-    expect(component.f.email.value).toBeNull();
-    expect(component.f.from_tel.value).toBeNull();
-    expect(component.f.from_message.value).toBeNull();
-  });
-
-  it('leaves the form filled in when the send fails', async () => {
-    fillValidForm();
-    sendEmailServiceSpy.sendEmailJS.mockResolvedValue(500);
-
-    component.onSubmit();
-    await fixture.whenStable();
-
-    expect(component.f.name.value).toBe('Jane Doe');
+    expect(component.model()).toEqual(validForm);
+    expect(component.sendError()).toBe('Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.');
+    expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain(
+      'Mesajul nu a putut fi trimis',
+    );
   });
 });
