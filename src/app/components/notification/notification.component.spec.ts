@@ -35,4 +35,21 @@ describe('NotificationComponent', () => {
 
     expect(el.querySelector('.notification')).toBeNull();
   });
+
+  it('shows the action button and runs the action when clicked', async () => {
+    const run = vi.fn();
+    TestBed.inject(NotificationService).show('"Croissant" a fost șters!', {
+      action: { label: 'Anulează', run },
+    });
+    const fixture = render();
+    const el: HTMLElement = fixture.nativeElement;
+
+    const undo = el.querySelector<HTMLButtonElement>('.notification-action')!;
+    expect(undo.textContent).toContain('Anulează');
+    undo.click();
+    await fixture.whenStable();
+
+    expect(run).toHaveBeenCalled();
+    expect(el.querySelector('.notification')).toBeNull();
+  });
 });

@@ -3,62 +3,163 @@
     padding: 1rem;
 }
 
-.center img {
-    text-decoration: none;
-    color: inherit;
-    border: none;
-    outline: none;
-    width: 250px;
-    margin: 1rem 0px;
-}
-
 h4,
 h6 {
     font-weight: 400;
-}
-
-.table {
-    border: 4px var(--red) solid;
-    border-spacing: 0;
-    border-collapse: separate;
-    table-layout: fixed;
-    border-radius: 1.4rem;
-    background-color: var(--white);
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
-
-th {
-    text-align: center;
-}
-
-td {
-    text-align: center;
 }
 
 .cart-img {
     filter: brightness(0) invert(1);
 }
 
-.table-product-img {
+.cart-panel {
+    border: 4px var(--red) solid;
     border-radius: 1.4rem;
+    background-color: var(--white);
+    padding: 1rem;
+}
+
+/* One grid for the header and every line, so the columns line up like a table. */
+.cart-header,
+.cart-line {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 2fr) 11rem minmax(0, 1fr) minmax(0, 1fr) 3.5rem;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+.cart-header {
+    font-family: var(--bold-font);
+    padding: 0 0.5rem 0.6rem;
+    border-bottom: 2px solid var(--red);
+}
+
+.cart-lines {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cart-line {
+    padding: 0.8rem 0.5rem;
+    border-bottom: 1px solid rgba(var(--main-red-for-alpha), 0.25);
+}
+
+.table-product-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 1rem;
     border: 2px var(--red) solid;
 }
 
-@media (min-width: 576px) {
-    .table-product-img {
-        width: 50%;
-    }
+.line-title {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
 }
 
-@media (max-width: 576px) {
-    .table-product-img {
-        width: 100%;
+.line-title-link:hover,
+.line-title-link:focus-visible {
+    text-decoration: underline !important;
+}
+
+.line-meta {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Only shown when the header row is hidden. */
+.cell-label {
+    display: none;
+}
+
+.skeleton {
+    background-color: rgba(var(--main-red-for-alpha), 0.15);
+}
+
+.skeleton-image {
+    aspect-ratio: 1;
+}
+
+.skeleton-cell {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.cart-summary {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 2rem;
+    padding: 1rem 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.cart-summary-total {
+    font-size: 1.5rem;
+}
+
+/*
+ * Phones: each line becomes a small card. The image sits on the left; title,
+ * prices and quantity stack beside it; the delete button stays top right.
+ */
+@media (max-width: 768px) {
+    .cart-header {
+        display: none;
     }
 
-    td {
-        text-align: center;
-        padding-left: 2px;
-        padding-right: 2px;
+    .cart-panel {
+        padding: 0.6rem;
+    }
+
+    .cart-line {
+        grid-template-columns: 5rem minmax(0, 1fr) auto;
+        grid-template-areas:
+            'image title remove'
+            'image price price'
+            'image total total'
+            'quantity quantity quantity';
+        gap: 0.2rem 0.8rem;
+        text-align: start;
+    }
+
+    .line-image {
+        grid-area: image;
+        align-self: start;
+    }
+
+    .line-title {
+        grid-area: title;
+        font-family: var(--bold-font);
+    }
+
+    .line-price {
+        grid-area: price;
+    }
+
+    .line-total {
+        grid-area: total;
+    }
+
+    .line-remove {
+        grid-area: remove;
+        align-self: start;
+    }
+
+    .line-quantity {
+        grid-area: quantity;
+        justify-self: start;
+        margin-top: 0.6rem;
+    }
+
+    .cell-label {
+        display: inline;
+    }
+
+    .cart-summary {
+        justify-content: space-between;
+        gap: 1rem;
     }
 }

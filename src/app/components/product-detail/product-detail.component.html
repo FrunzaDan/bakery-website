@@ -1,0 +1,94 @@
+<div class="container p-4"></div>
+<div class="container-fluid mb-4 px-2">
+  <div class="card product-detail px-2 mx-sm-4 p-3 p-sm-4">
+    <a routerLink="/products" class="back-link mb-3">
+      <i class="bi bi-arrow-left" aria-hidden="true"></i> Înapoi la produse
+    </a>
+
+    @if (product(); as product) {
+      <div class="row g-4 enter-rise">
+        <div class="col-md-6">
+          <img [src]="product.image" [alt]="product.title" class="product-image" />
+        </div>
+        <div class="col-md-6 d-flex flex-column">
+          <span class="badge category-badge align-self-start mb-2">{{ categoryLabel() }}</span>
+          <h1 class="product-title">{{ product.title }}</h1>
+          <p class="product-description">{{ product.description }}</p>
+          @if (product.gramaj) {
+            <p class="mb-1"><strong>Gramaj:</strong> {{ product.gramaj }} g</p>
+          }
+          <p class="product-price">{{ product.price | ron }}</p>
+
+          <div class="order-box mt-auto p-3">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <app-quantity-picker [(quantity)]="quantity" [label]="product.title" />
+              <span class="subtotal">Total: <strong>{{ subtotal() | ron }}</strong></span>
+            </div>
+            <button type="button" class="btn btn-primary w-100 mt-3 p-2" (click)="addToCart()">
+              <img src="/assets/images/cart/cart_add.svg" alt="" class="cart-icon" />
+              Adaugă în coș
+            </button>
+            @if (quantityInCart() > 0) {
+              <p class="text-center mt-2 mb-0">
+                Ai {{ quantityInCart() }} buc. în coș ·
+                <a routerLink="/cart" class="text-decoration-underline">Vezi coșul</a>
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-2">
+        <section class="col-md-6" aria-labelledby="ingredients-heading">
+          <h2 id="ingredients-heading" class="section-heading">Ingrediente</h2>
+          @if (product.ingredients) {
+            <p>{{ product.ingredients }}</p>
+          } @else {
+            <p>Lista de ingrediente este disponibilă la cerere, prin pagina de
+              <a routerLink="/contact" class="text-decoration-underline">contact</a>.</p>
+          }
+        </section>
+        <section class="col-md-6" aria-labelledby="allergens-heading">
+          <h2 id="allergens-heading" class="section-heading">Alergeni</h2>
+          @if (product.allergens; as allergens) {
+            <p>Conține: <strong>{{ allergens.join(', ') }}</strong>.</p>
+          } @else {
+            <p>Informațiile despre alergeni sunt disponibile la cerere, prin pagina de
+              <a routerLink="/contact" class="text-decoration-underline">contact</a>.</p>
+          }
+          <p class="small mb-0">Produsele sunt preparate într-un laborator care folosește și gluten, ouă,
+            lapte, nuci și susan, deci pot conține urme ale acestora.</p>
+        </section>
+      </div>
+    } @else if (isLoading()) {
+      <p class="visually-hidden" role="status">Se încarcă produsul...</p>
+      <div class="row g-4" aria-hidden="true">
+        <div class="col-md-6"><div class="skeleton skeleton-image product-image"></div></div>
+        <div class="col-md-6">
+          <div class="skeleton skeleton-text short"></div>
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text short"></div>
+          <div class="skeleton skeleton-button"></div>
+          <div class="skeleton skeleton-button"></div>
+        </div>
+      </div>
+    } @else if (loadError(); as error) {
+      <div class="text-center my-4 py-4" role="alert">
+        {{ error }}
+        <br />
+        <button type="button" class="btn btn-primary mt-3" (click)="reloadProducts()">
+          Reîncearcă
+        </button>
+      </div>
+    } @else {
+      <div class="text-center my-4 py-4">
+        <h1 class="product-title">Produsul nu a fost găsit</h1>
+        <p>Este posibil să nu mai fie în ofertă.</p>
+        <a routerLink="/products" class="btn btn-primary mt-2">Vezi toate produsele</a>
+      </div>
+    }
+  </div>
+</div>
+<div class="container m-4 p-4"></div>

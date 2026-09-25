@@ -338,3 +338,84 @@ iframe:focus {
     transform: scale(1.04);
   }
 }
+
+/* Loading placeholders: grey shapes in the layout of the content that is on its way. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 0.6rem;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-image {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+}
+
+.skeleton-title {
+  height: 1.6rem;
+  width: 70%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.skeleton-text.short {
+  width: 45%;
+}
+
+.skeleton-button {
+  height: 3rem;
+  margin-top: 1rem;
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Content arriving after a load rises into place; `--stagger` delays items of a list one after another. */
+.enter-rise {
+  animation: enter-rise 450ms ease-out both;
+  animation-delay: calc(var(--stagger, 0) * 60ms);
+}
+
+@keyframes enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+/* Leaving list items (e.g. a removed cart line) shrink away instead of vanishing. */
+.leave-collapse {
+  animation: leave-collapse 300ms ease-in forwards;
+}
+
+@keyframes leave-collapse {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after,
+  .enter-rise,
+  .leave-collapse {
+    animation: none;
+  }
+}

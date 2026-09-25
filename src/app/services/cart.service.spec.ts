@@ -158,4 +158,74 @@ describe('CartService', () => {
     expect(service.cartLines()).toEqual([]);
     expect(localStorageServiceSpy.setCartItems).toHaveBeenLastCalledWith([]);
   });
+
+  it('adds several pieces at once, up to the per-product maximum', () => {
+    expect(service.addProductToCart(productA, 3)).toBe(true);
+    expect(service.cartLines()).toEqual([{ product: productA, quantity: 3 }]);
+
+    expect(service.addProductToCart(productA, 500)).toBe(true);
+    expect(service.cartLines()[0].quantity).toBe(99);
+
+    expect(service.addProductToCart(productA)).toBe(false);
+    expect(service.cartLines()[0].quantity).toBe(99);
+  });
+
+  it('sets a quantity, clamped to 1..99 and rounded down', () => {
+    service.addProductToCart(productA);
+
+    service.setProductQuantity(productA, 12.7);
+    expect(service.cartLines()[0].quantity).toBe(12);
+
+    service.setProductQuantity(productA, 0);
+    expect(service.cartLines()[0].quantity).toBe(1);
+
+    service.setProductQuantity(productA, 1000);
+    expect(service.cartLines()[0].quantity).toBe(99);
+  });
+
+  it('undoes removing a line by putting it back in its place', () => {
+    service.addProductToCart(productA, 2);
+    service.addProductToCart(productB);
+
+    const undo = service.removeProductsFromCart(productA);
+    expect(service.cartLines()).toEqual([{ product: productB, quantity: 1 }]);
+
+    undo();
+    expect(service.cartLines()).toEqual([
+      { product: productA, quantity: 2 },
+      { product: productB, quantity: 1 },
+    ]);
+    expect(localStorageServiceSpy.setCartItems).toHaveBeenLastCalledWith([
+      { productId: 1, quantity: 2 },
+      { productId: 2, quantity: 1 },
+    ]);
+  });
+
+  it('adds the removed quantity on top when the product was added again before undo', () => {
+    service.addProductToCart(productA, 2);
+    const undo = service.removeProductsFromCart(productA);
+    service.addProductToCart(productA);
+
+    undo();
+
+    expect(service.cartLines()).toEqual([{ product: productA, quantity: 3 }]);
+  });
+
+  it('undoes emptying the cart, keeping what was added since', () => {
+    service.addProductToCart(productA);
+    const undo = service.removeAllCart();
+    service.addProductToCart(productB);
+
+    undo();
+
+    expect(service.cartLines().map((line) => line.product.id)).toEqual([1, 2]);
+  });
+
+  it('returns a harmless undo when the product was not in the cart', () => {
+    const undo = service.removeProductsFromCart(productA);
+
+    undo();
+
+    expect(service.cartLines()).toEqual([]);
+  });
 });

@@ -1,94 +1,113 @@
 <div class="container p-4"></div>
 @if (cartLines().length !== 0) {
-  <div class="container" style="overflow-x:auto;">
-    <div class="row">
-      <div class="col">
-      <table class="table">
-        <thead>
-          <tr>
-            <th valign="middle">Prod.</th>
-            <th valign="middle">Img.</th>
-            <th valign="middle">Cant.</th>
-            <th valign="middle">Preț
-              <br>/produs
-              </th>
-              <th valign="middle">Șterge</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            @for (line of cartLines(); track line.product.id) {
-              <tr>
-                <td valign="middle">{{line.product.title}}</td>
-                <td valign="middle"><img src="{{line.product.image}}" alt="{{line.product.title}}" class="table-product-img">
-                </td>
-                <td valign="middle">
-                  <span><button type="button" (click)="removeOneProduct(line.product)" class="btn-math" [attr.aria-label]="'Scade cantitatea pentru ' + line.product.title">
-                    -
-                  </button>
-                </span>
-                <span>{{line.quantity}}</span>
-                <span><button type="button" (click)="addOneProduct(line.product)" class="btn-math" [attr.aria-label]="'Crește cantitatea pentru ' + line.product.title">
-                  +
-                </button>
-              </span>
-            </td>
-            <td valign="middle">{{line.product.price | ron}}</td>
-            <td valign="middle">
-              <button type="button" (click)="removeFromCart(line.product)" class="btn btn-primary" [attr.aria-label]="'Șterge ' + line.product.title + ' din coș'">
+  <div class="container">
+    <div class="cart-panel">
+      <div class="cart-header" aria-hidden="true">
+        <span></span>
+        <span>Produs</span>
+        <span>Cantitate</span>
+        <span>Preț/buc.</span>
+        <span>Total</span>
+        <span></span>
+      </div>
+      <ul class="cart-lines" aria-label="Produse în coș">
+        @for (line of cartLines(); track line.product.id) {
+          <li class="cart-line" animate.leave="leave-collapse">
+            <a [routerLink]="['/products', line.product.id]" class="line-image" tabindex="-1" aria-hidden="true">
+              <img [src]="line.product.image" alt="" class="table-product-img" />
+            </a>
+            <div class="line-title">
+              <a [routerLink]="['/products', line.product.id]" class="line-title-link">{{ line.product.title }}</a>
+              @if (line.product.gramaj) {
+                <span class="line-meta">{{ line.product.gramaj }} g</span>
+              }
+            </div>
+            <div class="line-quantity">
+              <app-quantity-picker
+                [quantity]="line.quantity"
+                (quantityChange)="changeQuantity(line.product, $event)"
+                [label]="line.product.title"
+                [min]="0"
+              />
+            </div>
+            <div class="line-price">
+              <span class="cell-label">Preț/buc.: </span>{{ line.product.price | ron }}
+            </div>
+            <div class="line-total">
+              <span class="cell-label">Total: </span><strong>{{ line.product.price * line.quantity | ron }}</strong>
+            </div>
+            <div class="line-remove">
+              <button
+                type="button"
+                (click)="removeFromCart(line.product)"
+                class="btn btn-primary"
+                [attr.aria-label]="'Șterge ' + line.product.title + ' din coș'"
+              >
                 <i class="bi bi-trash" aria-hidden="true"></i>
               </button>
-            </td>
-          </tr>
+            </div>
+          </li>
         }
-        <tr style="width: 100%;">
-          <td></td>
-          <td></td>
-          <td><strong>Produse: {{totalNumberOfCartProducts()}}</strong></td>
-          <td><strong>Total: {{totalPrice() | ron}}</strong></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+      </ul>
+      <div class="cart-summary">
+        <span>Produse: <strong>{{ totalNumberOfCartProducts() }}</strong></span>
+        <span class="cart-summary-total">Total: <strong>{{ totalPrice() | ron }}</strong></span>
       </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="card p-2 my-4">
-        <div class="row p-2">
-          <div class="col justify-content-center align-items-center text-center my-2">
-            <button routerLink="/products" class="btn btn-primary width-100prc p-2 h-100">
-              <img src="/assets/images/cart/cart_add.svg" alt="cart" class="cart-icon">
-              <div>
-                Continuă
-                cumpărăturile
-              </div>
-            </button>
-          </div>
-          <div class="col justify-content-center align-items-center text-center my-2">
-            <button (click)="emptyCart()" class="btn btn-primary width-100prc p-2 h-100">
-              <img src="/assets/images/cart/cart_empty.svg" alt="cart" class="cart-icon">
-              <div>
-                Golește
-                coșul
-              </div>
-            </button>
-          </div>
-          <div class="col justify-content-center align-items-center text-center my-2">
-            <button routerLink="/checkout" class="btn btn-primary width-100prc p-2 h-100">
-              <img src="/assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
-              <div>
-                Către
-                detalii livrare
-              </div>
-            </button>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card p-2 my-4">
+          <div class="row p-2">
+            <div class="col-sm justify-content-center align-items-center text-center my-2">
+              <button routerLink="/products" class="btn btn-primary width-100prc p-2 h-100">
+                <img src="/assets/images/cart/cart_add.svg" alt="" class="cart-icon">
+                <div>
+                  Continuă
+                  cumpărăturile
+                </div>
+              </button>
+            </div>
+            <div class="col-sm justify-content-center align-items-center text-center my-2">
+              <button (click)="emptyCart()" class="btn btn-primary width-100prc p-2 h-100">
+                <img src="/assets/images/cart/cart_empty.svg" alt="" class="cart-icon">
+                <div>
+                  Golește
+                  coșul
+                </div>
+              </button>
+            </div>
+            <div class="col-sm justify-content-center align-items-center text-center my-2">
+              <button routerLink="/checkout" class="btn btn-primary width-100prc p-2 h-100">
+                <img src="/assets/images/cart/cart_checkout.svg" alt="" class="cart-icon">
+                <div>
+                  Către
+                  detalii livrare
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 } @else if (hasItems() && isLoadingProducts()) {
-  <div class="container text-center my-4 py-4">Se încarcă produsele...</div>
+  <div class="container">
+    <p class="visually-hidden" role="status">Se încarcă produsele...</p>
+    <div class="cart-panel" aria-hidden="true">
+      <ul class="cart-lines">
+        @for (placeholder of skeletonLines; track placeholder) {
+          <li class="cart-line">
+            <div class="line-image"><div class="skeleton skeleton-image"></div></div>
+            <div class="line-title"><div class="skeleton skeleton-title"></div></div>
+            <div class="line-quantity"><div class="skeleton skeleton-text skeleton-cell"></div></div>
+            <div class="line-price"><div class="skeleton skeleton-text skeleton-cell"></div></div>
+            <div class="line-total"><div class="skeleton skeleton-text skeleton-cell"></div></div>
+            <div class="line-remove"><div class="skeleton skeleton-text skeleton-cell"></div></div>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
 } @else if (hasItems() && loadError(); as error) {
   <div class="container text-center my-4 py-4" role="alert">
     {{ error }}
@@ -99,7 +118,7 @@
   </div>
 } @else {
   <div class="container">
-    <div class="card empty-cart-card">
+    <div class="card empty-cart-card enter-rise">
       <div class="row d-flex justify-content-center align-items-center text-center">
         <div class="col">
           <h5 class="card-title m-2">Comanda mea</h5>
@@ -108,7 +127,7 @@
           <h4>Comanda ta este goală</h4>
           <h6>Adaugă produse la comandă</h6>
           <button routerLink="/products" class="btn btn-primary p-3 m-4">
-            <img src="/assets/images/cart/cart_add.svg" alt="cart" class="cart-icon">
+            <img src="/assets/images/cart/cart_add.svg" alt="" class="cart-icon">
             <div>
               Caută produse
             </div>

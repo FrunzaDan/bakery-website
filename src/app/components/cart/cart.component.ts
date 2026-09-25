@@ -4,11 +4,14 @@ import { Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
 import { ProductCatalogService } from '../../services/product-catalog.service';
+import { QuantityPickerComponent } from '../../shared/quantity-picker/quantity-picker.component';
 import { RonPipe } from '../../shared/ron.pipe';
+
+const SKELETON_LINE_COUNT = 3;
 
 @Component({
   selector: 'app-cart',
-  imports: [RouterModule, RonPipe],
+  imports: [RouterModule, RonPipe, QuantityPickerComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
@@ -23,28 +26,32 @@ export class CartComponent {
   readonly hasItems = this.cartService.hasItems;
   readonly isLoadingProducts = this.catalog.isLoading;
   readonly loadError = this.catalog.loadError;
+  readonly skeletonLines = Array.from({ length: SKELETON_LINE_COUNT }, (_, index) => index);
 
   reloadProducts(): void {
     this.catalog.reload();
   }
 
-  removeOneProduct(product: Product): void {
-    this.cartService.removeProductFromCart(product);
-    this.notificationService.show(`"${product.title}" - 1`);
-  }
-
-  addOneProduct(product: Product): void {
-    this.cartService.addProductToCart(product);
-    this.notificationService.show(`"${product.title}" + 1`);
+  /** From the − / + buttons or a typed quantity; 0 removes the line, with undo. */
+  changeQuantity(product: Product, quantity: number): void {
+    if (quantity < 1) {
+      this.removeFromCart(product);
+      return;
+    }
+    this.cartService.setProductQuantity(product, quantity);
   }
 
   removeFromCart(product: Product): void {
-    this.cartService.removeProductsFromCart(product);
-    this.notificationService.show(`"${product.title}" a fost șters!`);
+    const undo = this.cartService.removeProductsFromCart(product);
+    this.notificationService.show(`"${product.title}" a fost șters!`, {
+      action: { label: 'Anulează', run: undo },
+    });
   }
 
   emptyCart(): void {
-    this.cartService.removeAllCart();
-    this.notificationService.show('Coșul a fost golit!');
+    const undo = this.cartService.removeAllCart();
+    this.notificationService.show('Coșul a fost golit!', {
+      action: { label: 'Anulează', run: undo },
+    });
   }
 }

@@ -70,3 +70,8 @@
         margin-right: 0.2rem;
     }
 }
+/* The title is the card's link; underline it only on hover so cards stay calm. */
+.product-link:hover,
+.product-link:focus-visible {
+  text-decoration: underline !important;
+}

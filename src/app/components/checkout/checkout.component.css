@@ -62,3 +62,57 @@ label {
         font-size: 1rem;
     }
 }
+fieldset legend {
+    float: none;
+    font-size: 1.8rem;
+}
+
+.payment-option {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+}
+
+.payment-hint {
+    display: block;
+    font-size: 1rem;
+    opacity: 0.85;
+}
+
+.payment-option-disabled {
+    opacity: 0.6;
+}
+
+.soon-badge {
+    background-color: var(--white);
+    color: var(--red);
+    font-size: 0.8rem;
+    vertical-align: middle;
+}
+
+.terms-label {
+    font-size: 1.4rem;
+}
+
+/* Bootstrap only shows .invalid-feedback after an .is-invalid sibling input; the checkbox has a label in between. */
+.form-check .invalid-feedback {
+    display: block;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-input:disabled {
+    cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+    fieldset legend {
+        font-size: 1rem;
+    }
+
+    .payment-option,
+    .terms-label {
+        font-size: 1.1rem;
+    }
+}

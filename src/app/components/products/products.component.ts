@@ -10,6 +10,7 @@ import {
 import { FormField, debounce, form } from '@angular/forms/signals';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
+  MAX_QUANTITY_PER_PRODUCT,
   PRODUCT_CATEGORIES,
   PRODUCT_CATEGORY_LABELS,
   Product,
@@ -48,6 +49,9 @@ const SORT_CHOICES: readonly SortChoice[] = [
 ];
 
 const SEARCH_DEBOUNCE_MS = 300;
+const SKELETON_CARD_COUNT = 8;
+/** Cards past this index appear together, so a long list doesn't take seconds to show. */
+const MAX_STAGGER = 12;
 
 const SORT_COMPARATORS: Record<SortOption, (a: Product, b: Product) => number> = {
   'title-asc': (a, b) => a.title.localeCompare(b.title, 'ro'),
@@ -90,6 +94,8 @@ export class ProductsComponent {
 
   readonly categories = CATEGORIES;
   readonly sortChoices = SORT_CHOICES;
+  readonly skeletonCards = Array.from({ length: SKELETON_CARD_COUNT }, (_, index) => index);
+  readonly maxStagger = MAX_STAGGER;
 
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
 
@@ -168,7 +174,10 @@ export class ProductsComponent {
   }
 
   addToCart(product: Product): void {
-    this.cartService.addProductToCart(product);
-    this.notificationService.show(`"${product.title}" a fost adăugat!`);
+    this.notificationService.show(
+      this.cartService.addProductToCart(product)
+        ? `"${product.title}" a fost adăugat!`
+        : `Poți comanda cel mult ${MAX_QUANTITY_PER_PRODUCT} buc. din "${product.title}".`,
+    );
   }
 }

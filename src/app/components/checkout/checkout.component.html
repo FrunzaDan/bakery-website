@@ -146,8 +146,61 @@
             <div class="invalid-feedback" id="zip-error">{{ zip.errors()[0].message }}</div>
           }
         </div>
-        <div class="form-text text-muted text-color-white mb-4">Nu îți stocăm nicăieri numărul de
-          telefon, E-mailul sau adresa.</div>
+        <fieldset class="mb-3">
+          <legend class="form-label">Metodă de plată:</legend>
+          @for (method of paymentMethods; track method.value) {
+            <div class="form-check payment-option">
+              <input
+                class="form-check-input"
+                type="radio"
+                [id]="'payment-' + method.value"
+                [value]="method.value"
+                [formField]="checkoutForm.paymentMethod"
+                [attr.aria-describedby]="'payment-' + method.value + '-hint'"
+              />
+              <label class="form-check-label" [for]="'payment-' + method.value">
+                {{ method.label }}
+                <span class="payment-hint" [id]="'payment-' + method.value + '-hint'">{{ method.hint }}</span>
+              </label>
+            </div>
+          }
+          <div class="form-check payment-option payment-option-disabled">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="payment-card"
+              disabled
+              aria-describedby="payment-card-hint"
+            />
+            <label class="form-check-label" for="payment-card">
+              Card online <span class="badge soon-badge">în curând</span>
+              <span class="payment-hint" id="payment-card-hint">Plata cu cardul va fi disponibilă în curând.</span>
+            </label>
+          </div>
+        </fieldset>
+        @let acceptTerms = checkoutForm.acceptTerms();
+        @let acceptTermsError = acceptTerms.touched() && acceptTerms.invalid();
+        <div class="form-check mb-3">
+          <input
+            id="acceptTerms"
+            class="form-check-input"
+            type="checkbox"
+            [formField]="checkoutForm.acceptTerms"
+            [class.is-invalid]="acceptTermsError"
+            [attr.aria-invalid]="acceptTermsError"
+            [attr.aria-describedby]="acceptTermsError ? 'acceptTerms-error' : null"
+          />
+          <label class="form-check-label terms-label" for="acceptTerms">
+            Am citit și sunt de acord cu
+            <a routerLink="/terms" target="_blank" class="text-decoration-underline">termenii și condițiile</a>
+            (se deschid într-o filă nouă).
+          </label>
+          @if (acceptTermsError) {
+            <div class="invalid-feedback" id="acceptTerms-error">{{ acceptTerms.errors()[0].message }}</div>
+          }
+        </div>
+        <div class="form-text text-color-white mb-4">Folosim datele tale doar pentru livrarea
+          acestei comenzi și pentru a te contacta în legătură cu ea.</div>
         <div class="row">
           <div class="col-sm justify-content-center align-items-center text-center my-2">
             <button type="button" routerLink="/cart" class="btn btn-primary width-100prc p-2 h-100">
@@ -181,18 +234,27 @@
     <div id="order-content">
       <p>{{order()}}</p>
     </div>
+    @if (placeOrderError(); as error) {
+      <div class="alert alert-danger mt-3 mb-0" role="alert">{{ error }}</div>
+    }
     <p class="text-center pt-4 pb-1">Confirmați plasarea comenzii?</p>
     <div class="row justify-content-center align-items-center width-100prc p-2">
       <div class="col-sm align-items-center text-center width-100prc p-2">
-        <button type="button" (click)="closeConfirmCheckout()"
+        <button type="button" (click)="closeConfirmCheckout()" [disabled]="isPlacingOrder()"
           class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
           Înapoi
         </button>
       </div>
       <div class="col-sm align-items-center text-center width-100prc p-2">
-        <button type="button" (click)="closeConfirmCheckout()"
+        <button type="button" (click)="confirmOrder()" [disabled]="isPlacingOrder()"
+          [attr.aria-busy]="isPlacingOrder()"
           class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 h-100">
-          Confirm
+          @if (isPlacingOrder()) {
+            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            Se plasează comanda...
+          } @else {
+            Confirm
+          }
         </button>
       </div>
     </div>

@@ -11,6 +11,10 @@ export class NotificationComponent {
 
   readonly notifications = this.notificationService.notifications;
 
+  runAction(id: number): void {
+    this.notificationService.runAction(id);
+  }
+
   dismiss(id: number): void {
     this.notificationService.dismiss(id);
   }

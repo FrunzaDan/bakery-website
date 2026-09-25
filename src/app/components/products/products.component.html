@@ -105,9 +105,18 @@
         <p class="visually-hidden" aria-live="polite">{{ resultsAnnouncement() }}</p>
         <div class="container d-flex flex-wrap justify-content-around">
           @if (isLoadingProducts()) {
-            <div class="container text-center my-4 py-4">
-              Se încarcă produsele...
-            </div>
+            @for (placeholder of skeletonCards; track placeholder) {
+              <div class="card product-card" aria-hidden="true">
+                <div class="skeleton skeleton-image card-img-top"></div>
+                <div class="card-body">
+                  <div class="skeleton skeleton-title"></div>
+                  <div class="skeleton skeleton-text"></div>
+                  <div class="skeleton skeleton-text"></div>
+                  <div class="skeleton skeleton-text short"></div>
+                  <div class="skeleton skeleton-button"></div>
+                </div>
+              </div>
+            }
           } @else if (loadError(); as error) {
             <div class="container text-center my-4 py-4" role="alert">
               {{ error }}
@@ -118,17 +127,27 @@
             </div>
           } @else {
             @for (product of visibleProducts(); track product.id) {
-              <div class="card product-card hover-card">
-                <img
-                  src="{{ product.image }}"
-                  class="card-img-top"
-                  alt="{{ product.title }}"
-                  />
+              <div
+                class="card product-card hover-card enter-rise"
+                [style.--stagger]="$index < maxStagger ? $index : maxStagger"
+                >
+                <a [routerLink]="['/products', product.id]" tabindex="-1" aria-hidden="true">
+                  <img
+                    src="{{ product.image }}"
+                    class="card-img-top"
+                    alt="{{ product.title }}"
+                    />
+                </a>
                 <div class="card-body">
-                  <h5 class="card-title">{{ product.title }}</h5>
+                  <h5 class="card-title">
+                    <a [routerLink]="['/products', product.id]" class="product-link">{{ product.title }}</a>
+                  </h5>
                   <p class="card-text">
                     {{ product.description }}
                   </p>
+                  @if (product.gramaj) {
+                    <p><strong>Gramaj:</strong> {{ product.gramaj }} g</p>
+                  }
                   <p><strong>Preț:</strong> {{ product.price | ron }}</p>
                   <button
                     class="btn btn-primary width-100prc justify-content-center align-items-center text-center"

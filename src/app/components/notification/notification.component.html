@@ -7,9 +7,21 @@
       animate.leave="fade-out"
     >
       {{ notification.message }}
-      <button type="button" class="btn btn-primary mt-4" (click)="dismiss(notification.id)">
-        Ok
-      </button>
+      <div class="d-flex gap-2 mt-4">
+        @if (notification.action; as action) {
+          <button
+            type="button"
+            class="btn btn-light notification-action"
+            (click)="runAction(notification.id)"
+          >
+            <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+            {{ action.label }}
+          </button>
+        }
+        <button type="button" class="btn btn-primary" (click)="dismiss(notification.id)">
+          Ok
+        </button>
+      </div>
     </div>
   }
 </div>

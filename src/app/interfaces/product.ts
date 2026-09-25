@@ -9,7 +9,13 @@ export const PRODUCT_CATEGORY_LABELS: Readonly<Record<ProductCategory, string>> 
   basic_products: 'Produse de bază',
 };
 
-/** A catalog product. Prices are in RON. */
+/** Most catalog products are sold one at a time; nobody orders 100 croissants online. */
+export const MAX_QUANTITY_PER_PRODUCT = 99;
+
+/**
+ * A catalog product. Prices are in RON, `gramaj` (weight) is in grams.
+ * `ingredients` and `allergens` are the food information EU law requires sellers to show.
+ */
 export interface Product {
   readonly id: number;
   readonly title: string;
@@ -17,4 +23,7 @@ export interface Product {
   readonly description: string;
   readonly image: string;
   readonly category: ProductCategory;
+  readonly gramaj?: number;
+  readonly ingredients?: string;
+  readonly allergens?: readonly string[];
 }

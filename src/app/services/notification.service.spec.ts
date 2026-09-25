@@ -50,7 +50,7 @@ describe('NotificationService', () => {
   });
 
   it('keeps a notification with a zero duration until it is dismissed', () => {
-    service.show('Sticky', 0);
+    service.show('Sticky', { durationMs: 0 });
     vi.advanceTimersByTime(60_000);
     expect(service.notifications().length).toBe(1);
 
@@ -65,5 +65,27 @@ describe('NotificationService', () => {
     service.dismiss(-1);
 
     expect(service.notifications()).toEqual(kept);
+  });
+
+  it('runs a notification action once and hides the notification', () => {
+    const run = vi.fn();
+    service.show('Șters', { action: { label: 'Anulează', run } });
+    const { id } = service.notifications()[0];
+
+    service.runAction(id);
+    service.runAction(id);
+
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(service.notifications()).toEqual([]);
+  });
+
+  it('keeps a notification with an action on screen longer', () => {
+    service.show('Șters', { action: { label: 'Anulează', run: () => undefined } });
+
+    vi.advanceTimersByTime(6999);
+    expect(service.notifications().length).toBe(1);
+
+    vi.advanceTimersByTime(1);
+    expect(service.notifications()).toEqual([]);
   });
 });

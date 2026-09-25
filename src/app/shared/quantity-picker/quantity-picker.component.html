@@ -1,0 +1,30 @@
+<div class="quantity-picker" role="group" [attr.aria-label]="'Cantitate ' + label()">
+  <button
+    type="button"
+    class="btn-math"
+    (click)="step(-1)"
+    [disabled]="quantity() <= min()"
+    [attr.aria-label]="'Scade cantitatea pentru ' + label()"
+  >
+    −
+  </button>
+  <input
+    type="number"
+    inputmode="numeric"
+    class="form-control quantity-input"
+    [min]="min()"
+    [max]="max"
+    [value]="quantity()"
+    (change)="onTyped($event)"
+    [attr.aria-label]="'Cantitate pentru ' + label()"
+  />
+  <button
+    type="button"
+    class="btn-math"
+    (click)="step(1)"
+    [disabled]="quantity() >= max"
+    [attr.aria-label]="'Crește cantitatea pentru ' + label()"
+  >
+    +
+  </button>
+</div>

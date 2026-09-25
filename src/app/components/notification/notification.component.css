@@ -10,6 +10,12 @@
     padding: 1rem;
 }
 
+.notification-action {
+    font-size: 1.4rem;
+    color: var(--red);
+    font-family: var(--bold-font);
+}
+
 @media only screen and (max-width: 576px) {
     .notification {
         bottom: 0rem;
