@@ -107,17 +107,20 @@ body {
 
 @font-face {
   font-family: 'Bold';
-  src: url('/assets/fonts/Raleway-Bold.ttf') format('truetype');
+  src: url('/assets/fonts/Raleway-Bold.woff2') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Regular';
-  src: url('/assets/fonts/Raleway-Regular.ttf') format('truetype');
+  src: url('/assets/fonts/Raleway-Regular.woff2') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Light';
-  src: url('/assets/fonts/Raleway-Thin.ttf') format('truetype');
+  src: url('/assets/fonts/Raleway-Thin.woff2') format('woff2');
+  font-display: swap;
 }
 
 a,

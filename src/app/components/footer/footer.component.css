@@ -23,6 +23,10 @@
     align-items: center;
 }
 
+.SAL-SOL {
+    height: auto;
+}
+
 @media only screen and (max-width: 576px) {
     .SAL-SOL {
         padding-left: 0.5rem;
