@@ -1,0 +1,45 @@
+/* Lay the button out as a direct child of the navbar, as Bootstrap expects. */
+:host {
+  display: contents;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+  box-shadow: none;
+}
+
+/* Mouse users get no ring; keyboard users still see where they are. */
+.navbar-toggler:focus-visible {
+  outline: 0.3rem solid var(--red);
+  outline-offset: 0.3rem;
+}
+
+/* Define the shape and color of the hamburger lines */
+.navbar-toggler span {
+  display: block;
+  background-color: var(--red);
+  height: 0.5rem;
+  width: 3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  left: 0;
+  opacity: 1;
+  transition: all 0.35s ease-out;
+  transform-origin: center left;
+  border-radius: 0.4rem;
+  transform: translate(0%, 0%) rotate(0deg);
+}
+
+/* Animate to X when open */
+.navbar-toggler.open span:nth-child(1) {
+  transform: translate(10%, -14%) rotate(45deg);
+}
+
+.navbar-toggler.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggler.open span:nth-child(3) {
+  transform: translate(10%, 14%) rotate(-45deg);
+}

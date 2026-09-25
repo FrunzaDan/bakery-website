@@ -1,95 +1,36 @@
 .nav-link {
-    position: relative;
-    font-size: 3.6rem;
-    font-family: var(--bold-font);
-    margin: 0rem 2rem;
-    text-align: center;
-    color: var(--red);
+  position: relative;
+  font-size: 3.6rem;
+  font-family: var(--bold-font);
+  margin: 0rem 2rem;
+  text-align: center;
+  color: var(--red);
 }
 
 /* The current page is underlined; the line grows out from the middle. */
 .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    bottom: 0.3rem;
-    height: 0.25rem;
-    border-radius: 0.2rem;
-    background: var(--red);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0.3rem;
+  height: 0.25rem;
+  border-radius: 0.2rem;
+  background: var(--red);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .nav-link.current-page::after {
-    transform: scaleX(1);
+  transform: scaleX(1);
 }
 
 .navbar {
-    border-radius: 1.4rem;
-    background: rgba(255, 255, 255, 0.8);
-    border: 0.4rem var(--red) solid;
-    margin-top: 1rem;
-    font-family: var(--bold-font);
-}
-
-.navbar-toggler:focus,
-.navbar-toggler:active {
-    box-shadow: none;
-}
-
-/* Mouse users get no ring; keyboard users still see where they are. */
-.navbar-toggler:focus-visible {
-    outline: 0.3rem solid var(--red);
-    outline-offset: 0.3rem;
-}
-
-/* Define the shape and color of the hamburger lines */
-.navbar-toggler span {
-    display: block;
-    background-color: var(--red);
-    height: 0.5rem;
-    width: 3rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    position: relative;
-    left: 0;
-    opacity: 1;
-    transition: all 0.35s ease-out;
-    transform-origin: center left;
-    border-radius: 0.4rem;
-}
-
-.navbar-toggler span:nth-child(1) {
-    margin-top: 0.5rem;
-}
-
-/* Animate collapse into X. */
-
-.navbar-toggler:not(.collapsed) span:nth-child(1) {
-    transform: translate(10%, -14%) rotate(45deg);
-}
-
-.navbar-toggler:not(.collapsed) span:nth-child(2) {
-    opacity: 0;
-}
-
-.navbar-toggler:not(.collapsed) span:nth-child(3) {
-    transform: translate(10%, 14%) rotate(-45deg);
-}
-
-/* Animate collapse open into hamburger menu */
-
-.navbar-toggler span:nth-child(1) {
-    transform: translate(0%, 0%) rotate(0deg);
-}
-
-.navbar-toggler span:nth-child(2) {
-    opacity: 1;
-}
-
-.navbar-toggler span:nth-child(3) {
-    transform: translate(0%, 0%) rotate(0deg);
+  border-radius: 1.4rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 0.4rem var(--red) solid;
+  margin-top: 1rem;
+  font-family: var(--bold-font);
 }
 
 /*
@@ -97,36 +38,61 @@
  * with the viewport, so all four (and the cart count) stay on one line at any width.
  */
 @media only screen and (min-width: 992px) {
-    .nav-link {
-        font-size: min(3.4vw, 3.6rem);
-        margin: 0rem min(1.2vw, 2rem);
-    }
+  .nav-link {
+    font-size: min(3.4vw, 3.6rem);
+    margin: 0rem min(1.2vw, 2rem);
+  }
 
-    /* Room for the cart count, which hangs past the end of "COȘ". */
-    .cart-label {
-        margin-right: 0.6em;
-    }
+  /* Room for the cart count, which hangs past the end of "COȘ". */
+  .cart-label {
+    margin-right: 0.6em;
+  }
 }
 
 @media only screen and (max-width: 991.98px) {
-    .nav-link {
-        font-size: 3.2rem;
-        margin: 0.4rem 0.2rem;
-    }
+  .nav-link {
+    font-size: 3.2rem;
+    margin: 0.4rem 0.2rem;
+  }
+
+  /*
+   * The menu slides down and fades in. It stays in the layout so it can animate;
+   * visibility switches off only after it has closed, so hidden links can't be tabbed to.
+   */
+  .navbar-collapse {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition:
+      max-height 0.5s ease,
+      opacity 0.5s ease,
+      transform 0.5s ease,
+      visibility 0s linear 0.5s;
+  }
+
+  .navbar-collapse.show {
+    max-height: 500px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
+  }
 }
 
 .cart-label {
-    position: relative;
+  position: relative;
 }
 
 /* Sits on the corner of "COȘ" so the count never pushes the link wider or onto a new line. */
 .cart-count {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    transform: translate(-20%, -30%);
-    font-size: 0.35em;
-    color: var(--white);
-    background: var(--red);
-    border-radius: 1em;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transform: translate(-20%, -30%);
+  font-size: 0.35em;
+  color: var(--white);
+  background: var(--red);
+  border-radius: 1em;
 }

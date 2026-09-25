@@ -10,20 +10,12 @@
             width="140rem"
           />
         </a>
-        <button
-          class="navbar-toggler collapsed border-0"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Deschide sau închide meniul"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <app-hamburger-button
+          [isOpen]="isMenuOpen()"
+          (toggleMenu)="onToggleMenu($event)"
+          controls="main-nav"
+        ></app-hamburger-button>
+        <div class="navbar-collapse" [class.show]="isMenuOpen()" id="main-nav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a
@@ -32,8 +24,7 @@
                 routerLinkActive="current-page"
                 [routerLinkActiveOptions]="{ exact: true }"
                 ariaCurrentWhenActive="page"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
+                (click)="closeMenu()"
                 >ACASĂ</a
               >
             </li>
@@ -43,8 +34,7 @@
                 class="nav-link hover-item"
                 routerLinkActive="current-page"
                 ariaCurrentWhenActive="page"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
+                (click)="closeMenu()"
                 >PRODUSE</a
               >
             </li>
@@ -54,8 +44,7 @@
                 class="nav-link hover-item"
                 routerLinkActive="current-page"
                 ariaCurrentWhenActive="page"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
+                (click)="closeMenu()"
                 >CONTACT</a
               >
             </li>
@@ -65,8 +54,7 @@
                 class="nav-link hover-item"
                 routerLinkActive="current-page"
                 ariaCurrentWhenActive="page"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
+                (click)="closeMenu()"
                 ><span class="cart-label"
                   >COȘ
                   <!-- Tracking the count re-creates the badge on every change, so it pops each time. -->

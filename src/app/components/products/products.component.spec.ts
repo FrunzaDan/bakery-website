@@ -234,4 +234,84 @@ describe('ProductsComponent', () => {
       expect(component.visibleProducts()).toEqual([]);
     });
   });
+
+  describe('sort menu', () => {
+    const toggle = (): HTMLButtonElement =>
+      element('.dropdown-toggle') as HTMLButtonElement;
+    const menu = (): HTMLElement => element('#sort-menu');
+    const options = (): HTMLElement[] =>
+      Array.from(menu().querySelectorAll<HTMLElement>('.dropdown-item'));
+
+    const press = async (key: string, target: HTMLElement): Promise<void> => {
+      target.dispatchEvent(
+        new KeyboardEvent('keydown', { key, bubbles: true }),
+      );
+      await harness.fixture.whenStable();
+    };
+
+    const openMenu = async (): Promise<void> => {
+      toggle().click();
+      await harness.fixture.whenStable();
+    };
+
+    beforeEach(() => navigate('/products'));
+
+    it('starts closed', () => {
+      expect(menu().classList).not.toContain('show');
+      expect(toggle().getAttribute('aria-expanded')).toBe('false');
+      expect(toggle().getAttribute('aria-controls')).toBe('sort-menu');
+    });
+
+    it('opens and closes from its button', async () => {
+      await openMenu();
+      expect(menu().classList).toContain('show');
+      expect(toggle().getAttribute('aria-expanded')).toBe('true');
+
+      await openMenu();
+      expect(menu().classList).not.toContain('show');
+    });
+
+    it('closes on a click anywhere else on the page', async () => {
+      await openMenu();
+
+      document.body.click();
+      await harness.fixture.whenStable();
+
+      expect(menu().classList).not.toContain('show');
+    });
+
+    it('closes on Escape and returns focus to its button', async () => {
+      await openMenu();
+      await press('ArrowDown', toggle());
+
+      await press('Escape', options()[0]);
+
+      expect(menu().classList).not.toContain('show');
+      expect(document.activeElement).toBe(toggle());
+    });
+
+    it('opens with the arrow keys and moves between the options without wrapping', async () => {
+      toggle().focus();
+
+      await press('ArrowDown', toggle());
+      expect(menu().classList).toContain('show');
+      expect(document.activeElement).toBe(options()[0]);
+
+      await press('ArrowDown', options()[0]);
+      expect(document.activeElement).toBe(options()[1]);
+
+      await press('ArrowUp', options()[1]);
+      await press('ArrowUp', options()[0]);
+      expect(document.activeElement).toBe(options()[0]);
+    });
+
+    it('closes once an option is chosen', async () => {
+      await openMenu();
+
+      await clickLink('Preț: mic - mare');
+
+      expect(menu().classList).not.toContain('show');
+      expect(queryParams()).toEqual({ sort: 'price-asc' });
+    });
+  });
 });

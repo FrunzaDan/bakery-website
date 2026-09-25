@@ -1,12 +1,17 @@
 import {
+  afterNextRender,
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
+  Injector,
   input,
   linkedSignal,
   OnInit,
+  signal,
   untracked,
+  viewChild,
 } from '@angular/core';
 import { FormField, debounce, form } from '@angular/forms/signals';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -89,6 +94,9 @@ function toSortOption(value: string | undefined): SortOption | undefined {
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
+  host: {
+    '(document:click)': 'onDocumentClick($event)',
+  },
 })
 export class ProductsComponent implements OnInit {
   private readonly seoService = inject(SeoService);
@@ -97,9 +105,16 @@ export class ProductsComponent implements OnInit {
   private readonly notificationService = inject(NotificationService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly injector = inject(Injector);
+
+  private readonly sortDropdown =
+    viewChild.required<ElementRef<HTMLElement>>('sortDropdown');
+  private readonly sortToggle =
+    viewChild.required<ElementRef<HTMLButtonElement>>('sortToggle');
 
   readonly categories = CATEGORIES;
   readonly sortChoices = SORT_CHOICES;
+  readonly isSortMenuOpen = signal(false);
   readonly skeletonCards = Array.from(
     { length: SKELETON_CARD_COUNT },
     (_, index) => index,
@@ -189,6 +204,73 @@ export class ProductsComponent implements OnInit {
       queryParamsHandling: 'merge',
       replaceUrl,
     });
+  }
+
+  toggleSortMenu(): void {
+    this.isSortMenuOpen.update((isOpen) => !isOpen);
+  }
+
+  closeSortMenu(returnFocus = false): void {
+    if (!this.isSortMenuOpen()) {
+      return;
+    }
+    this.isSortMenuOpen.set(false);
+    if (returnFocus) {
+      this.sortToggle().nativeElement.focus();
+    }
+  }
+
+  onDocumentClick(event: MouseEvent): void {
+    if (
+      this.isSortMenuOpen() &&
+      !this.sortDropdown().nativeElement.contains(event.target as Node)
+    ) {
+      this.closeSortMenu();
+    }
+  }
+
+  /** Tabbing out of the sort menu closes it. */
+  onSortMenuFocusOut(event: FocusEvent): void {
+    const next = event.relatedTarget as Node | null;
+    if (next && !this.sortDropdown().nativeElement.contains(next)) {
+      this.closeSortMenu();
+    }
+  }
+
+  /** Escape closes the sort menu; the arrow keys open it and move between the options. */
+  onSortMenuKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      this.closeSortMenu(true);
+      return;
+    }
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') {
+      return;
+    }
+    event.preventDefault();
+
+    const items = Array.from(
+      this.sortDropdown().nativeElement.querySelectorAll<HTMLElement>(
+        '.dropdown-item',
+      ),
+    );
+    const current = items.indexOf(event.target as HTMLElement);
+    const next =
+      current === -1
+        ? event.key === 'ArrowDown'
+          ? 0
+          : items.length - 1
+        : Math.min(
+            Math.max(current + (event.key === 'ArrowDown' ? 1 : -1), 0),
+            items.length - 1,
+          );
+
+    if (this.isSortMenuOpen()) {
+      items[next]?.focus();
+      return;
+    }
+    // The options are hidden until the menu has rendered open.
+    this.isSortMenuOpen.set(true);
+    afterNextRender(() => items[next]?.focus(), { injector: this.injector });
   }
 
   reloadProducts(): void {

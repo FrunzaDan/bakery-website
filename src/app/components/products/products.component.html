@@ -24,17 +24,30 @@
       <div
         class="col-md justify-content-center align-items-center text-center p-2"
       >
-        <div class="dropdown width-100prc">
+        <div
+          #sortDropdown
+          class="dropdown width-100prc"
+          (keydown)="onSortMenuKeydown($event)"
+          (focusout)="onSortMenuFocusOut($event)"
+        >
           <button
+            #sortToggle
             class="btn btn-primary toolbar-btn width-100prc d-flex justify-content-center align-items-center gap-2 p-2 dropdown-toggle"
+            [class.show]="isSortMenuOpen()"
             type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
+            aria-controls="sort-menu"
+            [attr.aria-expanded]="isSortMenuOpen()"
+            (click)="toggleSortMenu()"
           >
             <i class="bi bi-sort-down" aria-hidden="true"></i>
             <span>Sortează</span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end width-100prc">
+          <ul
+            id="sort-menu"
+            class="dropdown-menu dropdown-menu-end width-100prc"
+            [class.show]="isSortMenuOpen()"
+            data-bs-popper="static"
+          >
             @for (choice of sortChoices; track choice.value) {
               <li>
                 <a
@@ -44,6 +57,7 @@
                   queryParamsHandling="merge"
                   [class.active]="sort() === choice.value"
                   [attr.aria-current]="sort() === choice.value ? 'true' : null"
+                  (click)="closeSortMenu(true)"
                 >
                   {{ choice.label }}
                 </a>

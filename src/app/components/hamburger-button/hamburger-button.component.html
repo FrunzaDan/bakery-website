@@ -1,0 +1,13 @@
+<button
+  class="navbar-toggler border-0"
+  [class.open]="isOpen()"
+  (click)="toggleNavbar()"
+  type="button"
+  aria-label="Deschide sau închide meniul"
+  [attr.aria-controls]="controls()"
+  [attr.aria-expanded]="isOpen()"
+>
+  <span aria-hidden="true"></span>
+  <span aria-hidden="true"></span>
+  <span aria-hidden="true"></span>
+</button>

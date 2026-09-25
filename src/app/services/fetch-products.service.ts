@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { get, getDatabase, ref } from 'firebase/database';
+import type { DataSnapshot } from 'firebase/database';
 import {
   catchError,
   from,
@@ -12,7 +12,6 @@ import {
   timeout,
 } from 'rxjs';
 import { Product } from '../interfaces/product';
-import { firebaseApp } from '../firebase';
 import { parseProducts } from '../shared/parsers';
 import { SessionStorageService } from './session-storage.service';
 
@@ -21,7 +20,6 @@ import { SessionStorageService } from './session-storage.service';
 })
 export class FetchProductsService {
   private readonly http = inject(HttpClient);
-  private readonly database = getDatabase(firebaseApp);
   private readonly sessionStorageService = inject(SessionStorageService);
 
   fetchProducts(): Observable<Product[]> {
@@ -46,7 +44,7 @@ export class FetchProductsService {
   }
 
   fetchProductsFromFirebaseRealtimeDB(): Observable<Product[]> {
-    return from(get(ref(this.database, 'products'))).pipe(
+    return from(this.readProductsSnapshot()).pipe(
       map((snapshot): Product[] => {
         const values: unknown[] = [];
         snapshot.forEach((child) => {
@@ -66,6 +64,15 @@ export class FetchProductsService {
         }
       }),
     );
+  }
+
+  // The database SDK is large and only needed here, so it loads in its own chunk on first use.
+  private async readProductsSnapshot(): Promise<DataSnapshot> {
+    const [{ get, getDatabase, ref }, { firebaseApp }] = await Promise.all([
+      import('firebase/database'),
+      import('../firebase'),
+    ]);
+    return get(ref(getDatabase(firebaseApp), 'products'));
   }
 
   fetchProductsFromNG(): Observable<Product[]> {
