@@ -55,7 +55,7 @@ describe('CartComponent', () => {
     const el = await render();
 
     expect(el.querySelector('tbody')?.textContent).toContain('Croissant');
-    expect(el.textContent).toContain('5.00 RON');
+    expect(el.textContent).toContain('5,00 RON');
   });
 
   it('says the cart is empty when nothing is stored', async () => {

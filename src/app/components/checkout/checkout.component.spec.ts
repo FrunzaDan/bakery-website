@@ -128,10 +128,10 @@ describe('CheckoutComponent', () => {
 
     const order = component.buildOrder(checkoutForm);
 
-    expect(order).toContain('Croissant: 5.00 RON x 2 buc.');
-    expect(order).toContain('Baguette: 3.00 RON x 1 buc.');
+    expect(order).toContain('Croissant: 5,00 RON x 2 buc.');
+    expect(order).toContain('Baguette: 3,00 RON x 1 buc.');
     expect(order).toContain('Număr produse: 3 buc.');
-    expect(order).toContain('Preț total: 13.00 RON');
+    expect(order).toContain('Preț total: 13,00 RON');
   });
 
   it('shows the confirmation with the order once a valid form is submitted', async () => {
