@@ -53,4 +53,16 @@ describe('LocalStorageService', () => {
     expect(localStorage.getItem('cartProductsLocal')).toBeNull();
     expect(serverService.getCartItems()).toEqual([]);
   });
+
+  it('reports cart changes made in another tab', () => {
+    const onChange = vi.fn();
+    service.onCartItemsChangedInOtherTab(onChange);
+
+    localStorage.setItem('cartProductsLocal', JSON.stringify([cartItem]));
+    window.dispatchEvent(new StorageEvent('storage', { key: 'cartProductsLocal' }));
+    window.dispatchEvent(new StorageEvent('storage', { key: 'somethingElse' }));
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith([cartItem]);
+  });
 });

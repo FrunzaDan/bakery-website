@@ -25,6 +25,19 @@ export class LocalStorageService {
     }
   }
 
+  /** Calls `onChange` with the stored cart whenever another tab changes it. */
+  onCartItemsChangedInOtherTab(onChange: (cartItems: CartItem[]) => void): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    window.addEventListener('storage', (event) => {
+      // `key` is null when another tab clears the whole storage.
+      if (event.key === this.cartItemsKey || event.key === null) {
+        onChange(this.getCartItems());
+      }
+    });
+  }
+
   setCartItems(cartItems: readonly CartItem[]): void {
     if (!this.isBrowser) {
       return;

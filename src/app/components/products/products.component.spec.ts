@@ -2,7 +2,7 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ProductsComponent } from './products.component';
 import { Product, ProductCategory } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
@@ -122,6 +122,19 @@ describe('ProductsComponent', () => {
     });
   });
 
+  describe('searching', () => {
+    it('ignores diacritics and case in both directions', async () => {
+      await navigate('/products?q=paine');
+      expect(titles()).toEqual(['Pâine albă']);
+
+      await navigate('/products?q=CIOCOLATĂ');
+      expect(titles()).toEqual(['Tort de ciocolată']);
+
+      await navigate('/products?q=ciocolata');
+      expect(titles()).toEqual(['Tort de ciocolată']);
+    });
+  });
+
   describe('writing filters to the URL', () => {
     it('sets the category and keeps the other params', async () => {
       await navigate('/products?q=tort&sort=price-asc');
@@ -178,6 +191,18 @@ describe('ProductsComponent', () => {
     it('mentions the search term when nothing matches', async () => {
       await navigate('/products?q=croissant');
       expect(harness.routeNativeElement!.textContent).toContain('„croissant”');
+    });
+
+    it('shows an error instead of an empty list when the catalog fails to load', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => undefined);
+      TestBed.inject(FetchProductsService).fetchProducts = () =>
+        throwError(() => new Error('offline'));
+
+      await navigate('/products');
+
+      const alert = harness.routeNativeElement!.querySelector('[role="alert"]');
+      expect(alert?.textContent).toContain('Produsele nu au putut fi încărcate');
+      expect(component.visibleProducts()).toEqual([]);
     });
   });
 });

@@ -82,7 +82,7 @@ describe('CheckoutComponent', () => {
     await submitForm();
 
     expect(component.showConfirmCheckout()).toBe(false);
-    expect(component.order()).toBeUndefined();
+    expect(component.order()).toBeNull();
     expect(component.invalidSummary()).toBe(
       'Formularul are 2 erori. Te rugăm să corectezi câmpurile marcate.',
     );
@@ -135,6 +135,12 @@ describe('CheckoutComponent', () => {
   });
 
   it('shows the confirmation with the order once a valid form is submitted', async () => {
+    cartServiceSpy.cartLines.mockReturnValue([
+      {
+        product: { id: 1, title: 'Croissant', price: 5, description: '', image: '', category: 'pastry' },
+        quantity: 1,
+      },
+    ]);
     component.model.set(checkoutForm);
 
     await submitForm();
@@ -144,8 +150,19 @@ describe('CheckoutComponent', () => {
     expect(component.invalidSummary()).toBeNull();
   });
 
+  it('refuses to place an order when the cart is empty', async () => {
+    component.model.set(checkoutForm);
+
+    await submitForm();
+
+    expect(component.showConfirmCheckout()).toBe(false);
+    expect(component.invalidSummary()).toBe(
+      'Coșul tău este gol. Adaugă produse înainte de a plasa comanda.',
+    );
+  });
+
   it('hides the confirmation dialog when closeConfirmCheckout is invoked', () => {
-    component.showConfirmCheckout.set(true);
+    component.order.set('Comanda: ...');
 
     component.closeConfirmCheckout();
 

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ContactComponent } from './contact.component';
+import { NotificationService } from '../../services/notification.service';
 import { SendEmailService } from '../../services/send-email.service';
 import { ContactMeForm } from '../../interfaces/contact-me-form';
 
@@ -99,7 +100,26 @@ describe('ContactComponent', () => {
     expect(component.model()).toEqual({ name: '', email: '', phone: '', message: '' });
     expect(component.contactForm().touched()).toBe(false);
     expect(component.sendError()).toBeNull();
+    expect(TestBed.inject(NotificationService).notifications()[0]?.message).toBe(
+      'Mesajul a fost trimis!',
+    );
   });
+
+  it.each(['0722111222', '0722 111 222', '0722-111-222', '+40 722 111 222'])(
+    'accepts the phone number %s',
+    (phone) => {
+      component.model.set({ ...validForm, phone });
+      expect(component.contactForm.phone().invalid()).toBe(false);
+    },
+  );
+
+  it.each(['07221', '0722 abc 222', '0722  111 222', '+40 722 111 222 333 4'])(
+    'rejects the phone number %s',
+    (phone) => {
+      component.model.set({ ...validForm, phone });
+      expect(component.contactForm.phone().invalid()).toBe(true);
+    },
+  );
 
   it('keeps the form filled in and shows an error when the send fails', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined);

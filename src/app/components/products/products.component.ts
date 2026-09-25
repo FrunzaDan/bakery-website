@@ -56,6 +56,11 @@ const SORT_COMPARATORS: Record<SortOption, (a: Product, b: Product) => number> =
   'price-desc': (a, b) => b.price - a.price,
 };
 
+/** Lowercases and strips diacritics, so "paine" finds "Pâine" and "ș"/"ş" match. */
+function toSearchKey(text: string): string {
+  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+}
+
 function toCategory(value: string | undefined): ProductCategory | undefined {
   return PRODUCT_CATEGORIES.find((category) => category === value);
 }
@@ -89,6 +94,7 @@ export class ProductsComponent {
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
 
   readonly isLoadingProducts = this.catalog.isLoading;
+  readonly loadError = this.catalog.loadError;
 
   readonly category = input<ProductCategory | undefined, string | undefined>(undefined, {
     transform: toCategory,
@@ -117,13 +123,13 @@ export class ProductsComponent {
 
   readonly visibleProducts = computed((): readonly Product[] => {
     const category = this.category();
-    const term = this.q().toLowerCase();
+    const term = toSearchKey(this.q());
     const sortOption = this.sort();
 
     const filtered = this.catalog.products().filter(
       (product) =>
         (!category || product.category === category) &&
-        (!term || product.title.toLowerCase().includes(term)),
+        (!term || toSearchKey(product.title).includes(term)),
     );
 
     return sortOption ? [...filtered].sort(SORT_COMPARATORS[sortOption]) : filtered;
@@ -131,6 +137,7 @@ export class ProductsComponent {
 
   readonly resultsAnnouncement = computed(() => {
     if (this.isLoadingProducts()) return 'Se încarcă produsele';
+    if (this.loadError()) return '';
     const total = this.visibleProducts().length;
     return total === 1 ? '1 produs găsit' : `${total} produse găsite`;
   });
@@ -154,6 +161,10 @@ export class ProductsComponent {
       queryParamsHandling: 'merge',
       replaceUrl,
     });
+  }
+
+  reloadProducts(): void {
+    this.catalog.reload();
   }
 
   addToCart(product: Product): void {

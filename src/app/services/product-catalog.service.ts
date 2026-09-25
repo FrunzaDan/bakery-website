@@ -14,8 +14,20 @@ export class ProductCatalogService {
     stream: () => this.fetchProductsService.fetchProducts(),
   });
 
-  readonly products = computed((): readonly Product[] => this.productsResource.value() ?? []);
+  // `value()` throws while the resource is in its error state, so check `hasValue()` first.
+  readonly products = computed((): readonly Product[] =>
+    this.productsResource.hasValue() ? this.productsResource.value() : [],
+  );
   readonly isLoading = this.productsResource.isLoading;
+  readonly loadError = computed(() =>
+    this.productsResource.error()
+      ? 'Produsele nu au putut fi încărcate. Te rugăm să reîncerci mai târziu.'
+      : null,
+  );
+
+  reload(): void {
+    this.productsResource.reload();
+  }
 
   readonly productsById = computed(
     () => new Map(this.products().map((product) => [product.id, product])),

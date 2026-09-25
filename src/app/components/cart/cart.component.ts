@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
+import { ProductCatalogService } from '../../services/product-catalog.service';
 import { RonPipe } from '../../shared/ron.pipe';
 
 @Component({
@@ -14,10 +15,18 @@ import { RonPipe } from '../../shared/ron.pipe';
 export class CartComponent {
   private readonly cartService = inject(CartService);
   private readonly notificationService = inject(NotificationService);
+  private readonly catalog = inject(ProductCatalogService);
 
   readonly cartLines = this.cartService.cartLines;
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
   readonly totalPrice = this.cartService.totalPrice;
+  readonly hasItems = this.cartService.hasItems;
+  readonly isLoadingProducts = this.catalog.isLoading;
+  readonly loadError = this.catalog.loadError;
+
+  reloadProducts(): void {
+    this.catalog.reload();
+  }
 
   removeOneProduct(product: Product): void {
     this.cartService.removeProductFromCart(product);

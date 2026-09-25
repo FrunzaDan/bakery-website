@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormField, FormRoot, form } from '@angular/forms/signals';
 import { RouterModule } from '@angular/router';
 import { CheckoutForm } from '../../interfaces/checkout-form';
@@ -20,24 +20,28 @@ export class CheckoutComponent {
 
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
   readonly totalPrice = this.cartService.totalPrice;
-  readonly showConfirmCheckout = signal(false);
-  readonly order = signal<string | undefined>(undefined);
+  /** The order text awaiting confirmation; the confirmation dialog is open while it is set. */
+  readonly order = signal<string | null>(null);
+  readonly showConfirmCheckout = computed(() => this.order() !== null);
   readonly invalidSummary = signal<string | null>(null);
 
   readonly model = signal<CheckoutForm>(emptyCheckoutForm());
   readonly checkoutForm = form(this.model, checkoutFormSchema, {
     submission: {
       action: async () => {
+        if (this.cartService.cartLines().length === 0) {
+          this.invalidSummary.set('Coșul tău este gol. Adaugă produse înainte de a plasa comanda.');
+          return;
+        }
         this.invalidSummary.set(null);
         this.order.set(this.buildOrder(this.model()));
-        this.showConfirmCheckout.set(true);
       },
       onInvalid: (field) => this.invalidSummary.set(reportInvalidFields(field)),
     },
   });
 
   closeConfirmCheckout(): void {
-    this.showConfirmCheckout.set(false);
+    this.order.set(null);
   }
 
   buildOrder(checkoutForm: CheckoutForm): string {

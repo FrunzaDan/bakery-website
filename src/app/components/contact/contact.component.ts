@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormField, FormRoot, form } from '@angular/forms/signals';
 import { RouterModule } from '@angular/router';
 import { ContactMeForm } from '../../interfaces/contact-me-form';
+import { NotificationService } from '../../services/notification.service';
 import { SendEmailService } from '../../services/send-email.service';
 import { reportInvalidFields } from '../../shared/invalid-summary';
 import { contactFormSchema, emptyContactForm } from './contact-form';
@@ -14,6 +15,7 @@ import { contactFormSchema, emptyContactForm } from './contact-form';
 })
 export class ContactComponent {
   private readonly sendEmailService = inject(SendEmailService);
+  private readonly notificationService = inject(NotificationService);
 
   readonly invalidSummary = signal<string | null>(null);
   readonly sendError = signal<string | null>(null);
@@ -32,6 +34,7 @@ export class ContactComponent {
     try {
       await this.sendEmailService.sendEmailJS(this.model());
       this.contactForm().reset(emptyContactForm());
+      this.notificationService.show('Mesajul a fost trimis!');
     } catch (error: unknown) {
       console.error('Error sending the contact message:', error);
       this.sendError.set('Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.');

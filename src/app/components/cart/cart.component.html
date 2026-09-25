@@ -85,10 +85,17 @@
     </div>
   </div>
 </div>
-}
-
-
-@if (cartLines().length === 0) {
+} @else if (hasItems() && isLoadingProducts()) {
+  <div class="container text-center my-4 py-4">Se încarcă produsele...</div>
+} @else if (hasItems() && loadError(); as error) {
+  <div class="container text-center my-4 py-4" role="alert">
+    {{ error }}
+    <br />
+    <button type="button" class="btn btn-primary mt-3" (click)="reloadProducts()">
+      Reîncearcă
+    </button>
+  </div>
+} @else {
   <div class="container">
     <div class="card empty-cart-card">
       <div class="row d-flex justify-content-center align-items-center text-center">

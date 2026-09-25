@@ -15,22 +15,26 @@ export class CartService {
   // client-only cart stored in localStorage is applied after hydration to
   // avoid an SSR/CSR content mismatch (localStorage doesn't exist on the server).
   private readonly cartItems = signal<readonly CartItem[]>([]);
+  private storedCartLoaded = false;
 
   constructor() {
     afterNextRender((): void => {
-      const storedCartItems = this.localStorageService.getCartItems();
-      if (storedCartItems.length > 0) {
-        this.cartItems.set(storedCartItems);
-      }
+      this.loadStoredCart();
+      this.localStorageService.onCartItemsChangedInOtherTab((cartItems) =>
+        this.cartItems.set(cartItems),
+      );
     });
   }
+
+  /** True when the cart holds items, even before the catalog needed to show them has loaded. */
+  readonly hasItems = computed(() => this.cartItems().length > 0);
 
   /**
    * The cart only stores product ids and quantities; title, image and price
    * always come from the current catalog, so they can't go stale or be edited
    * in localStorage. Items whose product is no longer sold are left out.
    */
-  readonly cartLines = computed((): CartLine[] => {
+  readonly cartLines = computed((): readonly CartLine[] => {
     const productsById = this.catalog.productsById();
     return this.cartItems().flatMap((item) => {
       const product = productsById.get(item.productId);
@@ -51,6 +55,7 @@ export class CartService {
   });
 
   addProductToCart(product: Product): void {
+    this.loadStoredCart();
     const cartItems = this.cartItems();
     const isInCart = cartItems.some((item) => item.productId === product.id);
     this.updateCartItems(
@@ -63,6 +68,7 @@ export class CartService {
   }
 
   removeProductFromCart(product: Product): void {
+    this.loadStoredCart();
     this.updateCartItems(
       this.cartItems().flatMap((item) => {
         if (item.productId !== product.id) return [item];
@@ -72,11 +78,26 @@ export class CartService {
   }
 
   removeProductsFromCart(product: Product): void {
+    this.loadStoredCart();
     this.updateCartItems(this.cartItems().filter((item) => item.productId !== product.id));
   }
 
   removeAllCart(): void {
+    this.loadStoredCart();
     this.updateCartItems([]);
+  }
+
+  // Every change starts from the stored cart. A click replayed before the first
+  // render would otherwise change an empty cart and save it over the stored one.
+  private loadStoredCart(): void {
+    if (this.storedCartLoaded) {
+      return;
+    }
+    this.storedCartLoaded = true;
+    const storedCartItems = this.localStorageService.getCartItems();
+    if (storedCartItems.length > 0) {
+      this.cartItems.set(storedCartItems);
+    }
   }
 
   private updateCartItems(cartItems: readonly CartItem[]): void {

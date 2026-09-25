@@ -11,6 +11,7 @@ describe('CartService', () => {
   let localStorageServiceSpy: {
     getCartItems: ReturnType<typeof vi.fn>;
     setCartItems: ReturnType<typeof vi.fn>;
+    onCartItemsChangedInOtherTab: ReturnType<typeof vi.fn>;
   };
 
   const makeProduct = (overrides: Partial<Product> = {}): Product => ({
@@ -31,6 +32,7 @@ describe('CartService', () => {
     localStorageServiceSpy = {
       getCartItems: vi.fn().mockReturnValue([]),
       setCartItems: vi.fn(),
+      onCartItemsChangedInOtherTab: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -47,6 +49,17 @@ describe('CartService', () => {
     });
 
     service = TestBed.inject(CartService);
+  });
+
+  it('adds to the stored cart even when the product is added before the stored cart was read', () => {
+    localStorageServiceSpy.getCartItems.mockReturnValue([{ productId: 2, quantity: 3 }]);
+
+    service.addProductToCart(productA);
+
+    expect(localStorageServiceSpy.setCartItems).toHaveBeenLastCalledWith([
+      { productId: 2, quantity: 3 },
+      { productId: 1, quantity: 1 },
+    ]);
   });
 
   it('starts with an empty cart', () => {
