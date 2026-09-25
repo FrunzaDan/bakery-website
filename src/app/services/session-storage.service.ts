@@ -45,9 +45,14 @@ export class SessionStorageService {
     }
     try {
       const draftJson = sessionStorage.getItem(this.checkoutDraftKey);
-      return draftJson ? parseCheckoutDraft(JSON.parse(draftJson), defaults) : defaults;
+      return draftJson
+        ? parseCheckoutDraft(JSON.parse(draftJson), defaults)
+        : defaults;
     } catch (parseError: unknown) {
-      console.error('Error parsing the checkout draft from session storage:', parseError);
+      console.error(
+        'Error parsing the checkout draft from session storage:',
+        parseError,
+      );
       return defaults;
     }
   }
@@ -61,7 +66,10 @@ export class SessionStorageService {
     try {
       sessionStorage.setItem(this.checkoutDraftKey, JSON.stringify(savedDraft));
     } catch (storageError: unknown) {
-      console.error('Error saving the checkout draft to session storage:', storageError);
+      console.error(
+        'Error saving the checkout draft to session storage:',
+        storageError,
+      );
     }
   }
 
@@ -72,7 +80,10 @@ export class SessionStorageService {
     try {
       sessionStorage.removeItem(this.checkoutDraftKey);
     } catch (storageError: unknown) {
-      console.error('Error clearing the checkout draft from session storage:', storageError);
+      console.error(
+        'Error clearing the checkout draft from session storage:',
+        storageError,
+      );
     }
   }
 }

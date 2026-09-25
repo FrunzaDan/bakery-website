@@ -31,7 +31,14 @@ describe('CheckoutComponent', () => {
   };
 
   const croissantLine: CartLine = {
-    product: { id: 1, title: 'Croissant', price: 5, description: '', image: '', category: 'pastry' },
+    product: {
+      id: 1,
+      title: 'Croissant',
+      price: 5,
+      description: '',
+      image: '',
+      category: 'pastry',
+    },
     quantity: 1,
   };
 
@@ -42,7 +49,9 @@ describe('CheckoutComponent', () => {
   };
 
   const submitForm = async (): Promise<void> => {
-    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
+    fixture.nativeElement
+      .querySelector('form')
+      .dispatchEvent(new Event('submit'));
     await fixture.whenStable();
   };
 
@@ -74,8 +83,12 @@ describe('CheckoutComponent', () => {
 
   it('is invalid when required fields are empty, with a message per field', () => {
     expect(component.checkoutForm().invalid()).toBe(true);
-    expect(component.checkoutForm.name().errors()[0].message).toBe('Numele este necesar.');
-    expect(component.checkoutForm.zip().errors()[0].message).toBe('Codul poștal este necesar.');
+    expect(component.checkoutForm.name().errors()[0].message).toBe(
+      'Numele este necesar.',
+    );
+    expect(component.checkoutForm.zip().errors()[0].message).toBe(
+      'Codul poștal este necesar.',
+    );
   });
 
   it('is valid once all required fields are filled in correctly', () => {
@@ -87,7 +100,9 @@ describe('CheckoutComponent', () => {
   it('treats a whitespace-only field as missing', () => {
     component.model.set({ ...checkoutForm, street: '   ' });
 
-    expect(component.checkoutForm.street().errors()[0].message).toBe('Strada este necesară.');
+    expect(component.checkoutForm.street().errors()[0].message).toBe(
+      'Strada este necesară.',
+    );
   });
 
   it('rejects a phone number outside the 9-12 digit pattern', () => {
@@ -112,7 +127,8 @@ describe('CheckoutComponent', () => {
   });
 
   it('shows field errors only once the field is touched', async () => {
-    const nameError = (): Element | null => fixture.nativeElement.querySelector('#name-error');
+    const nameError = (): Element | null =>
+      fixture.nativeElement.querySelector('#name-error');
     expect(nameError()).toBeNull();
 
     await submitForm();
@@ -136,11 +152,25 @@ describe('CheckoutComponent', () => {
   it('includes every cart product and the computed totals in the order', () => {
     const cartLines: CartLine[] = [
       {
-        product: { id: 1, title: 'Croissant', price: 5, description: '', image: '', category: 'pastry' },
+        product: {
+          id: 1,
+          title: 'Croissant',
+          price: 5,
+          description: '',
+          image: '',
+          category: 'pastry',
+        },
         quantity: 2,
       },
       {
-        product: { id: 2, title: 'Baguette', price: 3, description: '', image: '', category: 'bakeries' },
+        product: {
+          id: 2,
+          title: 'Baguette',
+          price: 3,
+          description: '',
+          image: '',
+          category: 'bakeries',
+        },
         quantity: 1,
       },
     ];
@@ -159,7 +189,14 @@ describe('CheckoutComponent', () => {
   it('shows the confirmation with the order once a valid form is submitted', async () => {
     cartServiceSpy.cartLines.mockReturnValue([
       {
-        product: { id: 1, title: 'Croissant', price: 5, description: '', image: '', category: 'pastry' },
+        product: {
+          id: 1,
+          title: 'Croissant',
+          price: 5,
+          description: '',
+          image: '',
+          category: 'pastry',
+        },
         quantity: 1,
       },
     ]);
@@ -202,13 +239,14 @@ describe('CheckoutComponent', () => {
   it('defaults to cash on delivery and names the payment method in the order', () => {
     expect(component.model().paymentMethod).toBe('cash');
 
-    expect(component.buildOrder({ ...checkoutForm, paymentMethod: 'transfer' })).toContain(
-      'Metodă de plată: Transfer bancar',
-    );
+    expect(
+      component.buildOrder({ ...checkoutForm, paymentMethod: 'transfer' }),
+    ).toContain('Metodă de plată: Transfer bancar');
   });
 
   it('offers card payment only as a disabled "coming soon" option', () => {
-    const card: HTMLInputElement = fixture.nativeElement.querySelector('#payment-card');
+    const card: HTMLInputElement =
+      fixture.nativeElement.querySelector('#payment-card');
 
     expect(card.disabled).toBe(true);
     expect(fixture.nativeElement.textContent).toContain('în curând');
@@ -228,7 +266,11 @@ describe('CheckoutComponent', () => {
     it('restores a saved draft, but asks for the terms again', async () => {
       sessionStorage.setItem(
         'checkoutDraft',
-        JSON.stringify({ ...checkoutForm, paymentMethod: 'transfer', acceptTerms: true }),
+        JSON.stringify({
+          ...checkoutForm,
+          paymentMethod: 'transfer',
+          acceptTerms: true,
+        }),
       );
 
       await createComponent();
@@ -260,7 +302,9 @@ describe('CheckoutComponent', () => {
     };
 
     it('places the order that was confirmed, then empties the cart and opens the confirmation page', async () => {
-      const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+      const navigate = vi
+        .spyOn(TestBed.inject(Router), 'navigate')
+        .mockResolvedValue(true);
       orderServiceSpy.placeOrder.mockResolvedValue(placedOrder);
       await openConfirmation();
       await fixture.whenStable();

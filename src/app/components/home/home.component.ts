@@ -5,7 +5,7 @@ import {
   PRODUCT_CATEGORY_LABELS,
   ProductCategory,
 } from '../../interfaces/product';
-import { SEOService } from '../../services/seo.service';
+import { SeoService } from '../../services/seo.service';
 
 const CATEGORY_IMAGES: Readonly<Record<ProductCategory, string>> = {
   bakeries: '/assets/images/cofetarie.svg',
@@ -15,13 +15,13 @@ const CATEGORY_IMAGES: Readonly<Record<ProductCategory, string>> = {
 };
 
 @Component({
-    selector: 'app-home',
-    imports: [RouterLink],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css',
+  selector: 'app-home',
+  imports: [RouterLink],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
-  private readonly seoService = inject(SEOService);
+  private readonly seoService = inject(SeoService);
 
   readonly categoryCards = PRODUCT_CATEGORIES.map((category) => ({
     category,

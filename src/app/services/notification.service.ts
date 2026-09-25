@@ -19,11 +19,17 @@ export class NotificationService {
   private nextId = 0;
 
   /** Shows a notification, replacing the one on screen, and hides it after its duration. */
-  show(message: string, { action, durationMs }: NotificationOptions = {}): void {
+  show(
+    message: string,
+    { action, durationMs }: NotificationOptions = {},
+  ): void {
     const id = ++this.nextId;
-    this._notifications.set([action ? { id, message, action } : { id, message }]);
+    this._notifications.set([
+      action ? { id, message, action } : { id, message },
+    ]);
 
-    const duration = durationMs ?? (action ? ACTION_DURATION_MS : DEFAULT_DURATION_MS);
+    const duration =
+      durationMs ?? (action ? ACTION_DURATION_MS : DEFAULT_DURATION_MS);
     if (duration > 0) {
       setTimeout(() => this.dismiss(id), duration);
     }

@@ -9,7 +9,15 @@ describe('OrderConfirmationComponent', () => {
   const order: Order = {
     id: 'TB-20260925-4821',
     placedAt: '2026-09-25T07:30:00.000Z',
-    lines: [{ productId: 2, title: 'Croissant cu Unt', unitPrice: 8.99, quantity: 2, lineTotal: 17.98 }],
+    lines: [
+      {
+        productId: 2,
+        title: 'Croissant cu Unt',
+        unitPrice: 8.99,
+        quantity: 2,
+        lineTotal: 17.98,
+      },
+    ],
     totalQuantity: 2,
     totalPrice: 17.98,
     customer: {
@@ -37,8 +45,16 @@ describe('OrderConfirmationComponent', () => {
     orders = [order];
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([{ path: 'order/:id', component: OrderConfirmationComponent }], withComponentInputBinding()),
-        { provide: OrderService, useValue: { getOrder: (id: string) => orders.find((o) => o.id === id) } },
+        provideRouter(
+          [{ path: 'order/:id', component: OrderConfirmationComponent }],
+          withComponentInputBinding(),
+        ),
+        {
+          provide: OrderService,
+          useValue: {
+            getOrder: (id: string) => orders.find((o) => o.id === id),
+          },
+        },
       ],
     });
   });
@@ -59,7 +75,9 @@ describe('OrderConfirmationComponent', () => {
     const el = await open('/order/TB-20260925-4821');
 
     expect(el.textContent).toContain('IBAN');
-    expect(el.querySelector('.bank-details')?.textContent).toContain('Comanda TB-20260925-4821');
+    expect(el.querySelector('.bank-details')?.textContent).toContain(
+      'Comanda TB-20260925-4821',
+    );
   });
 
   it('says when the order is not found', async () => {

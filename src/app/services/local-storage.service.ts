@@ -28,7 +28,9 @@ export class LocalStorageService {
   }
 
   /** Calls `onChange` with the stored cart whenever another tab changes it. */
-  onCartItemsChangedInOtherTab(onChange: (cartItems: CartItem[]) => void): void {
+  onCartItemsChangedInOtherTab(
+    onChange: (cartItems: CartItem[]) => void,
+  ): void {
     if (!this.isBrowser) {
       return;
     }

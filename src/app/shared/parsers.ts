@@ -6,7 +6,11 @@ import {
   PaymentMethod,
 } from '../interfaces/checkout-form';
 import { Order, OrderLine } from '../interfaces/order';
-import { PRODUCT_CATEGORIES, Product, ProductCategory } from '../interfaces/product';
+import {
+  PRODUCT_CATEGORIES,
+  Product,
+  ProductCategory,
+} from '../interfaces/product';
 
 // Data from Firebase, products.json and browser storage is only trusted after
 // it has been checked here; anything malformed is dropped instead of cast.
@@ -43,8 +47,17 @@ function isPaymentMethod(value: unknown): value is PaymentMethod {
 
 export function parseProduct(value: unknown): Product | undefined {
   if (!isRecord(value)) return undefined;
-  const { id, title, price, description, image, category, gramaj, ingredients, allergens } =
-    value;
+  const {
+    id,
+    title,
+    price,
+    description,
+    image,
+    category,
+    gramaj,
+    ingredients,
+    allergens,
+  } = value;
   if (
     !Number.isInteger(id) ||
     typeof title !== 'string' ||
@@ -60,7 +73,9 @@ export function parseProduct(value: unknown): Product | undefined {
   // Rebuilt field by field so that unknown extra fields are not carried along.
   // The food information fields are optional: products saved before they
   // existed are still valid, they just show without them.
-  const validAllergens = Array.isArray(allergens) ? allergens.filter(isNonBlankString) : [];
+  const validAllergens = Array.isArray(allergens)
+    ? allergens.filter(isNonBlankString)
+    : [];
   return {
     id: id as number,
     title,
@@ -83,7 +98,8 @@ export function parseCartItem(value: unknown): CartItem | undefined {
   // `id` is the shape carts were saved in before they stored only references.
   const productId = value['productId'] ?? value['id'];
   const quantity = value['quantity'];
-  if (!Number.isInteger(productId) || !isPositiveInteger(quantity)) return undefined;
+  if (!Number.isInteger(productId) || !isPositiveInteger(quantity))
+    return undefined;
   return { productId: productId as number, quantity };
 }
 
@@ -106,14 +122,18 @@ const CUSTOMER_FIELDS = [
  * draft restores what it has; anything unusable falls back to `defaults`.
  * Terms acceptance is never restored: consent has to be given for each order.
  */
-export function parseCheckoutDraft(value: unknown, defaults: CheckoutForm): CheckoutForm {
+export function parseCheckoutDraft(
+  value: unknown,
+  defaults: CheckoutForm,
+): CheckoutForm {
   if (!isRecord(value)) return defaults;
   const draft: CheckoutForm = { ...defaults };
   for (const field of CUSTOMER_FIELDS) {
     const fieldValue = value[field];
     if (typeof fieldValue === 'string') draft[field] = fieldValue;
   }
-  if (isPaymentMethod(value['paymentMethod'])) draft.paymentMethod = value['paymentMethod'];
+  if (isPaymentMethod(value['paymentMethod']))
+    draft.paymentMethod = value['paymentMethod'];
   return draft;
 }
 
@@ -140,12 +160,26 @@ function parseOrderLine(value: unknown): OrderLine | undefined {
   ) {
     return undefined;
   }
-  return { productId: productId as number, title, unitPrice, quantity, lineTotal };
+  return {
+    productId: productId as number,
+    title,
+    unitPrice,
+    quantity,
+    lineTotal,
+  };
 }
 
 export function parseOrder(value: unknown): Order | undefined {
   if (!isRecord(value)) return undefined;
-  const { id, placedAt, lines, totalQuantity, totalPrice, customer, paymentMethod } = value;
+  const {
+    id,
+    placedAt,
+    lines,
+    totalQuantity,
+    totalPrice,
+    customer,
+    paymentMethod,
+  } = value;
   const parsedCustomer = parseOrderCustomer(customer);
   const parsedLines = Array.isArray(lines) ? lines.map(parseOrderLine) : [];
   if (
@@ -176,7 +210,10 @@ export function parseOrders(value: unknown): Order[] {
   return parseList(value, parseOrder);
 }
 
-function parseList<T>(value: unknown, parseItem: (item: unknown) => T | undefined): T[] {
+function parseList<T>(
+  value: unknown,
+  parseItem: (item: unknown) => T | undefined,
+): T[] {
   if (!Array.isArray(value)) return [];
   return value.flatMap((item) => {
     const parsed = parseItem(item);

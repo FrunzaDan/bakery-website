@@ -18,7 +18,9 @@ describe('SendEmailService', () => {
   });
 
   it('sends the form under the variable names of the EmailJS template', async () => {
-    const sendSpy = vi.spyOn(emailjs, 'send').mockResolvedValue({ status: 200, text: 'OK' });
+    const sendSpy = vi
+      .spyOn(emailjs, 'send')
+      .mockResolvedValue({ status: 200, text: 'OK' });
 
     await service.sendEmailJS(contactMeForm);
 
@@ -36,7 +38,10 @@ describe('SendEmailService', () => {
   });
 
   it('rejects when EmailJS fails', async () => {
-    vi.spyOn(emailjs, 'send').mockRejectedValue({ status: 400, text: 'Bad request' });
+    vi.spyOn(emailjs, 'send').mockRejectedValue({
+      status: 400,
+      text: 'Bad request',
+    });
 
     await expect(service.sendEmailJS(contactMeForm)).rejects.toEqual({
       status: 400,

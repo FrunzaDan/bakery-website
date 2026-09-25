@@ -4,18 +4,18 @@ import { RouterModule } from '@angular/router';
 import { ContactMeForm } from '../../interfaces/contact-me-form';
 import { NotificationService } from '../../services/notification.service';
 import { SendEmailService } from '../../services/send-email.service';
-import { SEOService } from '../../services/seo.service';
+import { SeoService } from '../../services/seo.service';
 import { reportInvalidFields } from '../../shared/invalid-summary';
 import { contactFormSchema, emptyContactForm } from './contact-form';
 
 @Component({
-    selector: 'app-contact',
-    imports: [RouterModule, FormField, FormRoot],
-    templateUrl: './contact.component.html',
-    styleUrl: './contact.component.css',
+  selector: 'app-contact',
+  imports: [RouterModule, FormField, FormRoot],
+  templateUrl: './contact.component.html',
+  styleUrl: './contact.component.css',
 })
 export class ContactComponent implements OnInit {
-  private readonly seoService = inject(SEOService);
+  private readonly seoService = inject(SeoService);
   private readonly sendEmailService = inject(SendEmailService);
   private readonly notificationService = inject(NotificationService);
 
@@ -39,7 +39,9 @@ export class ContactComponent implements OnInit {
       this.notificationService.show('Mesajul a fost trimis!');
     } catch (error: unknown) {
       console.error('Error sending the contact message:', error);
-      this.sendError.set('Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.');
+      this.sendError.set(
+        'Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.',
+      );
     }
   }
 

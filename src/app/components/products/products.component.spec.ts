@@ -1,6 +1,10 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router, provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  Router,
+  provideRouter,
+  withComponentInputBinding,
+} from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
 import { ProductsComponent } from './products.component';
@@ -13,7 +17,12 @@ describe('ProductsComponent', () => {
   let component: ProductsComponent;
   let router: Router;
 
-  const product = (id: number, title: string, price: number, category: ProductCategory): Product => ({
+  const product = (
+    id: number,
+    title: string,
+    price: number,
+    category: ProductCategory,
+  ): Product => ({
     id,
     title,
     price,
@@ -29,7 +38,8 @@ describe('ProductsComponent', () => {
     product(4, 'Tort de fructe', 90, 'sweets'),
   ];
 
-  const titles = (): string[] => component.visibleProducts().map((p) => p.title);
+  const titles = (): string[] =>
+    component.visibleProducts().map((p) => p.title);
 
   const queryParams = (): Record<string, string> =>
     router.parseUrl(router.url).queryParams as Record<string, string>;
@@ -42,7 +52,8 @@ describe('ProductsComponent', () => {
   const element = (selector: string): HTMLElement =>
     harness.routeNativeElement!.querySelector(selector) as HTMLElement;
 
-  const searchInput = (): HTMLInputElement => element('input[type="search"]') as HTMLInputElement;
+  const searchInput = (): HTMLInputElement =>
+    element('input[type="search"]') as HTMLInputElement;
 
   const typeInSearch = async (text: string): Promise<void> => {
     const input = searchInput();
@@ -53,9 +64,9 @@ describe('ProductsComponent', () => {
   };
 
   const clickLink = async (text: string): Promise<void> => {
-    const link = Array.from(harness.routeNativeElement!.querySelectorAll('a')).find(
-      (a) => a.textContent?.trim() === text,
-    );
+    const link = Array.from(
+      harness.routeNativeElement!.querySelectorAll('a'),
+    ).find((a) => a.textContent?.trim() === text);
     link!.click();
     await harness.fixture.whenStable();
   };
@@ -63,11 +74,20 @@ describe('ProductsComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([{ path: 'products', component: ProductsComponent }], withComponentInputBinding()),
-        { provide: FetchProductsService, useValue: { fetchProducts: () => of(products) } },
+        provideRouter(
+          [{ path: 'products', component: ProductsComponent }],
+          withComponentInputBinding(),
+        ),
+        {
+          provide: FetchProductsService,
+          useValue: { fetchProducts: () => of(products) },
+        },
         {
           provide: CartService,
-          useValue: { totalNumberOfProducts: signal(0), addProductToCart: vi.fn() },
+          useValue: {
+            totalNumberOfProducts: signal(0),
+            addProductToCart: vi.fn(),
+          },
         },
       ],
     });
@@ -139,7 +159,11 @@ describe('ProductsComponent', () => {
     it('sets the category and keeps the other params', async () => {
       await navigate('/products?q=tort&sort=price-asc');
       await clickLink('Torturi');
-      expect(queryParams()).toEqual({ q: 'tort', sort: 'price-asc', category: 'sweets' });
+      expect(queryParams()).toEqual({
+        q: 'tort',
+        sort: 'price-asc',
+        category: 'sweets',
+      });
     });
 
     it('removes the category param when "Toate" is chosen', async () => {
@@ -175,7 +199,10 @@ describe('ProductsComponent', () => {
       await typeInSearch('tort');
       expect(navigateSpy).toHaveBeenCalledWith(
         [],
-        expect.objectContaining({ replaceUrl: true, queryParams: { q: 'tort' } }),
+        expect.objectContaining({
+          replaceUrl: true,
+          queryParams: { q: 'tort' },
+        }),
       );
     });
   });
@@ -201,7 +228,9 @@ describe('ProductsComponent', () => {
       await navigate('/products');
 
       const alert = harness.routeNativeElement!.querySelector('[role="alert"]');
-      expect(alert?.textContent).toContain('Produsele nu au putut fi încărcate');
+      expect(alert?.textContent).toContain(
+        'Produsele nu au putut fi încărcate',
+      );
       expect(component.visibleProducts()).toEqual([]);
     });
   });

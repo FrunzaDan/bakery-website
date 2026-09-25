@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
-import { SEOService, SITE_URL } from './seo.service';
+import { SeoService, SITE_URL } from './seo.service';
 
-describe('SEOService', () => {
-  let service: SEOService;
+describe('SeoService', () => {
+  let service: SeoService;
 
   const metaContent = (selector: string) =>
     document.head.querySelector(`meta[${selector}]`)?.getAttribute('content');
-  const canonicalLinks = () => document.head.querySelectorAll('link[rel="canonical"]');
+  const canonicalLinks = () =>
+    document.head.querySelectorAll('link[rel="canonical"]');
 
   beforeEach(() => {
     document.head
@@ -15,18 +16,25 @@ describe('SEOService', () => {
       .forEach((element) => element.remove());
 
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SEOService);
+    service = TestBed.inject(SeoService);
   });
 
   it('sets the description and the social tags from the page title', () => {
     TestBed.inject(Title).setTitle('Produse - TestBakery Sibiu');
-    service.updateMetaTags({ description: 'Toate produsele', path: '/products' });
+    service.updateMetaTags({
+      description: 'Toate produsele',
+      path: '/products',
+    });
 
     expect(metaContent('name="description"')).toBe('Toate produsele');
-    expect(metaContent('property="og:title"')).toBe('Produse - TestBakery Sibiu');
+    expect(metaContent('property="og:title"')).toBe(
+      'Produse - TestBakery Sibiu',
+    );
     expect(metaContent('property="og:description"')).toBe('Toate produsele');
     expect(metaContent('property="og:url"')).toBe(`${SITE_URL}/products`);
-    expect(metaContent('name="twitter:title"')).toBe('Produse - TestBakery Sibiu');
+    expect(metaContent('name="twitter:title"')).toBe(
+      'Produse - TestBakery Sibiu',
+    );
   });
 
   it('keeps every page out of search engines while the site is a demo', () => {
@@ -44,10 +52,18 @@ describe('SEOService', () => {
   });
 
   it('sets a preview image only for pages that have one', () => {
-    service.updateMetaTags({ description: 'Pâine', path: '/products/1', image: '/assets/a.webp' });
+    service.updateMetaTags({
+      description: 'Pâine',
+      path: '/products/1',
+      image: '/assets/a.webp',
+    });
 
-    expect(metaContent('property="og:image"')).toBe(`${SITE_URL}/assets/a.webp`);
-    expect(metaContent('name="twitter:image"')).toBe(`${SITE_URL}/assets/a.webp`);
+    expect(metaContent('property="og:image"')).toBe(
+      `${SITE_URL}/assets/a.webp`,
+    );
+    expect(metaContent('name="twitter:image"')).toBe(
+      `${SITE_URL}/assets/a.webp`,
+    );
 
     service.updateMetaTags({ description: 'Contact', path: '/contact' });
 

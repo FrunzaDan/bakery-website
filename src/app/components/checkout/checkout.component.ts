@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormField, FormRoot, form } from '@angular/forms/signals';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -9,10 +16,14 @@ import {
 import { CartService } from '../../services/cart.service';
 import { NewOrder, OrderService } from '../../services/order.service';
 import { SessionStorageService } from '../../services/session-storage.service';
-import { SEOService } from '../../services/seo.service';
+import { SeoService } from '../../services/seo.service';
 import { reportInvalidFields } from '../../shared/invalid-summary';
 import { RonPipe } from '../../shared/ron.pipe';
-import { checkoutFormSchema, emptyCheckoutForm, toOrderCustomer } from './checkout-form';
+import {
+  checkoutFormSchema,
+  emptyCheckoutForm,
+  toOrderCustomer,
+} from './checkout-form';
 
 const PAYMENT_METHOD_HINTS = {
   cash: 'Plătești curierului, cash, când primești comanda.',
@@ -27,7 +38,7 @@ const PAYMENT_METHOD_HINTS = {
   styleUrl: './checkout.component.css',
 })
 export class CheckoutComponent implements OnInit {
-  private readonly seoService = inject(SEOService);
+  private readonly seoService = inject(SeoService);
   private readonly cartService = inject(CartService);
   private readonly orderService = inject(OrderService);
   private readonly sessionStorageService = inject(SessionStorageService);
@@ -65,7 +76,9 @@ export class CheckoutComponent implements OnInit {
       action: async () => {
         const lines = this.cartService.cartLines();
         if (lines.length === 0) {
-          this.invalidSummary.set('Coșul tău este gol. Adaugă produse înainte de a plasa comanda.');
+          this.invalidSummary.set(
+            'Coșul tău este gol. Adaugă produse înainte de a plasa comanda.',
+          );
           return;
         }
         this.invalidSummary.set(null);
@@ -109,7 +122,9 @@ export class CheckoutComponent implements OnInit {
       await this.router.navigate(['/order', placedOrder.id]);
     } catch (error: unknown) {
       console.error('Error placing the order:', error);
-      this.placeOrderError.set('Comanda nu a putut fi plasată. Te rugăm să încerci din nou.');
+      this.placeOrderError.set(
+        'Comanda nu a putut fi plasată. Te rugăm să încerci din nou.',
+      );
     } finally {
       this.isPlacingOrder.set(false);
     }

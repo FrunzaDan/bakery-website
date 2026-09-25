@@ -9,7 +9,14 @@ import { CartComponent } from './cart.component';
 
 describe('CartComponent', () => {
   const croissant: CartLine = {
-    product: { id: 1, title: 'Croissant', price: 5, description: '', image: '', category: 'pastry' },
+    product: {
+      id: 1,
+      title: 'Croissant',
+      price: 5,
+      description: '',
+      image: '',
+      category: 'pastry',
+    },
     quantity: 2,
   };
 
@@ -41,7 +48,10 @@ describe('CartComponent', () => {
             removeAllCart,
           },
         },
-        { provide: ProductCatalogService, useValue: { isLoading, loadError, reload } },
+        {
+          provide: ProductCatalogService,
+          useValue: { isLoading, loadError, reload },
+        },
       ],
     });
     const fixture = TestBed.createComponent(CartComponent);

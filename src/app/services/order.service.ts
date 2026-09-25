@@ -45,21 +45,21 @@ export class OrderService {
 
     const existingOrders = this.localStorageService.getOrders();
     const placedAt = new Date();
-    const lines = newOrder.lines.map(
-      ({ product, quantity }): OrderLine => ({
-        productId: product.id,
-        title: product.title,
-        unitPrice: product.price,
-        quantity,
-        lineTotal: roundToBani(product.price * quantity),
-      }),
-    );
+    const lines = newOrder.lines.map(({ product, quantity }): OrderLine => ({
+      productId: product.id,
+      title: product.title,
+      unitPrice: product.price,
+      quantity,
+      lineTotal: roundToBani(product.price * quantity),
+    }));
     const order: Order = {
       id: this.newOrderId(placedAt, existingOrders),
       placedAt: placedAt.toISOString(),
       lines,
       totalQuantity: lines.reduce((total, line) => total + line.quantity, 0),
-      totalPrice: roundToBani(lines.reduce((total, line) => total + line.lineTotal, 0)),
+      totalPrice: roundToBani(
+        lines.reduce((total, line) => total + line.lineTotal, 0),
+      ),
       customer: newOrder.customer,
       paymentMethod: newOrder.paymentMethod,
     };
@@ -69,14 +69,19 @@ export class OrderService {
   }
 
   getOrder(id: string): Order | undefined {
-    return this.localStorageService.getOrders().find((order) => order.id === id);
+    return this.localStorageService
+      .getOrders()
+      .find((order) => order.id === id);
   }
 
   private newOrderId(placedAt: Date, existingOrders: readonly Order[]): string {
     const takenIds = new Set(existingOrders.map((order) => order.id));
     let id: string;
     do {
-      const suffix = String(Math.floor(Math.random() * 10_000)).padStart(4, '0');
+      const suffix = String(Math.floor(Math.random() * 10_000)).padStart(
+        4,
+        '0',
+      );
       id = `TB-${datePart(placedAt)}-${suffix}`;
     } while (takenIds.has(id));
     return id;

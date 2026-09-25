@@ -4,7 +4,7 @@ import { Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
 import { ProductCatalogService } from '../../services/product-catalog.service';
-import { SEOService } from '../../services/seo.service';
+import { SeoService } from '../../services/seo.service';
 import { QuantityPickerComponent } from '../../shared/quantity-picker/quantity-picker.component';
 import { RonPipe } from '../../shared/ron.pipe';
 
@@ -17,7 +17,7 @@ const SKELETON_LINE_COUNT = 3;
   styleUrl: './cart.component.css',
 })
 export class CartComponent implements OnInit {
-  private readonly seoService = inject(SEOService);
+  private readonly seoService = inject(SeoService);
   private readonly cartService = inject(CartService);
   private readonly notificationService = inject(NotificationService);
   private readonly catalog = inject(ProductCatalogService);
@@ -28,7 +28,10 @@ export class CartComponent implements OnInit {
   readonly hasItems = this.cartService.hasItems;
   readonly isLoadingProducts = this.catalog.isLoading;
   readonly loadError = this.catalog.loadError;
-  readonly skeletonLines = Array.from({ length: SKELETON_LINE_COUNT }, (_, index) => index);
+  readonly skeletonLines = Array.from(
+    { length: SKELETON_LINE_COUNT },
+    (_, index) => index,
+  );
 
   reloadProducts(): void {
     this.catalog.reload();

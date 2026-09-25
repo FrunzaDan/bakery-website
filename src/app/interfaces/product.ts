@@ -1,8 +1,15 @@
-export const PRODUCT_CATEGORIES = ['bakeries', 'pastry', 'sweets', 'basic_products'] as const;
+export const PRODUCT_CATEGORIES = [
+  'bakeries',
+  'pastry',
+  'sweets',
+  'basic_products',
+] as const;
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 
-export const PRODUCT_CATEGORY_LABELS: Readonly<Record<ProductCategory, string>> = {
+export const PRODUCT_CATEGORY_LABELS: Readonly<
+  Record<ProductCategory, string>
+> = {
   bakeries: 'Cofetărie',
   pastry: 'Patiserie',
   sweets: 'Torturi',

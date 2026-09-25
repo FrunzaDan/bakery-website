@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { get, getDatabase, ref } from 'firebase/database';
-import { from } from 'rxjs/internal/observable/from';
-import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/internal/observable/of';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { map } from 'rxjs/internal/operators/map';
-import { switchMap } from 'rxjs/internal/operators/switchMap';
-import { tap } from 'rxjs/internal/operators/tap';
-import { timeout } from 'rxjs/internal/operators/timeout';
+import {
+  catchError,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  timeout,
+} from 'rxjs';
 import { Product } from '../interfaces/product';
 import { firebaseApp } from '../firebase';
 import { parseProducts } from '../shared/parsers';

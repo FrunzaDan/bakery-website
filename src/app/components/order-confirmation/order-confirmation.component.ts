@@ -1,10 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { afterRenderEffect, Component, inject, input, OnInit, signal } from '@angular/core';
+import {
+  afterRenderEffect,
+  Component,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PAYMENT_METHOD_LABELS } from '../../interfaces/checkout-form';
 import { Order } from '../../interfaces/order';
 import { OrderService } from '../../services/order.service';
-import { SEOService } from '../../services/seo.service';
+import { SeoService } from '../../services/seo.service';
 import { RonPipe } from '../../shared/ron.pipe';
 
 /** Demo bank details for paying by transfer; the IBAN is the standard Romanian example. */
@@ -23,7 +30,7 @@ export const BANK_DETAILS = {
   styleUrl: './order-confirmation.component.css',
 })
 export class OrderConfirmationComponent implements OnInit {
-  private readonly seoService = inject(SEOService);
+  private readonly seoService = inject(SeoService);
   private readonly orderService = inject(OrderService);
 
   readonly id = input.required<string>();

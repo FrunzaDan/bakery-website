@@ -17,7 +17,9 @@ export const contactFormSchema = schema<ContactMeForm>((p) => {
   email(p.email, { message: 'Un E-mail valid este necesar.' });
 
   required(p.phone, { message: 'Numărul de telefon este necesar.' });
-  pattern(p.phone, PHONE_PATTERN, { message: 'Un număr de telefon mobil valid este necesar.' });
+  pattern(p.phone, PHONE_PATTERN, {
+    message: 'Un număr de telefon mobil valid este necesar.',
+  });
 
   required(p.message, { message: 'Un mesaj este necesar.' });
   pattern(p.message, NOT_BLANK, { message: 'Un mesaj este necesar.' });

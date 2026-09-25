@@ -20,7 +20,7 @@ import {
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
 import { ProductCatalogService } from '../../services/product-catalog.service';
-import { SEOService } from '../../services/seo.service';
+import { SeoService } from '../../services/seo.service';
 import { RonPipe } from '../../shared/ron.pipe';
 
 type SortOption = 'title-asc' | 'title-desc' | 'price-asc' | 'price-desc';
@@ -55,12 +55,13 @@ const SKELETON_CARD_COUNT = 8;
 /** Cards past this index appear together, so a long list doesn't take seconds to show. */
 const MAX_STAGGER = 12;
 
-const SORT_COMPARATORS: Record<SortOption, (a: Product, b: Product) => number> = {
-  'title-asc': (a, b) => a.title.localeCompare(b.title, 'ro'),
-  'title-desc': (a, b) => b.title.localeCompare(a.title, 'ro'),
-  'price-asc': (a, b) => a.price - b.price,
-  'price-desc': (a, b) => b.price - a.price,
-};
+const SORT_COMPARATORS: Record<SortOption, (a: Product, b: Product) => number> =
+  {
+    'title-asc': (a, b) => a.title.localeCompare(b.title, 'ro'),
+    'title-desc': (a, b) => b.title.localeCompare(a.title, 'ro'),
+    'price-asc': (a, b) => a.price - b.price,
+    'price-desc': (a, b) => b.price - a.price,
+  };
 
 /** Lowercases and strips diacritics, so "paine" finds "Pâine" and "ș"/"ş" match. */
 function toSearchKey(text: string): string {
@@ -72,7 +73,9 @@ function toCategory(value: string | undefined): ProductCategory | undefined {
 }
 
 function toSortOption(value: string | undefined): SortOption | undefined {
-  return value !== undefined && value in SORT_COMPARATORS ? (value as SortOption) : undefined;
+  return value !== undefined && value in SORT_COMPARATORS
+    ? (value as SortOption)
+    : undefined;
 }
 
 /**
@@ -88,7 +91,7 @@ function toSortOption(value: string | undefined): SortOption | undefined {
   styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
-  private readonly seoService = inject(SEOService);
+  private readonly seoService = inject(SeoService);
   private readonly catalog = inject(ProductCatalogService);
   private readonly cartService = inject(CartService);
   private readonly notificationService = inject(NotificationService);
@@ -97,7 +100,10 @@ export class ProductsComponent implements OnInit {
 
   readonly categories = CATEGORIES;
   readonly sortChoices = SORT_CHOICES;
-  readonly skeletonCards = Array.from({ length: SKELETON_CARD_COUNT }, (_, index) => index);
+  readonly skeletonCards = Array.from(
+    { length: SKELETON_CARD_COUNT },
+    (_, index) => index,
+  );
   readonly maxStagger = MAX_STAGGER;
 
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
@@ -105,10 +111,15 @@ export class ProductsComponent implements OnInit {
   readonly isLoadingProducts = this.catalog.isLoading;
   readonly loadError = this.catalog.loadError;
 
-  readonly category = input<ProductCategory | undefined, string | undefined>(undefined, {
-    transform: toCategory,
+  readonly category = input<ProductCategory | undefined, string | undefined>(
+    undefined,
+    {
+      transform: toCategory,
+    },
+  );
+  readonly q = input('', {
+    transform: (value: string | undefined) => value?.trim() ?? '',
   });
-  readonly q = input('', { transform: (value: string | undefined) => value?.trim() ?? '' });
   readonly sort = input<SortOption | undefined, string | undefined>(undefined, {
     transform: toSortOption,
   });
@@ -124,7 +135,9 @@ export class ProductsComponent implements OnInit {
   private readonly searchModel = linkedSignal<string, { term: string }>({
     source: this.q,
     computation: (q, previous) =>
-      previous && previous.value.term.trim() === q ? previous.value : { term: q },
+      previous && previous.value.term.trim() === q
+        ? previous.value
+        : { term: q },
   });
   readonly searchForm = form(this.searchModel, (path) => {
     debounce(path.term, SEARCH_DEBOUNCE_MS);
@@ -135,13 +148,17 @@ export class ProductsComponent implements OnInit {
     const term = toSearchKey(this.q());
     const sortOption = this.sort();
 
-    const filtered = this.catalog.products().filter(
-      (product) =>
-        (!category || product.category === category) &&
-        (!term || toSearchKey(product.title).includes(term)),
-    );
+    const filtered = this.catalog
+      .products()
+      .filter(
+        (product) =>
+          (!category || product.category === category) &&
+          (!term || toSearchKey(product.title).includes(term)),
+      );
 
-    return sortOption ? [...filtered].sort(SORT_COMPARATORS[sortOption]) : filtered;
+    return sortOption
+      ? [...filtered].sort(SORT_COMPARATORS[sortOption])
+      : filtered;
   });
 
   readonly resultsAnnouncement = computed(() => {
@@ -155,7 +172,9 @@ export class ProductsComponent implements OnInit {
     effect(() => {
       const term = this.searchModel().term.trim();
       if (term !== untracked(this.q)) {
-        untracked(() => this.updateQueryParams({ q: term || null }, { replaceUrl: true }));
+        untracked(() =>
+          this.updateQueryParams({ q: term || null }, { replaceUrl: true }),
+        );
       }
     });
   }

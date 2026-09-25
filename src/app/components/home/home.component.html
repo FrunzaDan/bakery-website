@@ -4,7 +4,13 @@
     <div
       class="col px-4 d-flex justify-content-center align-items-center text-center"
     >
-      <p class="h1 text-color-red"><span aria-hidden="true">🚧 </span>Acest site este în construcție!<span aria-hidden="true"> 🚧</span></p>
+      <p class="h1 text-color-red">
+        <span aria-hidden="true">🚧 </span>Acest site este în construcție!<span
+          aria-hidden="true"
+        >
+          🚧</span
+        >
+      </p>
     </div>
   </div>
   <div class="row px-4">
@@ -21,13 +27,20 @@
   </div>
   <div class="row p-4">
     @for (card of categoryCards; track card.category) {
-      <div class="col-lg-3 col-sm-6 p-4 enter-rise" [style.--stagger]="$index + 2">
+      <div
+        class="col-lg-3 col-sm-6 p-4 enter-rise"
+        [style.--stagger]="$index + 2"
+      >
         <a
           class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-decoration-none"
           routerLink="/products"
           [queryParams]="{ category: card.category }"
         >
-          <img [src]="card.image" class="img-fluid" [alt]="'Categorie ' + card.label" />
+          <img
+            [src]="card.image"
+            class="img-fluid"
+            [alt]="'Categorie ' + card.label"
+          />
           {{ card.label }}
         </a>
       </div>

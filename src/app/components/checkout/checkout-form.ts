@@ -44,10 +44,13 @@ export const checkoutFormSchema = schema<CheckoutForm>((p) => {
   email(p.email, { message: 'Un E-mail valid este necesar.' });
 
   required(p.phone, { message: 'Numărul de telefon este necesar.' });
-  pattern(p.phone, PHONE_PATTERN, { message: 'Un număr de telefon mobil valid este necesar.' });
+  pattern(p.phone, PHONE_PATTERN, {
+    message: 'Un număr de telefon mobil valid este necesar.',
+  });
 
   // `required` treats an unticked checkbox (false) as missing.
   required(p.acceptTerms, {
-    message: 'Pentru a plasa comanda trebuie să accepți termenii și condițiile.',
+    message:
+      'Pentru a plasa comanda trebuie să accepți termenii și condițiile.',
   });
 });

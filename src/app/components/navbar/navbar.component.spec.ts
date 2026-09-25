@@ -19,7 +19,8 @@ describe('NavbarComponent', () => {
     return fixture.nativeElement as HTMLElement;
   };
 
-  const cartLink = (el: HTMLElement) => el.querySelector<HTMLAnchorElement>('a[href="/cart"]');
+  const cartLink = (el: HTMLElement) =>
+    el.querySelector<HTMLAnchorElement>('a[href="/cart"]');
 
   beforeEach(() => totalNumberOfProducts.set(0));
 

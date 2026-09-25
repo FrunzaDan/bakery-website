@@ -20,7 +20,14 @@ describe('OrderService', () => {
   };
 
   const line = (id: number, price: number, quantity: number): CartLine => ({
-    product: { id, title: `Produs ${id}`, price, description: '', image: '', category: 'pastry' },
+    product: {
+      id,
+      title: `Produs ${id}`,
+      price,
+      description: '',
+      image: '',
+      category: 'pastry',
+    },
     quantity,
   });
 
@@ -74,11 +81,25 @@ describe('OrderService', () => {
     expect(order.id).toMatch(/^TB-20260925-\d{4}$/);
     // Stamped when the backend accepts it, i.e. after the latency.
     expect(order.placedAt).toBe(
-      new Date(new Date(2026, 8, 25, 10, 30).getTime() + SIMULATED_LATENCY_MS).toISOString(),
+      new Date(
+        new Date(2026, 8, 25, 10, 30).getTime() + SIMULATED_LATENCY_MS,
+      ).toISOString(),
     );
     expect(order.lines).toEqual([
-      { productId: 1, title: 'Produs 1', unitPrice: 8.99, quantity: 3, lineTotal: 26.97 },
-      { productId: 2, title: 'Produs 2', unitPrice: 12.5, quantity: 1, lineTotal: 12.5 },
+      {
+        productId: 1,
+        title: 'Produs 1',
+        unitPrice: 8.99,
+        quantity: 3,
+        lineTotal: 26.97,
+      },
+      {
+        productId: 2,
+        title: 'Produs 2',
+        unitPrice: 12.5,
+        quantity: 1,
+        lineTotal: 12.5,
+      },
     ]);
     expect(order.totalQuantity).toBe(4);
     expect(order.totalPrice).toBe(39.47);
@@ -89,14 +110,20 @@ describe('OrderService', () => {
 
   it('keeps earlier orders and never reuses an id', async () => {
     const random = vi.spyOn(Math, 'random');
-    random.mockReturnValueOnce(0.1234).mockReturnValueOnce(0.1234).mockReturnValueOnce(0.5678);
+    random
+      .mockReturnValueOnce(0.1234)
+      .mockReturnValueOnce(0.1234)
+      .mockReturnValueOnce(0.5678);
 
     const first = await place();
     const second = await place();
 
     expect(first.id).toBe('TB-20260925-1234');
     expect(second.id).toBe('TB-20260925-5678');
-    expect(storedOrders.map((order) => order.id)).toEqual([first.id, second.id]);
+    expect(storedOrders.map((order) => order.id)).toEqual([
+      first.id,
+      second.id,
+    ]);
   });
 
   it('finds a saved order by id', async () => {
@@ -107,6 +134,8 @@ describe('OrderService', () => {
   });
 
   it('refuses an order without products', async () => {
-    await expect(service.placeOrder({ ...newOrder, lines: [] })).rejects.toThrow();
+    await expect(
+      service.placeOrder({ ...newOrder, lines: [] }),
+    ).rejects.toThrow();
   });
 });

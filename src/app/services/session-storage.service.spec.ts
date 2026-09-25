@@ -35,7 +35,10 @@ describe('SessionStorageService', () => {
 
   it('drops stored products that are malformed', () => {
     vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-    sessionStorage.setItem('productsSession', JSON.stringify([product, { id: 'x' }]));
+    sessionStorage.setItem(
+      'productsSession',
+      JSON.stringify([product, { id: 'x' }]),
+    );
 
     expect(service.getProductsSession()).toEqual([product]);
   });

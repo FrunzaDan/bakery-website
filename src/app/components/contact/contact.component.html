@@ -7,10 +7,14 @@
         <div class="card-body">
           <form [formRoot]="contactForm" id="contactForm">
             @if (sendError(); as error) {
-              <div class="alert alert-danger enter-rise" role="alert">{{ error }}</div>
+              <div class="alert alert-danger enter-rise" role="alert">
+                {{ error }}
+              </div>
             }
             @if (invalidSummary(); as summary) {
-              <div class="alert alert-danger enter-rise" role="alert">{{ summary }}</div>
+              <div class="alert alert-danger enter-rise" role="alert">
+                {{ summary }}
+              </div>
             }
             @let name = contactForm.name();
             @let nameError = name.touched() && name.invalid();
@@ -28,7 +32,9 @@
                 [attr.aria-describedby]="nameError ? 'name-error' : null"
               />
               @if (nameError) {
-                <div class="invalid-feedback" id="name-error">{{ name.errors()[0].message }}</div>
+                <div class="invalid-feedback" id="name-error">
+                  {{ name.errors()[0].message }}
+                </div>
               }
             </div>
             @let email = contactForm.email();
@@ -47,7 +53,9 @@
                 [attr.aria-describedby]="emailError ? 'email-error' : null"
               />
               @if (emailError) {
-                <div class="invalid-feedback" id="email-error">{{ email.errors()[0].message }}</div>
+                <div class="invalid-feedback" id="email-error">
+                  {{ email.errors()[0].message }}
+                </div>
               }
             </div>
             @let phone = contactForm.phone();
@@ -66,7 +74,9 @@
                 [attr.aria-describedby]="phoneError ? 'phone-error' : null"
               />
               @if (phoneError) {
-                <div class="invalid-feedback" id="phone-error">{{ phone.errors()[0].message }}</div>
+                <div class="invalid-feedback" id="phone-error">
+                  {{ phone.errors()[0].message }}
+                </div>
               }
             </div>
             @let message = contactForm.message();
@@ -84,11 +94,17 @@
                 style="height: 10rem"
               ></textarea>
               @if (messageError) {
-                <div class="invalid-feedback" id="message-error">{{ message.errors()[0].message }}</div>
+                <div class="invalid-feedback" id="message-error">
+                  {{ message.errors()[0].message }}
+                </div>
               }
             </div>
             <div class="d-grid">
-              <button class="btn btn-primary" type="submit" [disabled]="contactForm().submitting()">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                [disabled]="contactForm().submitting()"
+              >
                 Trimite
               </button>
             </div>
@@ -128,7 +144,9 @@
               class="height-100"
               target="_blank"
               rel="nofollow noopener"
-              >facebook.com/test.test<span class="visually-hidden"> (se deschide într-o filă nouă)</span></a
+              >facebook.com/test.test<span class="visually-hidden">
+                (se deschide într-o filă nouă)</span
+              ></a
             >
           </p>
         </div>

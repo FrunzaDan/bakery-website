@@ -40,14 +40,21 @@ describe('ProductDetailComponent', () => {
 
   let harness: RouterTestingHarness;
 
-  const open = async (url: string): Promise<{ el: HTMLElement; component: ProductDetailComponent }> => {
+  const open = async (
+    url: string,
+  ): Promise<{ el: HTMLElement; component: ProductDetailComponent }> => {
     const component = await harness.navigateByUrl(url, ProductDetailComponent);
     await harness.fixture.whenStable();
     return { el: harness.routeNativeElement!, component };
   };
 
   beforeEach(async () => {
-    productsById.set(new Map([[croissant.id, croissant], [baguette.id, baguette]]));
+    productsById.set(
+      new Map([
+        [croissant.id, croissant],
+        [baguette.id, baguette],
+      ]),
+    );
     isLoading.set(false);
     loadError.set(null);
     cartLines.set([]);
@@ -56,9 +63,18 @@ describe('ProductDetailComponent', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([{ path: 'products/:id', component: ProductDetailComponent }], withComponentInputBinding()),
-        { provide: ProductCatalogService, useValue: { productsById, isLoading, loadError, reload: vi.fn() } },
-        { provide: CartService, useValue: { cartLines, addProductToCart, setProductQuantity } },
+        provideRouter(
+          [{ path: 'products/:id', component: ProductDetailComponent }],
+          withComponentInputBinding(),
+        ),
+        {
+          provide: ProductCatalogService,
+          useValue: { productsById, isLoading, loadError, reload: vi.fn() },
+        },
+        {
+          provide: CartService,
+          useValue: { cartLines, addProductToCart, setProductQuantity },
+        },
       ],
     });
     harness = await RouterTestingHarness.create();
@@ -72,14 +88,20 @@ describe('ProductDetailComponent', () => {
     expect(el.textContent).toContain('8,99 RON');
     expect(el.textContent).toContain('făină de grâu, unt, lapte');
     expect(el.textContent).toContain('Conține: gluten, lapte.');
-    expect(TestBed.inject(Title).getTitle()).toBe('Croissant cu Unt - TestBakery Sibiu');
+    expect(TestBed.inject(Title).getTitle()).toBe(
+      'Croissant cu Unt - TestBakery Sibiu',
+    );
   });
 
   it('says where to ask when the food information is missing', async () => {
     const { el } = await open('/products/10');
 
-    expect(el.textContent).toContain('Lista de ingrediente este disponibilă la cerere');
-    expect(el.textContent).toContain('Informațiile despre alergeni sunt disponibile la cerere');
+    expect(el.textContent).toContain(
+      'Lista de ingrediente este disponibilă la cerere',
+    );
+    expect(el.textContent).toContain(
+      'Informațiile despre alergeni sunt disponibile la cerere',
+    );
   });
 
   it('adds the chosen quantity to the cart and starts again from 1', async () => {
@@ -106,7 +128,9 @@ describe('ProductDetailComponent', () => {
     const input = el.querySelector<HTMLInputElement>('input[type="number"]')!;
     expect(input.value).toBe('3');
     expect(el.textContent).toContain('26,97 RON');
-    expect(el.querySelector('a.btn[href="/cart"]')?.textContent).toContain('Vezi coșul');
+    expect(el.querySelector('a.btn[href="/cart"]')?.textContent).toContain(
+      'Vezi coșul',
+    );
     expect(el.textContent).not.toContain('Adaugă în coș');
 
     input.value = '5';
@@ -122,9 +146,9 @@ describe('ProductDetailComponent', () => {
 
     component.addToCart();
 
-    expect(TestBed.inject(NotificationService).notifications()[0].message).toContain(
-      'cantitatea maximă de 99 buc.',
-    );
+    expect(
+      TestBed.inject(NotificationService).notifications()[0].message,
+    ).toContain('cantitatea maximă de 99 buc.');
   });
 
   it('shows a skeleton while the catalog loads', async () => {
@@ -134,11 +158,17 @@ describe('ProductDetailComponent', () => {
     const { el } = await open('/products/2');
 
     expect(el.querySelector('.skeleton')).not.toBeNull();
-    expect(el.querySelector('[role="status"]')?.textContent).toContain('Se încarcă produsul');
+    expect(el.querySelector('[role="status"]')?.textContent).toContain(
+      'Se încarcă produsul',
+    );
   });
 
   it('says the product was not found for an unknown or non-numeric id', async () => {
-    expect((await open('/products/999')).el.textContent).toContain('Produsul nu a fost găsit');
-    expect((await open('/products/abc')).el.textContent).toContain('Produsul nu a fost găsit');
+    expect((await open('/products/999')).el.textContent).toContain(
+      'Produsul nu a fost găsit',
+    );
+    expect((await open('/products/abc')).el.textContent).toContain(
+      'Produsul nu a fost găsit',
+    );
   });
 });

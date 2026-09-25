@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { SEOService } from '../../services/seo.service';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
-    selector: 'app-delivery-info',
-    imports: [],
-    templateUrl: './delivery-info.component.html',
-    styleUrl: './delivery-info.component.css',
+  selector: 'app-delivery-info',
+  imports: [],
+  templateUrl: './delivery-info.component.html',
+  styleUrl: './delivery-info.component.css',
 })
 export class DeliveryInfoComponent implements OnInit {
-  private readonly seoService = inject(SEOService);
+  private readonly seoService = inject(SeoService);
 
   ngOnInit(): void {
     this.seoService.updateMetaTags({

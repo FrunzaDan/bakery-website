@@ -18,7 +18,9 @@ describe('ContactComponent', () => {
   };
 
   const submitForm = async (): Promise<void> => {
-    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
+    fixture.nativeElement
+      .querySelector('form')
+      .dispatchEvent(new Event('submit'));
     await fixture.whenStable();
   };
 
@@ -27,7 +29,10 @@ describe('ContactComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ContactComponent],
-      providers: [provideRouter([]), { provide: SendEmailService, useValue: sendEmailServiceSpy }],
+      providers: [
+        provideRouter([]),
+        { provide: SendEmailService, useValue: sendEmailServiceSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContactComponent);
@@ -41,17 +46,25 @@ describe('ContactComponent', () => {
 
   it('requires every field', () => {
     expect(component.contactForm().invalid()).toBe(true);
-    expect(component.contactForm.name().errors()[0].message).toBe('Numele este necesar.');
-    expect(component.contactForm.email().errors()[0].message).toBe('E-mail-ul este necesar.');
+    expect(component.contactForm.name().errors()[0].message).toBe(
+      'Numele este necesar.',
+    );
+    expect(component.contactForm.email().errors()[0].message).toBe(
+      'E-mail-ul este necesar.',
+    );
     expect(component.contactForm.phone().errors()[0].message).toBe(
       'Numărul de telefon este necesar.',
     );
-    expect(component.contactForm.message().errors()[0].message).toBe('Un mesaj este necesar.');
+    expect(component.contactForm.message().errors()[0].message).toBe(
+      'Un mesaj este necesar.',
+    );
   });
 
   it('flags an email without an @ as invalid', () => {
     component.model.set({ ...validForm, email: 'not-an-email' });
-    expect(component.contactForm.email().errors()[0].message).toBe('Un E-mail valid este necesar.');
+    expect(component.contactForm.email().errors()[0].message).toBe(
+      'Un E-mail valid este necesar.',
+    );
   });
 
   it('accepts a well-formed email', () => {
@@ -67,13 +80,17 @@ describe('ContactComponent', () => {
     },
   );
 
-  it.each(['123456789', '123456789012'])('accepts a 9-to-12-digit phone number: %s', (phone) => {
-    component.model.set({ ...validForm, phone });
-    expect(component.contactForm.phone().valid()).toBe(true);
-  });
+  it.each(['123456789', '123456789012'])(
+    'accepts a 9-to-12-digit phone number: %s',
+    (phone) => {
+      component.model.set({ ...validForm, phone });
+      expect(component.contactForm.phone().valid()).toBe(true);
+    },
+  );
 
   it('writes what is typed into the model', async () => {
-    const input: HTMLInputElement = fixture.nativeElement.querySelector('#name');
+    const input: HTMLInputElement =
+      fixture.nativeElement.querySelector('#name');
     input.value = 'Jane';
     input.dispatchEvent(new Event('input'));
     await fixture.whenStable();
@@ -97,12 +114,17 @@ describe('ContactComponent', () => {
     await submitForm();
 
     expect(sendEmailServiceSpy.sendEmailJS).toHaveBeenCalledWith(validForm);
-    expect(component.model()).toEqual({ name: '', email: '', phone: '', message: '' });
+    expect(component.model()).toEqual({
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+    });
     expect(component.contactForm().touched()).toBe(false);
     expect(component.sendError()).toBeNull();
-    expect(TestBed.inject(NotificationService).notifications()[0]?.message).toBe(
-      'Mesajul a fost trimis!',
-    );
+    expect(
+      TestBed.inject(NotificationService).notifications()[0]?.message,
+    ).toBe('Mesajul a fost trimis!');
   });
 
   it.each(['0722111222', '0722 111 222', '0722-111-222', '+40 722 111 222'])(
@@ -129,9 +151,11 @@ describe('ContactComponent', () => {
     await submitForm();
 
     expect(component.model()).toEqual(validForm);
-    expect(component.sendError()).toBe('Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.');
-    expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain(
-      'Mesajul nu a putut fi trimis',
+    expect(component.sendError()).toBe(
+      'Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.',
     );
+    expect(
+      fixture.nativeElement.querySelector('[role="alert"]')?.textContent,
+    ).toContain('Mesajul nu a putut fi trimis');
   });
 });

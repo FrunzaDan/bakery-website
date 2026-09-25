@@ -10,7 +10,10 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideRouter([]),
-        { provide: FetchProductsService, useValue: { fetchProducts: () => of([]) } },
+        {
+          provide: FetchProductsService,
+          useValue: { fetchProducts: () => of([]) },
+        },
       ],
     });
   });
@@ -34,8 +37,12 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
 
-    const backgrounds = fixture.nativeElement.querySelectorAll('[class^="background-image"]');
+    const backgrounds = fixture.nativeElement.querySelectorAll(
+      '[class^="background-image"]',
+    );
     expect(backgrounds.length).toBe(2);
-    backgrounds.forEach((image: HTMLImageElement) => expect(image.getAttribute('alt')).toBe(''));
+    backgrounds.forEach((image: HTMLImageElement) =>
+      expect(image.getAttribute('alt')).toBe(''),
+    );
   });
 });

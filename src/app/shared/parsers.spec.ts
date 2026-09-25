@@ -1,6 +1,11 @@
 import { CheckoutForm } from '../interfaces/checkout-form';
 import { Order } from '../interfaces/order';
-import { parseCartItems, parseCheckoutDraft, parseOrders, parseProducts } from './parsers';
+import {
+  parseCartItems,
+  parseCheckoutDraft,
+  parseOrders,
+  parseProducts,
+} from './parsers';
 
 describe('parsers', () => {
   const validProduct = {
@@ -28,29 +33,45 @@ describe('parsers', () => {
     });
 
     it('keeps the product but drops an invalid gramaj', () => {
-      expect(parseProducts([{ ...validProduct, gramaj: '90' }])).toEqual([validProduct]);
-      expect(parseProducts([{ ...validProduct, gramaj: 0 }])).toEqual([validProduct]);
+      expect(parseProducts([{ ...validProduct, gramaj: '90' }])).toEqual([
+        validProduct,
+      ]);
+      expect(parseProducts([{ ...validProduct, gramaj: 0 }])).toEqual([
+        validProduct,
+      ]);
     });
 
     it('keeps ingredients and the valid allergens', () => {
       expect(
         parseProducts([
-          { ...validProduct, ingredients: 'făină, unt', allergens: ['gluten', '', 3, 'lapte'] },
+          {
+            ...validProduct,
+            ingredients: 'făină, unt',
+            allergens: ['gluten', '', 3, 'lapte'],
+          },
         ]),
-      ).toEqual([{ ...validProduct, ingredients: 'făină, unt', allergens: ['gluten', 'lapte'] }]);
+      ).toEqual([
+        {
+          ...validProduct,
+          ingredients: 'făină, unt',
+          allergens: ['gluten', 'lapte'],
+        },
+      ]);
     });
 
     it('leaves out blank ingredients and empty allergen lists', () => {
-      expect(parseProducts([{ ...validProduct, ingredients: ' ', allergens: [] }])).toEqual([
-        validProduct,
-      ]);
-      expect(parseProducts([{ ...validProduct, allergens: 'gluten' }])).toEqual([validProduct]);
+      expect(
+        parseProducts([{ ...validProduct, ingredients: ' ', allergens: [] }]),
+      ).toEqual([validProduct]);
+      expect(parseProducts([{ ...validProduct, allergens: 'gluten' }])).toEqual(
+        [validProduct],
+      );
     });
 
     it('drops unknown extra fields such as the old catalog quantity', () => {
-      expect(parseProducts([{ ...validProduct, quantity: 0, extra: true }])).toEqual([
-        validProduct,
-      ]);
+      expect(
+        parseProducts([{ ...validProduct, quantity: 0, extra: true }]),
+      ).toEqual([validProduct]);
     });
 
     it.each([
@@ -109,16 +130,26 @@ describe('parsers', () => {
     it('restores the saved text fields and payment method, never the terms acceptance', () => {
       expect(
         parseCheckoutDraft(
-          { name: 'Ana', town: 'Sibiu', paymentMethod: 'transfer', acceptTerms: true },
+          {
+            name: 'Ana',
+            town: 'Sibiu',
+            paymentMethod: 'transfer',
+            acceptTerms: true,
+          },
           defaults,
         ),
-      ).toEqual({ ...defaults, name: 'Ana', town: 'Sibiu', paymentMethod: 'transfer' });
+      ).toEqual({
+        ...defaults,
+        name: 'Ana',
+        town: 'Sibiu',
+        paymentMethod: 'transfer',
+      });
     });
 
     it('falls back to the defaults for fields of the wrong type or unknown payment methods', () => {
-      expect(parseCheckoutDraft({ name: 42, paymentMethod: 'bitcoin' }, defaults)).toEqual(
-        defaults,
-      );
+      expect(
+        parseCheckoutDraft({ name: 42, paymentMethod: 'bitcoin' }, defaults),
+      ).toEqual(defaults);
       expect(parseCheckoutDraft('nope', defaults)).toEqual(defaults);
     });
   });
@@ -127,7 +158,15 @@ describe('parsers', () => {
     const validOrder: Order = {
       id: 'TB-20260925-0001',
       placedAt: '2026-09-25T06:00:00.000Z',
-      lines: [{ productId: 1, title: 'Croissant', unitPrice: 5, quantity: 2, lineTotal: 10 }],
+      lines: [
+        {
+          productId: 1,
+          title: 'Croissant',
+          unitPrice: 5,
+          quantity: 2,
+          lineTotal: 10,
+        },
+      ],
       totalQuantity: 2,
       totalPrice: 10,
       customer: {
@@ -148,9 +187,15 @@ describe('parsers', () => {
 
     it.each([
       ['no lines', { ...validOrder, lines: [] }],
-      ['a malformed line', { ...validOrder, lines: [{ ...validOrder.lines[0], quantity: 0 }] }],
+      [
+        'a malformed line',
+        { ...validOrder, lines: [{ ...validOrder.lines[0], quantity: 0 }] },
+      ],
       ['an invalid date', { ...validOrder, placedAt: 'yesterday' }],
-      ['a missing customer field', { ...validOrder, customer: { name: 'Ana' } }],
+      [
+        'a missing customer field',
+        { ...validOrder, customer: { name: 'Ana' } },
+      ],
       ['an unknown payment method', { ...validOrder, paymentMethod: 'card' }],
     ])('drops an order with %s', (_, order) => {
       expect(parseOrders([order, validOrder])).toEqual([validOrder]);

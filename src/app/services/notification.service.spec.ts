@@ -20,7 +20,9 @@ describe('NotificationService', () => {
   it('shows a notification with an assigned id', () => {
     service.show('Hello');
 
-    expect(service.notifications()).toEqual([{ id: expect.any(Number), message: 'Hello' }]);
+    expect(service.notifications()).toEqual([
+      { id: expect.any(Number), message: 'Hello' },
+    ]);
   });
 
   it('replaces the notification on screen with the newest one', () => {
@@ -80,7 +82,9 @@ describe('NotificationService', () => {
   });
 
   it('keeps a notification with an action on screen longer', () => {
-    service.show('Șters', { action: { label: 'Anulează', run: () => undefined } });
+    service.show('Șters', {
+      action: { label: 'Anulează', run: () => undefined },
+    });
 
     vi.advanceTimersByTime(6999);
     expect(service.notifications().length).toBe(1);

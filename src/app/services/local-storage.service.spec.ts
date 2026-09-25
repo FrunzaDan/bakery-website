@@ -59,7 +59,9 @@ describe('LocalStorageService', () => {
     service.onCartItemsChangedInOtherTab(onChange);
 
     localStorage.setItem('cartProductsLocal', JSON.stringify([cartItem]));
-    window.dispatchEvent(new StorageEvent('storage', { key: 'cartProductsLocal' }));
+    window.dispatchEvent(
+      new StorageEvent('storage', { key: 'cartProductsLocal' }),
+    );
     window.dispatchEvent(new StorageEvent('storage', { key: 'somethingElse' }));
 
     expect(onChange).toHaveBeenCalledTimes(1);

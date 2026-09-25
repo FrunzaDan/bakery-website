@@ -21,12 +21,13 @@ export interface SeoMetaConfig {
  */
 const ALLOW_INDEXING = false;
 
-const DEFAULT_ROBOTS = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+const DEFAULT_ROBOTS =
+  'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SEOService {
+export class SeoService {
   private readonly meta = inject(Meta);
   private readonly document = inject(DOCUMENT);
 
@@ -38,18 +39,32 @@ export class SEOService {
     this.meta.updateTag({ name: 'description', content: config.description });
     this.meta.updateTag({
       name: 'robots',
-      content: ALLOW_INDEXING ? (config.robots ?? DEFAULT_ROBOTS) : 'noindex, nofollow',
+      content: ALLOW_INDEXING
+        ? (config.robots ?? DEFAULT_ROBOTS)
+        : 'noindex, nofollow',
     });
     this.meta.updateTag({ property: 'og:title', content: title });
-    this.meta.updateTag({ property: 'og:description', content: config.description });
+    this.meta.updateTag({
+      property: 'og:description',
+      content: config.description,
+    });
     this.meta.updateTag({ property: 'og:url', content: url });
     this.meta.updateTag({ property: 'og:locale', content: 'ro_RO' });
     this.meta.updateTag({ name: 'twitter:title', content: title });
-    this.meta.updateTag({ name: 'twitter:description', content: config.description });
+    this.meta.updateTag({
+      name: 'twitter:description',
+      content: config.description,
+    });
 
     if (config.image) {
-      this.meta.updateTag({ property: 'og:image', content: SITE_URL + config.image });
-      this.meta.updateTag({ name: 'twitter:image', content: SITE_URL + config.image });
+      this.meta.updateTag({
+        property: 'og:image',
+        content: SITE_URL + config.image,
+      });
+      this.meta.updateTag({
+        name: 'twitter:image',
+        content: SITE_URL + config.image,
+      });
     } else {
       this.meta.removeTag("property='og:image'");
       this.meta.removeTag("name='twitter:image'");
@@ -59,7 +74,9 @@ export class SEOService {
   }
 
   private updateCanonicalUrl(url: string): void {
-    let link: HTMLLinkElement | null = this.document.querySelector('link[rel="canonical"]');
+    let link: HTMLLinkElement | null = this.document.querySelector(
+      'link[rel="canonical"]',
+    );
     if (!link) {
       link = this.document.createElement('link');
       link.setAttribute('rel', 'canonical');

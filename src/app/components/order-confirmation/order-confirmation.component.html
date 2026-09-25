@@ -12,7 +12,12 @@
         <p class="order-id">
           Număr comandă: <strong>{{ order.id }}</strong>
           <br />
-          <span class="small">Plasată pe {{ order.placedAt | date: 'd MMMM yyyy, HH:mm' : undefined : 'ro' }}</span>
+          <span class="small"
+            >Plasată pe
+            {{
+              order.placedAt | date: 'd MMMM yyyy, HH:mm' : undefined : 'ro'
+            }}</span
+          >
         </p>
       </div>
 
@@ -22,7 +27,10 @@
           <ul class="order-lines">
             @for (line of order.lines; track line.productId) {
               <li class="order-line">
-                <span>{{ line.title }} <span class="small">× {{ line.quantity }}</span></span>
+                <span
+                  >{{ line.title }}
+                  <span class="small">× {{ line.quantity }}</span></span
+                >
                 <span>{{ line.lineTotal | ron }}</span>
               </li>
             }
@@ -37,7 +45,8 @@
           <h2 id="delivery-heading" class="section-heading">Livrare</h2>
           <address class="mb-3">
             {{ order.customer.name }}<br />
-            Str. {{ order.customer.street }} nr. {{ order.customer.streetNumber }}<br />
+            Str. {{ order.customer.street }} nr. {{ order.customer.streetNumber
+            }}<br />
             {{ order.customer.town }}, {{ order.customer.zip }}<br />
             {{ order.customer.phone }} · {{ order.customer.email }}
           </address>
@@ -58,34 +67,54 @@
               <dd>Comanda {{ order.id }}</dd>
             </dl>
             <p class="small">
-              Trimite dovada plății la {{ bankDetails.proofEmail }}. Pregătim comanda după ce
-              primim plata.
+              Trimite dovada plății la {{ bankDetails.proofEmail }}. Pregătim
+              comanda după ce primim plata.
             </p>
           } @else {
-            <p class="small">Vei plăti {{ order.totalPrice | ron }} curierului, la livrare.</p>
+            <p class="small">
+              Vei plăti {{ order.totalPrice | ron }} curierului, la livrare.
+            </p>
           }
         </section>
       </div>
 
-      <section class="next-steps mt-4 p-3 enter-rise" style="--stagger: 6" aria-labelledby="next-heading">
+      <section
+        class="next-steps mt-4 p-3 enter-rise"
+        style="--stagger: 6"
+        aria-labelledby="next-heading"
+      >
         <h2 id="next-heading" class="section-heading">Ce urmează</h2>
         <ol class="mb-0">
-          <li>Te sunăm la {{ order.customer.phone }} ca să stabilim ziua și ora livrării.</li>
+          <li>
+            Te sunăm la {{ order.customer.phone }} ca să stabilim ziua și ora
+            livrării.
+          </li>
           <li>Coacem produsele proaspăt, pentru ziua livrării.</li>
-          <li>Pentru întrebări, scrie-ne pe pagina de <a routerLink="/contact" class="text-decoration-underline">contact</a>
-            și menționează numărul comenzii.</li>
+          <li>
+            Pentru întrebări, scrie-ne pe pagina de
+            <a routerLink="/contact" class="text-decoration-underline"
+              >contact</a
+            >
+            și menționează numărul comenzii.
+          </li>
         </ol>
       </section>
 
       <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-        <a routerLink="/products" class="btn btn-primary p-2 px-4">Continuă cumpărăturile</a>
+        <a routerLink="/products" class="btn btn-primary p-2 px-4"
+          >Continuă cumpărăturile</a
+        >
         <a routerLink="/" class="btn btn-primary p-2 px-4">Acasă</a>
       </div>
     } @else if (order() === null) {
       <div class="text-center my-4 py-4">
         <h1 class="order-title">Comanda nu a fost găsită</h1>
-        <p>Comenzile se pot vedea doar din browserul în care au fost plasate.</p>
-        <a routerLink="/products" class="btn btn-primary mt-2">Vezi produsele</a>
+        <p>
+          Comenzile se pot vedea doar din browserul în care au fost plasate.
+        </p>
+        <a routerLink="/products" class="btn btn-primary mt-2"
+          >Vezi produsele</a
+        >
       </div>
     } @else {
       <p class="visually-hidden" role="status">Se încarcă comanda...</p>

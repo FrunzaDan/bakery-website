@@ -42,7 +42,9 @@ describe('CartService', () => {
         {
           provide: ProductCatalogService,
           useValue: {
-            productsById: computed(() => new Map(catalogProducts().map((p) => [p.id, p]))),
+            productsById: computed(
+              () => new Map(catalogProducts().map((p) => [p.id, p])),
+            ),
           },
         },
       ],
@@ -52,7 +54,9 @@ describe('CartService', () => {
   });
 
   it('adds to the stored cart even when the product is added before the stored cart was read', () => {
-    localStorageServiceSpy.getCartItems.mockReturnValue([{ productId: 2, quantity: 3 }]);
+    localStorageServiceSpy.getCartItems.mockReturnValue([
+      { productId: 2, quantity: 3 },
+    ]);
 
     service.addProductToCart(productA);
 
@@ -107,7 +111,10 @@ describe('CartService', () => {
 
   it('takes titles and prices from the current catalog, not from when the product was added', () => {
     service.addProductToCart(productA);
-    catalogProducts.set([{ ...productA, title: 'Renamed', price: 12 }, productB]);
+    catalogProducts.set([
+      { ...productA, title: 'Renamed', price: 12 },
+      productB,
+    ]);
 
     expect(service.cartLines()[0].product.title).toBe('Renamed');
     expect(service.totalPrice()).toBe(12);

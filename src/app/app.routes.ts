@@ -1,77 +1,96 @@
 import { Routes } from '@angular/router';
-import { CartComponent } from './components/cart/cart.component';
-import { CheckoutComponent } from './components/checkout/checkout.component';
-import { ContactComponent } from './components/contact/contact.component';
-import { DeliveryInfoComponent } from './components/delivery-info/delivery-info.component';
-import { HomeComponent } from './components/home/home.component';
-import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { ProductDetailComponent } from './components/product-detail/product-detail.component';
-import { ProductsComponent } from './components/products/products.component';
-import { ReturnInfoComponent } from './components/return-info/return-info.component';
-import { TermsInfoComponent } from './components/terms-info/terms-info.component';
 
 export const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    loadComponent: () =>
+      import('./components/home/home.component').then((m) => m.HomeComponent),
     title: 'TestBakery - Cofetărie și patiserie în Sibiu',
   },
   {
     path: '',
-    component: HomeComponent,
+    loadComponent: () =>
+      import('./components/home/home.component').then((m) => m.HomeComponent),
     title: 'TestBakery - Cofetărie și patiserie în Sibiu',
   },
   {
     path: 'products',
-    component: ProductsComponent,
+    loadComponent: () =>
+      import('./components/products/products.component').then(
+        (m) => m.ProductsComponent,
+      ),
     title: 'Produse - TestBakery Sibiu',
   },
   {
     // The component replaces this with the product's name once it has loaded.
     path: 'products/:id',
-    component: ProductDetailComponent,
+    loadComponent: () =>
+      import('./components/product-detail/product-detail.component').then(
+        (m) => m.ProductDetailComponent,
+      ),
     title: 'Produs - TestBakery Sibiu',
   },
   {
     path: 'contact',
-    component: ContactComponent,
+    loadComponent: () =>
+      import('./components/contact/contact.component').then(
+        (m) => m.ContactComponent,
+      ),
     title: 'Contact - TestBakery Sibiu',
   },
   {
     path: 'cart',
-    component: CartComponent,
+    loadComponent: () =>
+      import('./components/cart/cart.component').then((m) => m.CartComponent),
     title: 'Coș - TestBakery Sibiu',
   },
   {
     path: 'checkout',
-    component: CheckoutComponent,
+    loadComponent: () =>
+      import('./components/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent,
+      ),
     title: 'Finalizează comanda - TestBakery Sibiu',
   },
   {
     path: 'order/:id',
-    component: OrderConfirmationComponent,
+    loadComponent: () =>
+      import('./components/order-confirmation/order-confirmation.component').then(
+        (m) => m.OrderConfirmationComponent,
+      ),
     title: 'Comanda ta - TestBakery Sibiu',
   },
   {
     path: 'delivery',
-    component: DeliveryInfoComponent,
+    loadComponent: () =>
+      import('./components/delivery-info/delivery-info.component').then(
+        (m) => m.DeliveryInfoComponent,
+      ),
     title: 'Plată și livrare - TestBakery Sibiu',
   },
   {
     path: 'return',
-    component: ReturnInfoComponent,
+    loadComponent: () =>
+      import('./components/return-info/return-info.component').then(
+        (m) => m.ReturnInfoComponent,
+      ),
     title: 'Retur - TestBakery Sibiu',
   },
   {
     path: 'terms',
-    component: TermsInfoComponent,
+    loadComponent: () =>
+      import('./components/terms-info/terms-info.component').then(
+        (m) => m.TermsInfoComponent,
+      ),
     title: 'Termeni și condiții - TestBakery Sibiu',
   },
   {
     path: '**',
     pathMatch: 'full',
-    component: PageNotFoundComponent,
+    loadComponent: () =>
+      import('./components/page-not-found/page-not-found.component').then(
+        (m) => m.PageNotFoundComponent,
+      ),
     title: '404 - TestBakery Sibiu',
   },
 ];

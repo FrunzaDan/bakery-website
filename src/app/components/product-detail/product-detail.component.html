@@ -8,10 +8,16 @@
     @if (product(); as product) {
       <div class="row g-4 enter-rise">
         <div class="col-md-6">
-          <img [src]="product.image" [alt]="product.title" class="product-image" />
+          <img
+            [src]="product.image"
+            [alt]="product.title"
+            class="product-image"
+          />
         </div>
         <div class="col-md-6 d-flex flex-column">
-          <span class="badge category-badge align-self-start mb-2">{{ categoryLabel() }}</span>
+          <span class="badge category-badge align-self-start mb-2">{{
+            categoryLabel()
+          }}</span>
           <h1 class="product-title">{{ product.title }}</h1>
           <p class="product-description">{{ product.description }}</p>
           @if (product.gramaj) {
@@ -22,7 +28,9 @@
           <!-- Once the product is in the cart, the picker edits the cart's quantity,
                so the number shown is always what will be ordered. -->
           <div class="order-box mt-auto p-3">
-            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div
+              class="d-flex flex-wrap align-items-center justify-content-between gap-3"
+            >
               @if (quantityInCart() > 0) {
                 <app-quantity-picker
                   [quantity]="quantityInCart()"
@@ -30,16 +38,25 @@
                   [label]="product.title"
                 />
               } @else {
-                <app-quantity-picker [(quantity)]="quantity" [label]="product.title" />
+                <app-quantity-picker
+                  [(quantity)]="quantity"
+                  [label]="product.title"
+                />
               }
-              <span class="subtotal">Total: <strong>{{ subtotal() | ron }}</strong></span>
+              <span class="subtotal"
+                >Total: <strong>{{ subtotal() | ron }}</strong></span
+              >
             </div>
             @if (quantityInCart() > 0) {
               <a
                 routerLink="/cart"
                 class="btn btn-primary w-100 mt-3 p-2 d-flex justify-content-center align-items-center gap-2"
               >
-                <img src="/assets/images/cart/cart.svg" alt="" class="cart-icon" />
+                <img
+                  src="/assets/images/cart/cart.svg"
+                  alt=""
+                  class="cart-icon"
+                />
                 Vezi coșul
               </a>
               <p class="text-center small mt-2 mb-0 enter-rise">
@@ -51,7 +68,11 @@
                 class="btn btn-primary w-100 mt-3 p-2 d-flex justify-content-center align-items-center gap-2"
                 (click)="addToCart()"
               >
-                <img src="/assets/images/cart/cart_add.svg" alt="" class="cart-icon" />
+                <img
+                  src="/assets/images/cart/cart_add.svg"
+                  alt=""
+                  class="cart-icon"
+                />
                 Adaugă în coș
               </button>
             }
@@ -65,26 +86,42 @@
           @if (product.ingredients) {
             <p>{{ product.ingredients }}</p>
           } @else {
-            <p>Lista de ingrediente este disponibilă la cerere, prin pagina de
-              <a routerLink="/contact" class="text-decoration-underline">contact</a>.</p>
+            <p>
+              Lista de ingrediente este disponibilă la cerere, prin pagina de
+              <a routerLink="/contact" class="text-decoration-underline"
+                >contact</a
+              >.
+            </p>
           }
         </section>
         <section class="col-md-6" aria-labelledby="allergens-heading">
           <h2 id="allergens-heading" class="section-heading">Alergeni</h2>
           @if (product.allergens; as allergens) {
-            <p>Conține: <strong>{{ allergens.join(', ') }}</strong>.</p>
+            <p>
+              Conține: <strong>{{ allergens.join(', ') }}</strong
+              >.
+            </p>
           } @else {
-            <p>Informațiile despre alergeni sunt disponibile la cerere, prin pagina de
-              <a routerLink="/contact" class="text-decoration-underline">contact</a>.</p>
+            <p>
+              Informațiile despre alergeni sunt disponibile la cerere, prin
+              pagina de
+              <a routerLink="/contact" class="text-decoration-underline"
+                >contact</a
+              >.
+            </p>
           }
-          <p class="small mb-0">Produsele sunt preparate într-un laborator care folosește și gluten, ouă,
-            lapte, nuci și susan, deci pot conține urme ale acestora.</p>
+          <p class="small mb-0">
+            Produsele sunt preparate într-un laborator care folosește și gluten,
+            ouă, lapte, nuci și susan, deci pot conține urme ale acestora.
+          </p>
         </section>
       </div>
     } @else if (isLoading()) {
       <p class="visually-hidden" role="status">Se încarcă produsul...</p>
       <div class="row g-4" aria-hidden="true">
-        <div class="col-md-6"><div class="skeleton skeleton-image product-image"></div></div>
+        <div class="col-md-6">
+          <div class="skeleton skeleton-image product-image"></div>
+        </div>
         <div class="col-md-6">
           <div class="skeleton skeleton-text short"></div>
           <div class="skeleton skeleton-title"></div>
@@ -99,7 +136,11 @@
       <div class="text-center my-4 py-4" role="alert">
         {{ error }}
         <br />
-        <button type="button" class="btn btn-primary mt-3" (click)="reloadProducts()">
+        <button
+          type="button"
+          class="btn btn-primary mt-3"
+          (click)="reloadProducts()"
+        >
           Reîncearcă
         </button>
       </div>
@@ -107,7 +148,9 @@
       <div class="text-center my-4 py-4 enter-rise">
         <h1 class="product-title">Produsul nu a fost găsit</h1>
         <p>Este posibil să nu mai fie în ofertă.</p>
-        <a routerLink="/products" class="btn btn-primary mt-2">Vezi toate produsele</a>
+        <a routerLink="/products" class="btn btn-primary mt-2"
+          >Vezi toate produsele</a
+        >
       </div>
     }
   </div>

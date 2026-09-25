@@ -1,4 +1,10 @@
-import { afterNextRender, computed, inject, Injectable, signal } from '@angular/core';
+import {
+  afterNextRender,
+  computed,
+  inject,
+  Injectable,
+  signal,
+} from '@angular/core';
 import { CartItem, CartLine } from '../interfaces/cart-item';
 import { MAX_QUANTITY_PER_PRODUCT, Product } from '../interfaces/product';
 import { LocalStorageService } from './local-storage.service';
@@ -72,7 +78,10 @@ export class CartService {
   /** Sets the product's quantity, clamped to 1..`MAX_QUANTITY_PER_PRODUCT`; use the remove methods to drop it. */
   setProductQuantity(product: Product, quantity: number): void {
     this.loadStoredCart();
-    this.setQuantity(product, Math.min(Math.max(Math.floor(quantity), 1), MAX_QUANTITY_PER_PRODUCT));
+    this.setQuantity(
+      product,
+      Math.min(Math.max(Math.floor(quantity), 1), MAX_QUANTITY_PER_PRODUCT),
+    );
   }
 
   removeProductFromCart(product: Product): void {
@@ -80,7 +89,9 @@ export class CartService {
     this.updateCartItems(
       this.cartItems().flatMap((item) => {
         if (item.productId !== product.id) return [item];
-        return item.quantity > 1 ? [{ ...item, quantity: item.quantity - 1 }] : [];
+        return item.quantity > 1
+          ? [{ ...item, quantity: item.quantity - 1 }]
+          : [];
       }),
     );
   }
@@ -94,7 +105,9 @@ export class CartService {
       return () => undefined;
     }
     const removed = cartItems[index];
-    this.updateCartItems(cartItems.filter((item) => item.productId !== product.id));
+    this.updateCartItems(
+      cartItems.filter((item) => item.productId !== product.id),
+    );
     return () => this.putBack([{ item: removed, index }]);
   }
 
@@ -107,7 +120,10 @@ export class CartService {
   }
 
   private quantityOf(product: Product): number {
-    return this.cartItems().find((item) => item.productId === product.id)?.quantity ?? 0;
+    return (
+      this.cartItems().find((item) => item.productId === product.id)
+        ?.quantity ?? 0
+    );
   }
 
   private setQuantity(product: Product, quantity: number): void {
@@ -115,7 +131,9 @@ export class CartService {
     const isInCart = cartItems.some((item) => item.productId === product.id);
     this.updateCartItems(
       isInCart
-        ? cartItems.map((item) => (item.productId === product.id ? { ...item, quantity } : item))
+        ? cartItems.map((item) =>
+            item.productId === product.id ? { ...item, quantity } : item,
+          )
         : [...cartItems, { productId: product.id, quantity }],
     );
   }
@@ -128,7 +146,9 @@ export class CartService {
     this.loadStoredCart();
     const cartItems = [...this.cartItems()];
     for (const { item, index } of removed) {
-      const existing = cartItems.findIndex((current) => current.productId === item.productId);
+      const existing = cartItems.findIndex(
+        (current) => current.productId === item.productId,
+      );
       if (existing === -1) {
         cartItems.splice(Math.min(index, cartItems.length), 0, item);
       } else {
