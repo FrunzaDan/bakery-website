@@ -11,14 +11,14 @@
         @if (notification.action; as action) {
           <button
             type="button"
-            class="btn btn-light notification-action"
+            class="btn btn-light notification-action flex-fill"
             (click)="runAction(notification.id)"
           >
             <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
             {{ action.label }}
           </button>
         }
-        <button type="button" class="btn btn-primary" (click)="dismiss(notification.id)">
+        <button type="button" class="btn btn-primary flex-fill" (click)="dismiss(notification.id)">
           Ok
         </button>
       </div>

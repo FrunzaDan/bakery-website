@@ -172,11 +172,13 @@ iframe {
 .subtitle-1 {
   font-family: var(--bold-font);
   font-size: 4rem;
+  line-height: 1.5;
 }
 
 .subtitle-2 {
   font-family: var(--regular-font);
   font-size: 2rem;
+  line-height: 1.5;
 }
 
 .list-container-1 {
@@ -439,7 +441,7 @@ iframe {
 
 /* Content arriving after a load rises into place; `--stagger` delays items of a list one after another. */
 .enter-rise {
-  animation: enter-rise 450ms ease-out both;
+  animation: enter-rise 450ms ease-out backwards;
   animation-delay: calc(var(--stagger, 0) * 60ms);
 }
 

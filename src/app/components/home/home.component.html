@@ -23,7 +23,7 @@
     @for (card of categoryCards; track card.category) {
       <div class="col-lg-3 col-sm-6 p-4 enter-rise" [style.--stagger]="$index + 2">
         <a
-          class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-reset text-decoration-none"
+          class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-decoration-none"
           routerLink="/products"
           [queryParams]="{ category: card.category }"
         >
