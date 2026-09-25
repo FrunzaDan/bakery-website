@@ -5,6 +5,7 @@ import { MAX_QUANTITY_PER_PRODUCT, PRODUCT_CATEGORY_LABELS } from '../../interfa
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
 import { ProductCatalogService } from '../../services/product-catalog.service';
+import { SEOService } from '../../services/seo.service';
 import { QuantityPickerComponent } from '../../shared/quantity-picker/quantity-picker.component';
 import { RonPipe } from '../../shared/ron.pipe';
 
@@ -20,6 +21,7 @@ export class ProductDetailComponent {
   private readonly cartService = inject(CartService);
   private readonly notificationService = inject(NotificationService);
   private readonly title = inject(Title);
+  private readonly seo = inject(SEOService);
 
   /** The route's `:id`; anything that isn't a number becomes NaN and matches no product. */
   readonly id = input.required<number, string>({ transform: Number });
@@ -42,8 +44,22 @@ export class ProductDetailComponent {
   constructor() {
     effect(() => {
       const product = this.product();
+      const path = `/products/${this.id()}`;
       if (product) {
-        this.title.setTitle(product.title);
+        const weight = product.gramaj ? ` ${product.gramaj} g.` : '';
+        this.title.setTitle(`${product.title} - TestBakery Sibiu`);
+        this.seo.updateMetaTags({
+          description: `${product.description}${weight} Comandă online de la TestBakery Sibiu.`,
+          path,
+          image: product.image,
+        });
+      } else if (!this.isLoading()) {
+        this.title.setTitle('Produsul nu a fost găsit - TestBakery Sibiu');
+        this.seo.updateMetaTags({
+          description: 'Produsul căutat nu există.',
+          path,
+          robots: 'noindex, follow',
+        });
       }
     });
   }

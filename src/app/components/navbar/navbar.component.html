@@ -1,32 +1,33 @@
 <div class="container-fluid px-4">
     <div class="row px-4">
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg" aria-label="Meniu principal">
             <div class="container-fluid">
-                <a class="navbar-brand" routerLink="home">
-                    <img src="/assets/images/TestBakery-Logo.svg" class="hover-logo" alt="TestBakery-Logo" width="140rem">
+                <a class="navbar-brand" routerLink="/">
+                    <img src="/assets/images/TestBakery-Logo.svg" class="hover-logo" alt="TestBakery, pagina principală" width="140rem">
                 </a>
-                <a class="navbar-toggler collapsed border-0" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
+                <button class="navbar-toggler collapsed border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Deschide sau închide meniul">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a routerLink="/home" class="nav-link hover-item" data-bs-toggle="collapse"
+                            <a routerLink="/" class="nav-link hover-item" routerLinkActive="current-page" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page" data-bs-toggle="collapse"
                                 data-bs-target=".navbar-collapse.show">ACASĂ</a>
                         </li>
                         <li class="nav-item">
-                            <a routerLink="/products" class="nav-link hover-item" data-bs-toggle="collapse"
+                            <a routerLink="/products" class="nav-link hover-item" routerLinkActive="current-page" ariaCurrentWhenActive="page" data-bs-toggle="collapse"
                                 data-bs-target=".navbar-collapse.show">PRODUSE</a>
                         </li>
                         <li class="nav-item">
-                            <a routerLink="/contact" class="nav-link hover-item" data-bs-toggle="collapse"
+                            <a routerLink="/contact" class="nav-link hover-item" routerLinkActive="current-page" ariaCurrentWhenActive="page" data-bs-toggle="collapse"
                                 data-bs-target=".navbar-collapse.show">CONTACT</a>
                         </li>
                         <li class="nav-item">
-                            <a routerLink="/cart" class="nav-link hover-item" data-bs-toggle="collapse"
+                            <a routerLink="/cart" class="nav-link hover-item" routerLinkActive="current-page" ariaCurrentWhenActive="page" data-bs-toggle="collapse"
                                 data-bs-target=".navbar-collapse.show"><span class="cart-label">COȘ
                                     @if (totalNumberOfCartProducts() > 0) {
                                         <span class="badge cart-count">{{ totalNumberOfCartProducts() }}<span

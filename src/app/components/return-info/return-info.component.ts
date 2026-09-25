@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { SEOService } from '../../services/seo.service';
 
 @Component({
     selector: 'app-return-info',
@@ -6,4 +7,13 @@ import { Component } from '@angular/core';
     templateUrl: './return-info.component.html',
     styleUrl: './return-info.component.css',
 })
-export class ReturnInfoComponent {}
+export class ReturnInfoComponent implements OnInit {
+  private readonly seoService = inject(SEOService);
+
+  ngOnInit(): void {
+    this.seoService.updateMetaTags({
+      description: 'Condițiile de retur pentru produsele comandate de la TestBakery Sibiu.',
+      path: '/return',
+    });
+  }
+}

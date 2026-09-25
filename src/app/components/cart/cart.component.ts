@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
 import { ProductCatalogService } from '../../services/product-catalog.service';
+import { SEOService } from '../../services/seo.service';
 import { QuantityPickerComponent } from '../../shared/quantity-picker/quantity-picker.component';
 import { RonPipe } from '../../shared/ron.pipe';
 
@@ -15,7 +16,8 @@ const SKELETON_LINE_COUNT = 3;
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
+  private readonly seoService = inject(SEOService);
   private readonly cartService = inject(CartService);
   private readonly notificationService = inject(NotificationService);
   private readonly catalog = inject(ProductCatalogService);
@@ -52,6 +54,14 @@ export class CartComponent {
     const undo = this.cartService.removeAllCart();
     this.notificationService.show('Coșul a fost golit!', {
       action: { label: 'Anulează', run: undo },
+    });
+  }
+
+  ngOnInit(): void {
+    this.seoService.updateMetaTags({
+      description: 'Produsele din coșul tău de la TestBakery Sibiu.',
+      path: '/cart',
+      robots: 'noindex, follow',
     });
   }
 }

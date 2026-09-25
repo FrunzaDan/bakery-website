@@ -2,12 +2,13 @@
 <div class="container-fluid mb-4 px-2">
   <div class="card px-2 mx-4">
     <div class="row align-items-center p-2 p-sm-4 mx-sm-4">
-      <h2 class="text-center p-4">
+      <h1 class="text-center pt-4 px-4 mb-0">Finalizează comanda</h1>
+      <p class="h2 text-center p-4">
         Plasează comanda ta de {{totalNumberOfCartProducts()}} produs(e) în valoare totală de {{totalPrice() | ron}}
         și
         te vom contacta noi. Pentru a intra în legătură cu tine, avem nevoie de datele tale de contact și de
         adresa de livrare:
-      </h2>
+      </p>
       <form [formRoot]="checkoutForm">
         @if (invalidSummary(); as summary) {
           <div class="alert alert-danger" role="alert">{{ summary }}</div>
@@ -203,19 +204,19 @@
           acestei comenzi și pentru a te contacta în legătură cu ea.</div>
         <div class="row">
           <div class="col-sm justify-content-center align-items-center text-center my-2">
-            <button type="button" routerLink="/cart" class="btn btn-primary width-100prc p-2 h-100">
-              <img src="/assets/images/cart/cart.svg" alt="cart" class="cart-icon">
-              <div>
+            <a routerLink="/cart" class="btn btn-primary width-100prc p-2 h-100">
+              <img src="/assets/images/cart/cart.svg" alt="" class="cart-icon">
+              <span class="d-block">
                 Înapoi la comanda mea detaliată
-              </div>
-            </button>
+              </span>
+            </a>
           </div>
           <div class="col-sm justify-content-center align-items-center text-center my-2">
             <button type="submit" class="btn btn-primary width-100prc p-2 h-100">
-              <img src="/assets/images/cart/cart_checkout.svg" alt="cart" class="cart-icon">
-              <div>
+              <img src="/assets/images/cart/cart_checkout.svg" alt="" class="cart-icon">
+              <span class="d-block">
                 Plasează comanda
-              </div>
+              </span>
             </button>
           </div>
         </div>

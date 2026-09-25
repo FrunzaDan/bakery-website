@@ -1,54 +1,57 @@
 import { TestBed } from '@angular/core/testing';
-import { Meta } from '@angular/platform-browser';
-import { SEOService } from './seo.service';
+import { Title } from '@angular/platform-browser';
+import { SEOService, SITE_URL } from './seo.service';
 
 describe('SEOService', () => {
   let service: SEOService;
 
+  const metaContent = (selector: string) =>
+    document.head.querySelector(`meta[${selector}]`)?.getAttribute('content');
+  const canonicalLinks = () => document.head.querySelectorAll('link[rel="canonical"]');
+
   beforeEach(() => {
     document.head
-      .querySelectorAll('link[rel="canonical"]')
-      .forEach((link) => link.remove());
+      .querySelectorAll('link[rel="canonical"], meta[name], meta[property]')
+      .forEach((element) => element.remove());
 
     TestBed.configureTestingModule({});
     service = TestBed.inject(SEOService);
   });
 
-  it('updates the meta description tag', () => {
-    const meta = TestBed.inject(Meta);
-    const updateTagSpy = vi.spyOn(meta, 'updateTag');
+  it('sets the description and the social tags from the page title', () => {
+    TestBed.inject(Title).setTitle('Produse - TestBakery Sibiu');
+    service.updateMetaTags({ description: 'Toate produsele', path: '/products' });
 
-    service.updateMetaDescription('My description');
-
-    expect(updateTagSpy).toHaveBeenCalledWith({
-      name: 'description',
-      content: 'My description',
-    });
+    expect(metaContent('name="description"')).toBe('Toate produsele');
+    expect(metaContent('property="og:title"')).toBe('Produse - TestBakery Sibiu');
+    expect(metaContent('property="og:description"')).toBe('Toate produsele');
+    expect(metaContent('property="og:url"')).toBe(`${SITE_URL}/products`);
+    expect(metaContent('name="twitter:title"')).toBe('Produse - TestBakery Sibiu');
   });
 
-  it('creates a canonical link with the given href', () => {
-    service.createLinkForCanonicalURL('https://example.com/page');
+  it('keeps every page out of search engines while the site is a demo', () => {
+    service.updateMetaTags({ description: 'Acasă', path: '/' });
 
-    const links = document.head.querySelectorAll('link[rel="canonical"]');
-    expect(links.length).toBe(1);
-    expect(links[0].getAttribute('href')).toBe('https://example.com/page');
+    expect(metaContent('name="robots"')).toBe('noindex, nofollow');
   });
 
-  it('falls back to the current page URL without its query string or fragment', () => {
-    history.replaceState(null, '', '/products?q=tort&categorie=prajituri#rezultate');
+  it('reuses one canonical link and drops the trailing slash for the home page', () => {
+    service.updateMetaTags({ description: 'Produse', path: '/products' });
+    service.updateMetaTags({ description: 'Acasă', path: '/' });
 
-    service.createLinkForCanonicalURL();
-
-    const link = document.head.querySelector('link[rel="canonical"]');
-    expect(link?.getAttribute('href')).toBe(`${location.origin}/products`);
+    expect(canonicalLinks().length).toBe(1);
+    expect(canonicalLinks()[0].getAttribute('href')).toBe(SITE_URL);
   });
 
-  it('replaces any existing canonical link instead of duplicating it', () => {
-    service.createLinkForCanonicalURL('https://example.com/first');
-    service.createLinkForCanonicalURL('https://example.com/second');
+  it('sets a preview image only for pages that have one', () => {
+    service.updateMetaTags({ description: 'Pâine', path: '/products/1', image: '/assets/a.webp' });
 
-    const links = document.head.querySelectorAll('link[rel="canonical"]');
-    expect(links.length).toBe(1);
-    expect(links[0].getAttribute('href')).toBe('https://example.com/second');
+    expect(metaContent('property="og:image"')).toBe(`${SITE_URL}/assets/a.webp`);
+    expect(metaContent('name="twitter:image"')).toBe(`${SITE_URL}/assets/a.webp`);
+
+    service.updateMetaTags({ description: 'Contact', path: '/contact' });
+
+    expect(metaContent('property="og:image"')).toBeUndefined();
+    expect(metaContent('name="twitter:image"')).toBeUndefined();
   });
 });

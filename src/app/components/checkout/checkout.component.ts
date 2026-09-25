@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { FormField, FormRoot, form } from '@angular/forms/signals';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -9,6 +9,7 @@ import {
 import { CartService } from '../../services/cart.service';
 import { NewOrder, OrderService } from '../../services/order.service';
 import { SessionStorageService } from '../../services/session-storage.service';
+import { SEOService } from '../../services/seo.service';
 import { reportInvalidFields } from '../../shared/invalid-summary';
 import { RonPipe } from '../../shared/ron.pipe';
 import { checkoutFormSchema, emptyCheckoutForm, toOrderCustomer } from './checkout-form';
@@ -25,7 +26,8 @@ const PAYMENT_METHOD_HINTS = {
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css',
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnInit {
+  private readonly seoService = inject(SEOService);
   private readonly cartService = inject(CartService);
   private readonly orderService = inject(OrderService);
   private readonly sessionStorageService = inject(SessionStorageService);
@@ -141,5 +143,13 @@ export class CheckoutComponent {
     }
 
     return `Comanda: \n\n${customerContactInfo}\n${productString}`.trim();
+  }
+
+  ngOnInit(): void {
+    this.seoService.updateMetaTags({
+      description: 'Finalizează comanda la TestBakery Sibiu.',
+      path: '/checkout',
+      robots: 'noindex, follow',
+    });
   }
 }

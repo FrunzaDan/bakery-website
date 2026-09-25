@@ -9,6 +9,31 @@
   font-family: var(--regular-font);
 }
 
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--bold-font);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+  outline: 0.2rem solid var(--white);
+  outline-offset: -0.4rem;
+}
+
+/* Focus lands here from the skip link; the page itself needs no ring. */
+main:focus {
+  outline: none;
+}
+
 .background-image-1 {
   display: block;
   position: fixed;

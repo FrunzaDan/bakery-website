@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormField, FormRoot, form } from '@angular/forms/signals';
 import { RouterModule } from '@angular/router';
 import { ContactMeForm } from '../../interfaces/contact-me-form';
 import { NotificationService } from '../../services/notification.service';
 import { SendEmailService } from '../../services/send-email.service';
+import { SEOService } from '../../services/seo.service';
 import { reportInvalidFields } from '../../shared/invalid-summary';
 import { contactFormSchema, emptyContactForm } from './contact-form';
 
@@ -13,7 +14,8 @@ import { contactFormSchema, emptyContactForm } from './contact-form';
     templateUrl: './contact.component.html',
     styleUrl: './contact.component.css',
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
+  private readonly seoService = inject(SEOService);
   private readonly sendEmailService = inject(SendEmailService);
   private readonly notificationService = inject(NotificationService);
 
@@ -39,5 +41,13 @@ export class ContactComponent {
       console.error('Error sending the contact message:', error);
       this.sendError.set('Mesajul nu a putut fi trimis. Te rugăm să încerci din nou.');
     }
+  }
+
+  ngOnInit(): void {
+    this.seoService.updateMetaTags({
+      description:
+        'Contactează TestBakery din Sibiu: telefon, e-mail, adresa de pe Calea Dumbrăvii și formularul de contact.',
+      path: '/contact',
+    });
   }
 }

@@ -5,6 +5,7 @@ import {
   inject,
   input,
   linkedSignal,
+  OnInit,
   untracked,
 } from '@angular/core';
 import { FormField, debounce, form } from '@angular/forms/signals';
@@ -19,6 +20,7 @@ import {
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
 import { ProductCatalogService } from '../../services/product-catalog.service';
+import { SEOService } from '../../services/seo.service';
 import { RonPipe } from '../../shared/ron.pipe';
 
 type SortOption = 'title-asc' | 'title-desc' | 'price-asc' | 'price-desc';
@@ -85,7 +87,8 @@ function toSortOption(value: string | undefined): SortOption | undefined {
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
+  private readonly seoService = inject(SEOService);
   private readonly catalog = inject(ProductCatalogService);
   private readonly cartService = inject(CartService);
   private readonly notificationService = inject(NotificationService);
@@ -179,5 +182,13 @@ export class ProductsComponent {
         ? `"${product.title}" a fost adăugat!`
         : `Poți comanda cel mult ${MAX_QUANTITY_PER_PRODUCT} buc. din "${product.title}".`,
     );
+  }
+
+  ngOnInit(): void {
+    this.seoService.updateMetaTags({
+      description:
+        'Torturi, prăjituri, patiserie și produse de bază de la TestBakery Sibiu. Vezi prețurile și gramajul și comandă online.',
+      path: '/products',
+    });
   }
 }

@@ -2,9 +2,7 @@
 <div class="container-fluid mb-4 px-2 pb-2">
   <div class="card px-2 mx-4">
     <div class="row justify-content-center align-items-center pt-2 mt-2">
-      <span class="subtitle-2 text-center pt-2 mt-2"
-        >Găsește și comandă produse:</span
-        >
+      <h1 class="subtitle-2 fw-normal text-center pt-2 mt-2 mb-0">Găsește și comandă produse:</h1>
       </div>
       <div class="row justify-content-center align-items-center p-2">
         <div
@@ -57,21 +55,21 @@
         <div
           class="col-md justify-content-center align-items-center text-center p-2"
           >
-          <button
-            routerLink="../cart"
+          <a
+            routerLink="/cart"
             class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2"
             >
             <img
               src="/assets/images/cart/cart.svg"
-              alt="cart"
+              alt=""
               class="cart-icon"
               />
             <span class="ps-2"> Comanda mea </span>
 
-            <div class="badge bg-danger">
+            <span class="badge bg-danger d-block">
               Produse: {{ totalNumberOfCartProducts() }}
-            </div>
-          </button>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -139,9 +137,9 @@
                     />
                 </a>
                 <div class="card-body">
-                  <h5 class="card-title">
+                  <h2 class="card-title h5">
                     <a [routerLink]="['/products', product.id]" class="product-link">{{ product.title }}</a>
-                  </h5>
+                  </h2>
                   <p class="card-text">
                     {{ product.description }}
                   </p>
@@ -155,10 +153,10 @@
                     >
                     <img
                       src="/assets/images/cart/cart_add.svg"
-                      alt="cart"
+                      alt=""
                       class="cart-icon"
                       />
-                    <div>Comandă</div>
+                    <span class="d-block">Comandă<span class="visually-hidden"> {{ product.title }}</span></span>
                   </button>
                 </div>
               </div>

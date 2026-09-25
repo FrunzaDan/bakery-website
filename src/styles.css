@@ -93,16 +93,10 @@ a:active {
 
 .form-control:focus {
   border-color: var(--red);
-  box-shadow: none;
+  box-shadow: 0 0 0 0.25rem rgba(var(--main-red-for-alpha), 0.35);
 }
 
 iframe {
-  outline: none !important;
-  border: none !important;
-}
-
-iframe:focus {
-  outline: none !important;
   border: none !important;
 }
 

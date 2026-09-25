@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { afterRenderEffect, Component, inject, input, signal } from '@angular/core';
+import { afterRenderEffect, Component, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PAYMENT_METHOD_LABELS } from '../../interfaces/checkout-form';
 import { Order } from '../../interfaces/order';
 import { OrderService } from '../../services/order.service';
+import { SEOService } from '../../services/seo.service';
 import { RonPipe } from '../../shared/ron.pipe';
 
 /** Demo bank details for paying by transfer; the IBAN is the standard Romanian example. */
@@ -21,7 +22,8 @@ export const BANK_DETAILS = {
   templateUrl: './order-confirmation.component.html',
   styleUrl: './order-confirmation.component.css',
 })
-export class OrderConfirmationComponent {
+export class OrderConfirmationComponent implements OnInit {
+  private readonly seoService = inject(SEOService);
   private readonly orderService = inject(OrderService);
 
   readonly id = input.required<string>();
@@ -38,6 +40,14 @@ export class OrderConfirmationComponent {
   constructor() {
     afterRenderEffect(() => {
       this.order.set(this.orderService.getOrder(this.id()) ?? null);
+    });
+  }
+
+  ngOnInit(): void {
+    this.seoService.updateMetaTags({
+      description: 'Detaliile comenzii tale la TestBakery Sibiu.',
+      path: `/order/${this.id()}`,
+      robots: 'noindex, follow',
     });
   }
 }

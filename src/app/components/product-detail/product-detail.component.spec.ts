@@ -70,7 +70,7 @@ describe('ProductDetailComponent', () => {
     expect(el.textContent).toContain('8,99 RON');
     expect(el.textContent).toContain('făină de grâu, unt, lapte');
     expect(el.textContent).toContain('Conține: gluten, lapte.');
-    expect(TestBed.inject(Title).getTitle()).toBe('Croissant cu Unt');
+    expect(TestBed.inject(Title).getTitle()).toBe('Croissant cu Unt - TestBakery Sibiu');
   });
 
   it('says where to ask when the food information is missing', async () => {

@@ -15,10 +15,14 @@
 }
 
 .navbar-toggler:focus,
-.navbar-toggler:active,
-.navbar-toggler-icon:focus {
-    outline: none;
+.navbar-toggler:active {
     box-shadow: none;
+}
+
+/* Mouse users get no ring; keyboard users still see where they are. */
+.navbar-toggler:focus-visible {
+    outline: 0.3rem solid var(--red);
+    outline-offset: 0.3rem;
 }
 
 /* Define the shape and color of the hamburger lines */
