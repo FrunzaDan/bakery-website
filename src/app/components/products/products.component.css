@@ -6,10 +6,17 @@
     width: 100%;
 }
 
+.search-box {
+    position: relative;
+}
+
+/* Vertically centred on the input, whatever its height or font size. */
 .search-icon {
     position: absolute;
-    z-index: 10;
-    transform: translate(-200%, -85%);
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    pointer-events: none;
     color: var(--red);
 }
 
@@ -24,9 +31,8 @@
 }
 
 .search-products-form-control {
-    display: inline-block;
-    height: 100% !important;
     font-size: 1.8rem;
+    padding-right: 3rem !important;
 }
 
 .btn .badge {

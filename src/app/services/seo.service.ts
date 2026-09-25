@@ -22,7 +22,15 @@ export class SEOService {
     link.setAttribute('rel', 'canonical');
     this.doc.head.appendChild(link);
 
-    link.setAttribute('href', href ? href : this.doc.URL + '/');
+    link.setAttribute('href', href ?? this.urlWithoutQuery());
+  }
+
+  /** The current page URL without its query string or fragment, so filtered views share one canonical page. */
+  private urlWithoutQuery(): string {
+    const url = new URL(this.doc.URL);
+    url.search = '';
+    url.hash = '';
+    return url.href;
   }
 
   private removeExistingCanonicalLink(): void {

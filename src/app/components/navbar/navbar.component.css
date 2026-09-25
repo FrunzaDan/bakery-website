@@ -69,37 +69,41 @@
     transform: translate(0%, 0%) rotate(0deg);
 }
 
-@media only screen and (min-width: 1000px) and (max-width: 1200px) {
+/*
+ * The menu collapses below 992px (navbar-expand-lg). Above that the links scale
+ * with the viewport, so all four (and the cart count) stay on one line at any width.
+ */
+@media only screen and (min-width: 992px) {
     .nav-link {
-        font-size: 3rem;
-        margin: 0rem 1rem;
+        font-size: min(3.4vw, 3.6rem);
+        margin: 0rem min(1.2vw, 2rem);
+    }
+
+    /* Room for the cart count, which hangs past the end of "COȘ". */
+    .cart-label {
+        margin-right: 0.6em;
     }
 }
 
-@media only screen and (min-width: 900px) and (max-width: 1000px) {
-    .nav-link {
-        font-size: 2.6rem;
-        margin: 0rem 1rem;
-    }
-}
-
-@media only screen and (min-width: 768px) and (max-width: 900px) {
-    .nav-link {
-        font-size: 2rem;
-        margin: 0rem 1rem;
-    }
-}
-
-@media only screen and (min-width: 576px) and (max-width: 768px) {
-    .nav-link {
-        font-size: 1.3rem;
-        margin: 0rem 0.2rem;
-    }
-}
-
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 991.98px) {
     .nav-link {
         font-size: 3.2rem;
         margin: 0.4rem 0.2rem;
     }
+}
+
+.cart-label {
+    position: relative;
+}
+
+/* Sits on the corner of "COȘ" so the count never pushes the link wider or onto a new line. */
+.cart-count {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    transform: translate(-20%, -30%);
+    font-size: 0.35em;
+    color: var(--white);
+    background: var(--red);
+    border-radius: 1em;
 }

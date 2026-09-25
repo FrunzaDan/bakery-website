@@ -34,11 +34,13 @@ describe('SEOService', () => {
     expect(links[0].getAttribute('href')).toBe('https://example.com/page');
   });
 
-  it('falls back to the current document URL when no href is given', () => {
+  it('falls back to the current page URL without its query string or fragment', () => {
+    history.replaceState(null, '', '/products?q=tort&categorie=prajituri#rezultate');
+
     service.createLinkForCanonicalURL();
 
     const link = document.head.querySelector('link[rel="canonical"]');
-    expect(link?.getAttribute('href')).toBe(document.URL + '/');
+    expect(link?.getAttribute('href')).toBe(`${location.origin}/products`);
   });
 
   it('replaces any existing canonical link instead of duplicating it', () => {
