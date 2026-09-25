@@ -36,6 +36,7 @@ describe('ProductDetailComponent', () => {
   const loadError = signal<string | null>(null);
   const cartLines = signal<readonly CartLine[]>([]);
   const addProductToCart = vi.fn(() => true);
+  const setProductQuantity = vi.fn();
 
   let harness: RouterTestingHarness;
 
@@ -51,12 +52,13 @@ describe('ProductDetailComponent', () => {
     loadError.set(null);
     cartLines.set([]);
     addProductToCart.mockClear();
+    setProductQuantity.mockClear();
 
     TestBed.configureTestingModule({
       providers: [
         provideRouter([{ path: 'products/:id', component: ProductDetailComponent }], withComponentInputBinding()),
         { provide: ProductCatalogService, useValue: { productsById, isLoading, loadError, reload: vi.fn() } },
-        { provide: CartService, useValue: { cartLines, addProductToCart } },
+        { provide: CartService, useValue: { cartLines, addProductToCart, setProductQuantity } },
       ],
     });
     harness = await RouterTestingHarness.create();
@@ -95,6 +97,23 @@ describe('ProductDetailComponent', () => {
       '4 buc. din "Croissant cu Unt" au fost adăugate!',
     );
     expect(component.quantity()).toBe(1);
+  });
+
+  it('shows and edits the cart quantity once the product is in the cart', async () => {
+    cartLines.set([{ product: croissant, quantity: 3 }]);
+    const { el } = await open('/products/2');
+
+    const input = el.querySelector<HTMLInputElement>('input[type="number"]')!;
+    expect(input.value).toBe('3');
+    expect(el.textContent).toContain('26,97 RON');
+    expect(el.querySelector('a.btn[href="/cart"]')?.textContent).toContain('Vezi coșul');
+    expect(el.textContent).not.toContain('Adaugă în coș');
+
+    input.value = '5';
+    input.dispatchEvent(new Event('change'));
+
+    expect(setProductQuantity).toHaveBeenCalledWith(croissant, 5);
+    expect(addProductToCart).not.toHaveBeenCalled();
   });
 
   it('tells the customer when the cart already holds the maximum', async () => {

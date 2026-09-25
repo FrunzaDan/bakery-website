@@ -7,6 +7,15 @@
   font-size: 1.2rem;
 }
 
+.back-link .bi {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.back-link:hover .bi {
+  transform: translateX(-0.3rem);
+}
+
 .back-link:hover,
 .back-link:focus-visible {
   text-decoration: underline !important;

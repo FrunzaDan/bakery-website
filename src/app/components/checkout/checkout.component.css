@@ -1,4 +1,5 @@
-label {
+label,
+.form-group-title {
     font-size: 1.8rem;
 }
 
@@ -54,11 +55,12 @@ label {
     width: 96%;
     max-height: 90%;
     white-space: pre-wrap;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 @media (max-width: 576px) {
-    label {
+    label,
+    .form-group-title {
         font-size: 1rem;
     }
 }

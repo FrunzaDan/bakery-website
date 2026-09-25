@@ -1,6 +1,6 @@
 <div class="container p-4"></div>
 <div class="container-fluid mb-4 px-2">
-  <div class="card px-2 mx-4">
+  <div class="card px-2 mx-sm-4 enter-rise">
     <div class="row align-items-center p-2 p-sm-4 mx-sm-4">
       <h1 class="text-center pt-4 px-4 mb-0">Finalizează comanda</h1>
       <p class="h2 text-center p-4">
@@ -11,7 +11,7 @@
       </p>
       <form [formRoot]="checkoutForm">
         @if (invalidSummary(); as summary) {
-          <div class="alert alert-danger" role="alert">{{ summary }}</div>
+          <div class="alert alert-danger enter-rise" role="alert">{{ summary }}</div>
         }
         @let name = checkoutForm.name();
         @let nameError = name.touched() && name.invalid();
@@ -70,7 +70,7 @@
             <div class="invalid-feedback" id="phone-error">{{ phone.errors()[0].message }}</div>
           }
         </div>
-        <p class="form-label mb-1">Adresă de livrare:</p>
+        <p class="form-label form-group-title mb-1">Adresă de livrare:</p>
         @let town = checkoutForm.town();
         @let townError = town.touched() && town.invalid();
         <div class="mb-3">
@@ -238,7 +238,7 @@
     @if (placeOrderError(); as error) {
       <div class="alert alert-danger mt-3 mb-0" role="alert">{{ error }}</div>
     }
-    <p class="text-center pt-4 pb-1">Confirmați plasarea comenzii?</p>
+    <p class="text-center pt-4 pb-1">Confirmi plasarea comenzii?</p>
     <div class="row justify-content-center align-items-center width-100prc p-2">
       <div class="col-sm align-items-center text-center width-100prc p-2">
         <button type="button" (click)="closeConfirmCheckout()" [disabled]="isPlacingOrder()"
@@ -254,7 +254,7 @@
             <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
             Se plasează comanda...
           } @else {
-            Confirm
+            Confirmă
           }
         </button>
       </div>

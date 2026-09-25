@@ -2,7 +2,7 @@
 <h1 class="visually-hidden">Coșul meu</h1>
 @if (cartLines().length !== 0) {
   <div class="container">
-    <div class="cart-panel">
+    <div class="cart-panel enter-rise">
       <div class="cart-header" aria-hidden="true">
         <span></span>
         <span>Produs</span>
@@ -52,12 +52,16 @@
       </ul>
       <div class="cart-summary">
         <span>Produse: <strong>{{ totalNumberOfCartProducts() }}</strong></span>
-        <span class="cart-summary-total">Total: <strong>{{ totalPrice() | ron }}</strong></span>
+        <span class="cart-summary-total">Total:
+          @for (total of [totalPrice()]; track total) {
+            <strong class="d-inline-block pop">{{ total | ron }}</strong>
+          }
+        </span>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <div class="card p-2 my-4">
+        <div class="card p-2 my-4 enter-rise" style="--stagger: 2">
           <div class="row p-2">
             <div class="col-sm justify-content-center align-items-center text-center my-2">
               <a routerLink="/products" class="btn btn-primary width-100prc p-2 h-100">

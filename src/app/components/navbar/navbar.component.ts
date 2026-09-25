@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 
@@ -9,5 +9,11 @@ import { CartService } from '../../services/cart.service';
     styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-    readonly totalNumberOfCartProducts = inject(CartService).totalNumberOfProducts;
+    private readonly totalNumberOfCartProducts = inject(CartService).totalNumberOfProducts;
+
+    /** The count as a one-item list (empty when the cart is), so the template can re-create the badge when it changes. */
+    readonly cartCounts = computed(() => {
+        const count = this.totalNumberOfCartProducts();
+        return count > 0 ? [count] : [];
+    });
 }

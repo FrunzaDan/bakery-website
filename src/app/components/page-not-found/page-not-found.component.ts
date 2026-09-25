@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SEOService } from '../../services/seo.service';
 
 @Component({
     selector: 'app-page-not-found',
-    imports: [],
+    imports: [RouterLink],
     templateUrl: './page-not-found.component.html',
     styleUrl: './page-not-found.component.css',
 })

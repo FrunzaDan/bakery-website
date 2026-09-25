@@ -1,10 +1,10 @@
 <div class="container p-4"></div>
 <div class="container-fluid mb-4 px-2 pb-2">
-  <div class="card px-2 mx-4">
+  <div class="card px-2 mx-sm-4 enter-rise">
     <div class="row justify-content-center align-items-center pt-2 mt-2">
       <h1 class="subtitle-2 fw-normal text-center pt-2 mt-2 mb-0">Găsește și comandă produse:</h1>
       </div>
-      <div class="row justify-content-center align-items-center p-2">
+      <div class="row justify-content-center align-items-center px-2 pt-2">
         <div
           class="col-md justify-content-center align-items-center text-center p-2"
           >
@@ -24,13 +24,13 @@
           >
           <div class="dropdown width-100prc">
             <button
-              class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2 dropdown-toggle"
+              class="btn btn-primary toolbar-btn width-100prc d-flex justify-content-center align-items-center gap-2 p-2 dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
               >
-              <i class="bi bi-sort-down ps-2"></i>
-              <span class="ps-2"> Sortează </span>
+              <i class="bi bi-sort-down" aria-hidden="true"></i>
+              <span>Sortează</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end width-100prc">
               @for (choice of sortChoices; track choice.value) {
@@ -51,22 +51,21 @@
           </div>
         </div>
       </div>
-      <div class="row justify-content-center align-items-center p-2">
+      <div class="row justify-content-center align-items-center px-2 pb-2">
         <div
           class="col-md justify-content-center align-items-center text-center p-2"
           >
           <a
             routerLink="/cart"
-            class="btn btn-primary width-100prc justify-content-center align-items-center text-center p-2"
+            class="btn btn-primary toolbar-btn width-100prc d-flex flex-wrap justify-content-center align-items-center gap-2 p-2"
             >
             <img
               src="/assets/images/cart/cart.svg"
               alt=""
               class="cart-icon"
               />
-            <span class="ps-2"> Comanda mea </span>
-
-            <span class="badge bg-danger d-block">
+            <span>Comanda mea</span>
+            <span class="badge rounded-pill cart-count-badge">
               Produse: {{ totalNumberOfCartProducts() }}
             </span>
           </a>
@@ -76,7 +75,7 @@
   </div>
 
   <div class="container-fluid mb-4 px-2">
-    <div class="card py-2 mx-4">
+    <div class="card py-2 mx-sm-4 enter-rise" style="--stagger: 2">
       <div class="container">
         <div class="row px-2 py-4">
           @for (option of categories; track option.label) {
@@ -129,7 +128,7 @@
                 class="card product-card hover-card enter-rise"
                 [style.--stagger]="$index < maxStagger ? $index : maxStagger"
                 >
-                <a [routerLink]="['/products', product.id]" tabindex="-1" aria-hidden="true">
+                <a [routerLink]="['/products', product.id]" class="product-image-link" tabindex="-1" aria-hidden="true">
                   <img
                     src="{{ product.image }}"
                     class="card-img-top"

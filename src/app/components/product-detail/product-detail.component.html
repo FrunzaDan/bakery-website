@@ -19,26 +19,47 @@
           }
           <p class="product-price">{{ product.price | ron }}</p>
 
+          <!-- Once the product is in the cart, the picker edits the cart's quantity,
+               so the number shown is always what will be ordered. -->
           <div class="order-box mt-auto p-3">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-              <app-quantity-picker [(quantity)]="quantity" [label]="product.title" />
+              @if (quantityInCart() > 0) {
+                <app-quantity-picker
+                  [quantity]="quantityInCart()"
+                  (quantityChange)="updateCartQuantity($event)"
+                  [label]="product.title"
+                />
+              } @else {
+                <app-quantity-picker [(quantity)]="quantity" [label]="product.title" />
+              }
               <span class="subtotal">Total: <strong>{{ subtotal() | ron }}</strong></span>
             </div>
-            <button type="button" class="btn btn-primary w-100 mt-3 p-2" (click)="addToCart()">
-              <img src="/assets/images/cart/cart_add.svg" alt="" class="cart-icon" />
-              Adaugă în coș
-            </button>
             @if (quantityInCart() > 0) {
-              <p class="text-center mt-2 mb-0">
-                Ai {{ quantityInCart() }} buc. în coș ·
-                <a routerLink="/cart" class="text-decoration-underline">Vezi coșul</a>
+              <a
+                routerLink="/cart"
+                class="btn btn-primary w-100 mt-3 p-2 d-flex justify-content-center align-items-center gap-2"
+              >
+                <img src="/assets/images/cart/cart.svg" alt="" class="cart-icon" />
+                Vezi coșul
+              </a>
+              <p class="text-center small mt-2 mb-0 enter-rise">
+                Produsul este în coș. Cantitatea se actualizează pe loc.
               </p>
+            } @else {
+              <button
+                type="button"
+                class="btn btn-primary w-100 mt-3 p-2 d-flex justify-content-center align-items-center gap-2"
+                (click)="addToCart()"
+              >
+                <img src="/assets/images/cart/cart_add.svg" alt="" class="cart-icon" />
+                Adaugă în coș
+              </button>
             }
           </div>
         </div>
       </div>
 
-      <div class="row g-4 mt-2">
+      <div class="row g-4 mt-2 enter-rise" style="--stagger: 3">
         <section class="col-md-6" aria-labelledby="ingredients-heading">
           <h2 id="ingredients-heading" class="section-heading">Ingrediente</h2>
           @if (product.ingredients) {
@@ -83,7 +104,7 @@
         </button>
       </div>
     } @else {
-      <div class="text-center my-4 py-4">
+      <div class="text-center my-4 py-4 enter-rise">
         <h1 class="product-title">Produsul nu a fost găsit</h1>
         <p>Este posibil să nu mai fie în ofertă.</p>
         <a routerLink="/products" class="btn btn-primary mt-2">Vezi toate produsele</a>

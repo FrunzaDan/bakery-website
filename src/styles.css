@@ -16,6 +16,26 @@
   font-size: 1.4rem;
 }
 
+/* Buttons ease between their colours and dip slightly when pressed. */
+.btn,
+.btn-math {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
+}
+
+.btn:not(:disabled):active,
+.btn-math:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.cart-icon {
+  transition: filter 0.2s ease;
+}
+
 .btn-math {
   background-color: var(--red) !important;
   border-color: var(--white) !important;
@@ -27,7 +47,6 @@
   border: 1px var(--red) solid;
   padding: 0px 8px;
   margin: 0 8px;
-  transition: all 0.2s;
 }
 
 .cart-icon {
@@ -37,6 +56,29 @@
 
 .selected-btn {
   box-shadow: 0.4rem 1rem 4rem rgba(255, 255, 255, 1);
+}
+
+/* Dropdowns (e.g. sorting) drop into place instead of appearing at once. */
+.dropdown-menu.show {
+  animation: dropdown-in 180ms ease-out;
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.4rem);
+  }
+}
+
+.dropdown-item {
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--red);
 }
 
 *,
@@ -89,6 +131,12 @@ a:active {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.form-control {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .form-control:focus {
@@ -173,19 +221,25 @@ iframe {
 
 .hover-logo {
   position: relative;
-  transition: all 0.2s;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
   transform-origin: 50% 50%;
 }
 
 .hover-item {
   position: relative;
-  transition: all 0.2s;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
   transform-origin: 50% 50%;
 }
 
 .hover-card {
   position: relative;
-  transition: all 0.2s;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
   transform-origin: 50% 50%;
 }
 
@@ -197,7 +251,9 @@ iframe {
   width: 20rem;
   text-align: center;
   position: relative;
-  transition: all 0.2s;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
   transform-origin: 50% 50%;
   filter: drop-shadow(4px 4px var(--red));
 }
@@ -406,10 +462,48 @@ iframe {
   }
 }
 
+/* Pages cross-fade and rise a little when the route changes (the router uses view transitions). */
+::view-transition-old(root) {
+  animation: page-out 160ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 280ms ease-out both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+}
+
+/* Brief pop, e.g. on a count that just changed. Uses `scale`, so it keeps any positioning `transform`. */
+.pop {
+  animation: pop 300ms ease-out;
+}
+
+@keyframes pop {
+  40% {
+    scale: 1.35;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .skeleton::after,
-  .enter-rise,
-  .leave-collapse {
-    animation: none;
+  *,
+  *::before,
+  *::after,
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

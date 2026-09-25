@@ -25,14 +25,20 @@
 }
 
 .fade-in {
-  transition: opacity 400ms ease-in;
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
 
   @starting-style {
     opacity: 0;
+    transform: translateY(1rem);
   }
 }
 
 .fade-out {
-  transition: opacity 600ms ease-out;
+  transition:
+    opacity 300ms ease-in,
+    transform 300ms ease-in;
   opacity: 0;
+  transform: translateY(1rem);
 }

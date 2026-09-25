@@ -34,12 +34,14 @@ export class ProductDetailComponent {
     return product ? PRODUCT_CATEGORY_LABELS[product.category] : '';
   });
 
-  /** Starts at 1 again whenever another product is opened. */
+  /** How many to add while the product isn't in the cart; starts at 1 for each product. */
   readonly quantity = linkedSignal({ source: this.id, computation: () => 1 });
   readonly quantityInCart = computed(
     () => this.cartService.cartLines().find((line) => line.product.id === this.id())?.quantity ?? 0,
   );
-  readonly subtotal = computed(() => (this.product()?.price ?? 0) * this.quantity());
+  readonly subtotal = computed(
+    () => (this.product()?.price ?? 0) * (this.quantityInCart() || this.quantity()),
+  );
 
   constructor() {
     effect(() => {
@@ -83,5 +85,12 @@ export class ProductDetailComponent {
     const added = Math.min(this.quantity(), MAX_QUANTITY_PER_PRODUCT - before);
     this.notificationService.show(`${added} buc. din "${product.title}" au fost adăugate!`);
     this.quantity.set(1);
+  }
+
+  updateCartQuantity(quantity: number): void {
+    const product = this.product();
+    if (product) {
+      this.cartService.setProductQuantity(product, quantity);
+    }
   }
 }

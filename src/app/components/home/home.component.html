@@ -11,7 +11,7 @@
     <div
       class="col px-4 d-flex justify-content-center align-items-center text-center"
     >
-      <div class="card p-4 width-100prc">
+      <div class="card p-4 width-100prc enter-rise">
         <h1 class="subtitle-1 fw-normal mb-0">Bine ați venit la TestBakery!</h1>
         <div class="subtitle-2">
           La TestBakery vă oferim produse alimentare din următoarele categorii:
@@ -21,7 +21,7 @@
   </div>
   <div class="row p-4">
     @for (card of categoryCards; track card.category) {
-      <div class="col-lg-3 col-sm-6 p-4">
+      <div class="col-lg-3 col-sm-6 p-4 enter-rise" [style.--stagger]="$index + 2">
         <a
           class="card home-category-card hover-card p-4 h-100 w-100 align-items-center text-reset text-decoration-none"
           routerLink="/products"
@@ -37,7 +37,7 @@
     <div
       class="col px-4 d-flex justify-content-center align-items-center text-center"
     >
-      <div class="card p-4 width-100prc">
+      <div class="card p-4 width-100prc enter-rise" style="--stagger: 6">
         <div class="subtitle-2">
           De asemenea, livrăm in Sibiu torturi pentru diverse evenimente și
           aniversări:

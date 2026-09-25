@@ -2,6 +2,15 @@
     background-color: var(--white);
 }
 
+.nav-link {
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+    color: var(--red) !important;
+}
+
 .SAL-col {
     display: flex;
     justify-content: right;

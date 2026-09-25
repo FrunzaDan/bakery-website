@@ -31,21 +31,51 @@
 }
 
 .search-products-form-control {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     padding-right: 3rem !important;
 }
 
-.btn .badge {
-    top: 0px;
+/* Same height as the search box next to it: same font size, padding and border. */
+.toolbar-btn {
+    line-height: 1.5;
 }
 
-.comanda-mea {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.toolbar-btn .cart-icon {
+    height: 1.6rem;
+}
+
+.cart-count-badge {
+    font-size: 1rem;
+    background-color: var(--white);
+    color: var(--red);
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+@media (pointer: fine) {
+    .toolbar-btn:hover .cart-count-badge {
+        background-color: var(--red);
+        color: var(--white);
+    }
+}
+
+/* The photo zooms a little inside its frame when the card is hovered. */
+.product-image-link {
+    display: block;
+    overflow: hidden;
+    border-top-left-radius: 1.2rem;
+    border-top-right-radius: 1.2rem;
+}
+
+.product-image-link img {
+    transition: transform 0.4s ease;
+}
+
+@media (pointer: fine) {
+    .product-card:hover .product-image-link img {
+        transform: scale(1.06);
+    }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 768px) {
@@ -60,16 +90,8 @@
         margin-top: 0.6rem;
         margin-bottom: 0.6rem;
     }
-
-    .search-products-form-control {
-        font-size: 1.4rem;
-    }
-
-    .comanda-mea {
-        margin-left: 0.2rem;
-        margin-right: 0.2rem;
-    }
 }
+
 /* The title is the card's link; underline it only on hover so cards stay calm. */
 .product-link:hover,
 .product-link:focus-visible {
