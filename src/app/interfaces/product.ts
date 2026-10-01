@@ -20,7 +20,8 @@ export const PRODUCT_CATEGORY_LABELS: Readonly<
 export const MAX_QUANTITY_PER_PRODUCT = 99;
 
 /**
- * A catalog product. Prices are in RON, `gramaj` (weight) is in grams.
+ * A catalog product. Prices are in RON, `gramaj` (weight) is in grams and
+ * `calories` is in kcal per 100 g, as on EU nutrition labels.
  * `ingredients` and `allergens` are the food information EU law requires sellers to show.
  */
 export interface Product {
@@ -31,6 +32,13 @@ export interface Product {
   readonly image: string;
   readonly category: ProductCategory;
   readonly gramaj?: number;
+  readonly calories?: number;
   readonly ingredients?: string;
   readonly allergens?: readonly string[];
+}
+
+/** Kcal in one piece, when both the weight and the energy value are known. */
+export function caloriesPerPiece(product: Product): number | undefined {
+  if (!product.gramaj || !product.calories) return undefined;
+  return Math.round((product.gramaj * product.calories) / 100);
 }

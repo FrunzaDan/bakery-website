@@ -55,6 +55,7 @@ export function parseProduct(value: unknown): Product | undefined {
     image,
     category,
     gramaj,
+    calories,
     ingredients,
     allergens,
   } = value;
@@ -84,6 +85,7 @@ export function parseProduct(value: unknown): Product | undefined {
     image,
     category,
     ...(isPositiveNumber(gramaj) && { gramaj }),
+    ...(isPositiveNumber(calories) && { calories }),
     ...(isNonBlankString(ingredients) && { ingredients }),
     ...(validAllergens.length > 0 && { allergens: validAllergens }),
   };

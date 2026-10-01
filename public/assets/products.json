@@ -4,11 +4,12 @@
       "allergens": [
         "gluten"
       ],
+      "calories": 240,
       "category": "bakeries",
       "description": "Pâine cu maia coaptă proaspăt, cu coajă crocantă și miez moale și aerat.",
       "gramaj": 800,
       "id": 1,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/01-paine-cu-maia.webp",
       "ingredients": "făină de grâu, apă, maia naturală, sare",
       "price": 12.5,
       "title": "Pâine cu Maia"
@@ -19,11 +20,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 406,
       "category": "pastry",
       "description": "Croissant fraged și crocant, preparat din aluat laminat timp de 72 de ore.",
       "gramaj": 90,
       "id": 2,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/02-croissant-cu-unt.webp",
       "ingredients": "făină de grâu, unt 25%, lapte, zahăr, drojdie, ouă, sare",
       "price": 8.99,
       "title": "Croissant cu Unt"
@@ -35,11 +37,12 @@
         "lapte",
         "soia"
       ],
+      "calories": 420,
       "category": "sweets",
       "description": "Tort bogat de ciocolată neagră cu umplutură de ganache și glazură de cacao.",
       "gramaj": 1500,
       "id": 3,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/03-tort-de-ciocolata.webp",
       "ingredients": "ciocolată neagră 70%, smântână, ouă, zahăr, făină de grâu, unt, cacao",
       "price": 18.99,
       "title": "Tort de Ciocolată"
@@ -50,11 +53,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 290,
       "category": "sweets",
       "description": "Prăjitură românească clasică cu foi fragede, cremă de vanilie și caramel.",
       "gramaj": 150,
       "id": 4,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/04-cremsnit.webp",
       "ingredients": "foietaj (făină de grâu, unt), lapte, ouă, zahăr, amidon, vanilie, caramel",
       "price": 22,
       "title": "Cremșnit"
@@ -65,11 +69,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 330,
       "category": "pastry",
       "description": "Plăcintă foietată cu brânză dulce de vaci și stafide, rumenită perfect la cuptor.",
       "gramaj": 120,
       "id": 5,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/05-branzoaica.webp",
       "ingredients": "făină de grâu, brânză dulce de vaci, ouă, zahăr, stafide, unt, drojdie",
       "price": 7.5,
       "title": "Brânzoaică"
@@ -79,11 +84,12 @@
         "gluten",
         "lapte"
       ],
+      "calories": 300,
       "category": "bakeries",
       "description": "Chifle moi din aluat cu lapte, cu coajă aurie ușoară, perfecte pentru micul dejun.",
       "gramaj": 60,
       "id": 6,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/06-chifle-cu-lapte.webp",
       "ingredients": "făină de grâu, lapte, unt, zahăr, drojdie, sare",
       "price": 6.99,
       "title": "Chifle cu Lapte"
@@ -95,11 +101,12 @@
         "ouă",
         "susan"
       ],
+      "calories": 360,
       "category": "bakeries",
       "description": "Cozonac tradițional românesc împletit, presărat cu semințe de susan.",
       "gramaj": 1000,
       "id": 7,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/07-cozonac-impletit.webp",
       "ingredients": "făină de grâu, lapte, ouă, zahăr, unt, drojdie, semințe de susan, coajă de lămâie",
       "price": 14,
       "title": "Cozonac Împletit"
@@ -108,11 +115,12 @@
       "allergens": [
         "gluten"
       ],
+      "calories": 280,
       "category": "bakeries",
       "description": "Pâine rustică din făină integrală cu semințe de floarea-soarelui și dovleac.",
       "gramaj": 600,
       "id": 8,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/08-paine-cu-seminte.webp",
       "ingredients": "făină integrală de grâu, apă, semințe de floarea-soarelui, semințe de dovleac, drojdie, sare",
       "price": 13.5,
       "title": "Pâine cu Semințe"
@@ -123,11 +131,12 @@
         "ouă",
         "lapte"
       ],
+      "calories": 280,
       "category": "sweets",
       "description": "Blat pufos de vanilie cu frișcă și căpșuni proaspete, stratificat cu grijă.",
       "gramaj": 1500,
       "id": 9,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/09-tort-cu-frisca-si-capsuni.webp",
       "ingredients": "ouă, făină de grâu, zahăr, frișcă, căpșuni, vanilie",
       "price": 24.99,
       "title": "Tort cu Frișcă și Căpșuni"
@@ -136,11 +145,12 @@
       "allergens": [
         "gluten"
       ],
+      "calories": 270,
       "category": "bakeries",
       "description": "Baghetă crocantă la exterior și pufoasă la interior, coaptă în stil franțuzesc.",
       "gramaj": 250,
       "id": 10,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/10-bagheta-frantuzeasca.webp",
       "ingredients": "făină de grâu, apă, drojdie, sare",
       "price": 5.5,
       "title": "Baghetă Franțuzească"
@@ -150,11 +160,12 @@
         "gluten",
         "lapte"
       ],
+      "calories": 300,
       "category": "bakeries",
       "description": "Pâine plată moale unsă cu unt de usturoi și pătrunjel proaspăt.",
       "gramaj": 150,
       "id": 11,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/11-lipie-cu-usturoi.webp",
       "ingredients": "făină de grâu, apă, unt, usturoi, pătrunjel, drojdie, sare",
       "price": 7,
       "title": "Lipie cu Usturoi"
@@ -165,11 +176,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 290,
       "category": "pastry",
       "description": "Plăcintă foietată cu carne tocată condimentată și ceapă călită.",
       "gramaj": 180,
       "id": 12,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/12-placinta-cu-carne.webp",
       "ingredients": "foietaj (făină de grâu, unt), carne tocată de porc și vită, ceapă, condimente, ouă",
       "price": 9.5,
       "title": "Plăcintă cu Carne"
@@ -180,11 +192,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 310,
       "category": "pastry",
       "description": "Plăcintă crocantă din foi de plăcintă cu telemea cremoasă și mărar proaspăt.",
       "gramaj": 180,
       "id": 13,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/13-placinta-cu-telemea-si-marar.webp",
       "ingredients": "foi de plăcintă (făină de grâu), telemea de vacă, ouă, mărar, unt",
       "price": 8.5,
       "title": "Plăcintă cu Telemea și Mărar"
@@ -195,11 +208,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 350,
       "category": "sweets",
       "description": "Gogoși românești pufoase, pudrate cu zahăr și umplute cu gem de caise.",
       "gramaj": 100,
       "id": 14,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/14-gogosi-cu-gem.webp",
       "ingredients": "făină de grâu, lapte, ouă, zahăr, drojdie, gem de caise, ulei de floarea-soarelui",
       "price": 4.99,
       "title": "Gogoși cu Gem"
@@ -209,11 +223,12 @@
         "gluten",
         "lapte"
       ],
+      "calories": 380,
       "category": "pastry",
       "description": "Spirale din aluat foietaj cu zahăr și scorțișoară, glazurate deasupra.",
       "gramaj": 120,
       "id": 15,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/15-melc-cu-scortisoara.webp",
       "ingredients": "foietaj (făină de grâu, unt), zahăr, scorțișoară, glazură de zahăr",
       "price": 6.5,
       "title": "Melc cu Scorțișoară"
@@ -225,11 +240,12 @@
         "lapte",
         "soia"
       ],
+      "calories": 410,
       "category": "sweets",
       "description": "Macarons cu coajă crocantă și interior moale, umplute cu ganache de zmeură.",
       "gramaj": 25,
       "id": 16,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/16-macaron-cu-zmeura.webp",
       "ingredients": "făină de migdale, albuș, zahăr, ciocolată albă, smântână, piure de zmeură",
       "price": 5.99,
       "title": "Macaron cu Zmeură"
@@ -238,11 +254,12 @@
       "allergens": [
         "gluten"
       ],
+      "calories": 250,
       "category": "bakeries",
       "description": "Pâine densă din secară, ușor acrișoară, perfectă cu mezeluri și brânzeturi.",
       "gramaj": 700,
       "id": 17,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/17-paine-de-secara.webp",
       "ingredients": "făină de secară, făină de grâu, apă, maia, sare",
       "price": 11,
       "title": "Pâine de Secară"
@@ -254,11 +271,12 @@
         "lapte",
         "soia"
       ],
+      "calories": 330,
       "category": "sweets",
       "description": "Ecler din aluat choux umplut cu cremă de vanilie și glazurat cu ciocolată.",
       "gramaj": 80,
       "id": 18,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/18-ecler-cu-ciocolata.webp",
       "ingredients": "făină de grâu, ouă, unt, lapte, zahăr, vanilie, ciocolată neagră",
       "price": 7.99,
       "title": "Ecler cu Ciocolată"
@@ -269,11 +287,12 @@
         "nuci",
         "lapte"
       ],
+      "calories": 270,
       "category": "pastry",
       "description": "Strudel fin cu mere, scorțișoară, nuci și o notă de rom.",
       "gramaj": 150,
       "id": 19,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/19-strudel-cu-mere.webp",
       "ingredients": "foi de strudel (făină de grâu), mere, zahăr, nuci, scorțișoară, rom, unt",
       "price": 10.5,
       "title": "Strudel cu Mere"
@@ -284,11 +303,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 370,
       "category": "sweets",
       "description": "Tartă cu lămâie mătăsoasă pe bază de aluat fraged, cu coajă de lămâie confiată.",
       "gramaj": 120,
       "id": 20,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/20-tarta-cu-lamaie.webp",
       "ingredients": "făină de grâu, unt, ouă, zahăr, suc și coajă de lămâie",
       "price": 16.99,
       "title": "Tartă cu Lămâie"
@@ -297,11 +317,12 @@
       "allergens": [
         "gluten"
       ],
+      "calories": 300,
       "category": "bakeries",
       "description": "Covrigi moi presărați cu sare grunjoasă, copți proaspăt în fiecare zi.",
       "gramaj": 100,
       "id": 21,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/21-covrigi-cu-sare.webp",
       "ingredients": "făină de grâu, apă, drojdie, sare grunjoasă",
       "price": 6,
       "title": "Covrigi cu Sare"
@@ -311,11 +332,12 @@
         "gluten",
         "lapte"
       ],
+      "calories": 390,
       "category": "pastry",
       "description": "Aluat foietaj răsucit cu umplutură de mac și coajă de portocală.",
       "gramaj": 110,
       "id": 22,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/22-rasucita-cu-mac.webp",
       "ingredients": "foietaj (făină de grâu, unt), mac, zahăr, coajă de portocală",
       "price": 8,
       "title": "Răsucită cu Mac"
@@ -326,11 +348,12 @@
         "ouă",
         "lapte"
       ],
+      "calories": 400,
       "category": "sweets",
       "description": "Tort Medovik în straturi cu foi de miere și cremă de smântână — un clasic.",
       "gramaj": 1200,
       "id": 23,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/23-tort-medovik.webp",
       "ingredients": "făină de grâu, miere, ouă, unt, zahăr, smântână, bicarbonat",
       "price": 26,
       "title": "Tort Medovik"
@@ -340,11 +363,12 @@
         "gluten",
         "sulfiți"
       ],
+      "calories": 290,
       "category": "bakeries",
       "description": "Focaccia cu roșii cherry, măsline, rozmarin și sare de mare.",
       "gramaj": 400,
       "id": 24,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/24-focaccia-cu-rozmarin.webp",
       "ingredients": "făină de grâu, apă, ulei de măsline, roșii cherry, măsline, rozmarin, sare de mare",
       "price": 12,
       "title": "Focaccia cu Rozmarin"
@@ -355,11 +379,12 @@
         "nuci",
         "lapte"
       ],
+      "calories": 430,
       "category": "sweets",
       "description": "Baklava cu nuci caramelizate, însiropată cu miere și apă de trandafiri.",
       "gramaj": 100,
       "id": 25,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/25-baklava-cu-nuci.webp",
       "ingredients": "foi de plăcintă (făină de grâu), nuci, unt, zahăr, miere, apă de trandafiri",
       "price": 9.99,
       "title": "Baklava cu Nuci"
@@ -370,11 +395,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 300,
       "category": "pastry",
       "description": "Tarte mici din aluat fraged umplute cu gem de fructe de pădure de sezon.",
       "gramaj": 90,
       "id": 26,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/26-tartelete-cu-fructe-de-padure.webp",
       "ingredients": "făină de grâu, unt, ouă, zahăr, gem de fructe de pădure",
       "price": 7,
       "title": "Tartelete cu Fructe de Pădure"
@@ -385,11 +411,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 330,
       "category": "sweets",
       "description": "Prăjitură moale din griș însiropată, cu aromă de vanilie și cocos.",
       "gramaj": 120,
       "id": 27,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/27-prajitura-cu-gris-si-sirop.webp",
       "ingredients": "griș, lapte, ouă, zahăr, nucă de cocos, vanilie",
       "price": 11.5,
       "title": "Prăjitură cu Griș și Sirop"
@@ -398,11 +425,12 @@
       "allergens": [
         "gluten"
       ],
+      "calories": 260,
       "category": "bakeries",
       "description": "Chifle mici de ciabatta cu miez poros și coajă aurie, ideale pentru sandvișuri.",
       "gramaj": 80,
       "id": 28,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/28-chifle-ciabatta.webp",
       "ingredients": "făină de grâu, apă, ulei de măsline, drojdie, sare",
       "price": 5.99,
       "title": "Chifle Ciabatta"
@@ -412,11 +440,12 @@
         "gluten",
         "lapte"
       ],
+      "calories": 250,
       "category": "pastry",
       "description": "Pătrate din aluat foietaj umplute cu cremă de dovleac și scorțișoară.",
       "gramaj": 180,
       "id": 29,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/29-placinta-cu-dovleac.webp",
       "ingredients": "foietaj (făină de grâu, unt), dovleac, zahăr, scorțișoară",
       "price": 8.5,
       "title": "Plăcintă cu Dovleac"
@@ -427,11 +456,12 @@
         "ouă",
         "lapte"
       ],
+      "calories": 290,
       "category": "sweets",
       "description": "Tiramisu clasic cu mascarpone, pișcoturi înmuiate în espresso și pudră de cacao.",
       "gramaj": 200,
       "id": 30,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/30-tiramisu-in-pahar.webp",
       "ingredients": "mascarpone, ouă, zahăr, pișcoturi (făină de grâu), cafea espresso, cacao",
       "price": 19.99,
       "title": "Tiramisu în Pahar"
@@ -441,11 +471,12 @@
         "gluten",
         "lapte"
       ],
+      "calories": 300,
       "category": "bakeries",
       "description": "Pâine pufoasă cu mozzarella, cheddar și unt de arpagic, ruptă în bucăți.",
       "gramaj": 500,
       "id": 31,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/31-paine-cu-branza-si-smantana.webp",
       "ingredients": "făină de grâu, lapte, mozzarella, cheddar, unt, arpagic, drojdie",
       "price": 15,
       "title": "Pâine cu Brânză și Smântână"
@@ -456,11 +487,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 310,
       "category": "pastry",
       "description": "Felie delicată de foietaj cu cremă fină de vanilie și glazură lucioasă.",
       "gramaj": 130,
       "id": 32,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/32-felie-cu-crema-de-vanilie.webp",
       "ingredients": "foietaj (făină de grâu, unt), lapte, ouă, zahăr, vanilie, glazură de zahăr",
       "price": 7.5,
       "title": "Felie cu Cremă de Vanilie"
@@ -472,11 +504,12 @@
         "nuci",
         "lapte"
       ],
+      "calories": 390,
       "category": "sweets",
       "description": "Tort umed de morcovi cu glazură de cremă de brânză și nuci caramelizate.",
       "gramaj": 1300,
       "id": 33,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/33-tort-de-morcovi-cu-nuci.webp",
       "ingredients": "morcovi, făină de grâu, ouă, zahăr, ulei, nuci, cremă de brânză, scorțișoară",
       "price": 20,
       "title": "Tort de Morcovi cu Nuci"
@@ -486,11 +519,12 @@
         "gluten",
         "susan"
       ],
+      "calories": 260,
       "category": "bakeries",
       "description": "Pâine de sandwich multicereale, moale și ușoară, potrivită pentru uz zilnic.",
       "gramaj": 600,
       "id": 34,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/34-paine-multicereale.webp",
       "ingredients": "făină de grâu, făină de secară, fulgi de ovăz, semințe de in, semințe de susan, drojdie, sare",
       "price": 10.5,
       "title": "Pâine Multicereale"
@@ -501,11 +535,12 @@
         "lapte",
         "ouă"
       ],
+      "calories": 340,
       "category": "pastry",
       "description": "Rulou savuros copt la cuptor cu ceapă caramelizată și brânză gruyère.",
       "gramaj": 150,
       "id": 35,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/35-rulou-cu-ceapa-si-gruyere.webp",
       "ingredients": "foietaj (făină de grâu, unt), ceapă, brânză gruyère, ouă",
       "price": 9,
       "title": "Rulou cu Ceapă și Gruyère"
@@ -517,11 +552,12 @@
         "ouă",
         "soia"
       ],
+      "calories": 460,
       "category": "sweets",
       "description": "Brownies moi cu bucăți de ciocolată neagră și glazură de caramel sărat.",
       "gramaj": 90,
       "id": 36,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/36-brownies-cu-caramel-sarat.webp",
       "ingredients": "ciocolată neagră, unt, zahăr, ouă, făină de grâu, caramel, sare",
       "price": 13.99,
       "title": "Brownies cu Caramel Sărat"
@@ -532,11 +568,12 @@
         "ouă",
         "lapte"
       ],
+      "calories": 310,
       "category": "bakeries",
       "description": "Pâine împletită îmbogățită cu ouă și miere, moale și aurie.",
       "gramaj": 500,
       "id": 37,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/37-paine-cu-miere-impletita.webp",
       "ingredients": "făină de grâu, ouă, miere, lapte, unt, drojdie, sare",
       "price": 14.5,
       "title": "Pâine cu Miere Împletită"
@@ -547,11 +584,12 @@
         "lapte",
         "soia"
       ],
+      "calories": 410,
       "category": "pastry",
       "description": "Aluat de croissant rulat cu ciocolată neagră și cremă de espresso.",
       "gramaj": 110,
       "id": 38,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/38-rulou-croissant-cu-mocha.webp",
       "ingredients": "făină de grâu, unt, lapte, zahăr, ciocolată neagră, cafea espresso, drojdie",
       "price": 10,
       "title": "Rulou Croissant cu Mocha"
@@ -561,11 +599,12 @@
         "ouă",
         "lapte"
       ],
+      "calories": 260,
       "category": "sweets",
       "description": "Pavlova pufoasă cu frișcă, kiwi și fructul pasiunii, ușoară și răcoritoare.",
       "gramaj": 800,
       "id": 39,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/39-pavlova-cu-fructe-tropicale.webp",
       "ingredients": "albuș, zahăr, frișcă, kiwi, fructul pasiunii, mango",
       "price": 21,
       "title": "Pavlova cu Fructe Tropicale"
@@ -575,11 +614,12 @@
         "gluten",
         "lapte"
       ],
+      "calories": 270,
       "category": "bakeries",
       "description": "Pâine cu blat subțire, roșii, mozzarella și busuioc proaspăt.",
       "gramaj": 350,
       "id": 40,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/40-paine-pizza.webp",
       "ingredients": "făină de grâu, apă, roșii, mozzarella, busuioc, ulei de măsline, drojdie",
       "price": 16,
       "title": "Pâine Pizza"
@@ -591,11 +631,12 @@
         "ouă",
         "nuci"
       ],
+      "calories": 400,
       "category": "pastry",
       "description": "Rulou din aluat dulce cu umplutură de nuci, cacao și o notă de rom.",
       "gramaj": 130,
       "id": 41,
-      "image": "/assets/images/products/sample_img.webp",
+      "image": "/assets/images/products/41-rulou-cu-nuca-si-cacao.webp",
       "ingredients": "făină de grâu, lapte, ouă, unt, zahăr, nuci, cacao, rom",
       "price": 11,
       "title": "Rulou cu Nucă și Cacao"

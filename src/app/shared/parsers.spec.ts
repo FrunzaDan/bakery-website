@@ -41,6 +41,15 @@ describe('parsers', () => {
       ]);
     });
 
+    it('keeps valid calories and drops invalid ones', () => {
+      expect(parseProducts([{ ...validProduct, calories: 406 }])).toEqual([
+        { ...validProduct, calories: 406 },
+      ]);
+      expect(parseProducts([{ ...validProduct, calories: '406' }])).toEqual([
+        validProduct,
+      ]);
+    });
+
     it('keeps ingredients and the valid allergens', () => {
       expect(
         parseProducts([

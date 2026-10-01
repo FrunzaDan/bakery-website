@@ -67,6 +67,18 @@ describe('ContactComponent', () => {
     );
   });
 
+  it('flags a message that is too short or too long', () => {
+    component.model.set({ ...validForm, message: 'a' });
+    expect(component.contactForm.message().errors()[0].message).toBe(
+      'Mesajul trebuie să aibă cel puțin 2 caractere.',
+    );
+
+    component.model.set({ ...validForm, message: 'a'.repeat(1001) });
+    expect(component.contactForm.message().errors()[0].message).toBe(
+      'Mesajul poate avea cel mult 1000 de caractere.',
+    );
+  });
+
   it('accepts a well-formed email', () => {
     component.model.set(validForm);
     expect(component.contactForm.email().errors()).toEqual([]);

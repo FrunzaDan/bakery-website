@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Product } from '../../interfaces/product';
+import { caloriesPerPiece, Product } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { NotificationService } from '../../services/notification.service';
 import { ProductCatalogService } from '../../services/product-catalog.service';
@@ -22,6 +22,7 @@ export class CartComponent implements OnInit {
   private readonly notificationService = inject(NotificationService);
   private readonly catalog = inject(ProductCatalogService);
 
+  readonly caloriesPerPiece = caloriesPerPiece;
   readonly cartLines = this.cartService.cartLines;
   readonly totalNumberOfCartProducts = this.cartService.totalNumberOfProducts;
   readonly totalPrice = this.cartService.totalPrice;

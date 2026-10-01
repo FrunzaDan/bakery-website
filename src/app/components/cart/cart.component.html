@@ -32,8 +32,17 @@
                 class="line-title-link"
                 >{{ line.product.title }}</a
               >
-              @if (line.product.gramaj) {
-                <span class="line-meta">{{ line.product.gramaj }} g</span>
+              @if (line.product.gramaj || line.product.calories) {
+                <span class="line-meta">
+                  @if (line.product.gramaj) {
+                    {{ line.product.gramaj }} g
+                  }
+                  @if (caloriesPerPiece(line.product); as perPiece) {
+                    · {{ perPiece }} kcal / buc.
+                  } @else if (line.product.calories) {
+                    {{ line.product.calories }} kcal / 100 g
+                  }
+                </span>
               }
             </div>
             <div class="line-quantity">

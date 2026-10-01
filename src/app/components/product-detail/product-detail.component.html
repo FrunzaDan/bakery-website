@@ -23,6 +23,15 @@
           @if (product.gramaj) {
             <p class="mb-1"><strong>Gramaj:</strong> {{ product.gramaj }} g</p>
           }
+          @if (product.calories) {
+            <p class="mb-1">
+              <strong>Valoare energetică:</strong>
+              {{ product.calories }} kcal / 100 g
+              @if (caloriesPerPiece(product); as perPiece) {
+                ({{ perPiece }} kcal / buc.)
+              }
+            </p>
+          }
           <p class="product-price">{{ product.price | ron }}</p>
 
           <!-- Once the product is in the cart, the picker edits the cart's quantity,

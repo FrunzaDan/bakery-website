@@ -9,6 +9,7 @@ import {
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import {
+  caloriesPerPiece,
   MAX_QUANTITY_PER_PRODUCT,
   PRODUCT_CATEGORY_LABELS,
 } from '../../interfaces/product';
@@ -36,6 +37,7 @@ export class ProductDetailComponent {
   /** The route's `:id`; anything that isn't a number becomes NaN and matches no product. */
   readonly id = input.required<number, string>({ transform: Number });
 
+  readonly caloriesPerPiece = caloriesPerPiece;
   readonly isLoading = this.catalog.isLoading;
   readonly loadError = this.catalog.loadError;
   readonly product = computed(() => this.catalog.productsById().get(this.id()));
