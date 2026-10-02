@@ -132,6 +132,20 @@ describe('CartComponent', () => {
     expect(undoRemove).toHaveBeenCalled();
   });
 
+  it('removes the line from its trash button, with an undo in the notification', async () => {
+    cartLines.set([croissant]);
+    hasItems.set(true);
+    const el = await render();
+
+    el.querySelector<HTMLButtonElement>(
+      'button[aria-label="Șterge Croissant din coș"]',
+    )!.click();
+
+    expect(removeProductsFromCart).toHaveBeenCalledWith(croissant.product);
+    clickUndo();
+    expect(undoRemove).toHaveBeenCalled();
+  });
+
   it('can undo emptying the cart', async () => {
     cartLines.set([croissant]);
     hasItems.set(true);
