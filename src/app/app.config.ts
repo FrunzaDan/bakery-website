@@ -2,7 +2,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
-  provideZonelessChangeDetection,
 } from '@angular/core';
 import {
   provideClientHydration,
@@ -32,6 +31,5 @@ export const appConfig: ApplicationConfig = {
 
     provideClientHydration(withEventReplay(), withNoIncrementalHydration()),
     provideHttpClient(withFetch()),
-    provideZonelessChangeDetection(),
   ],
 };
