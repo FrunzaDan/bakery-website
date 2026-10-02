@@ -1,21 +1,21 @@
 # TestBakery Website
 
-A storefront demo for a bakery in Sibiu, Romania: browse products, build a cart and place an order. I built it to practise a realistic Angular shop flow (catalog, cart, checkout, order confirmation) without a custom backend. Orders are simulated in the browser and no payment is taken.
+TestBakery Website is a demo online shop for a bakery in Sibiu, Romania. Customers can browse products by category, search and sort them, build a cart and place an order through a full checkout flow. There's no custom backend: the product catalog comes from Firebase Realtime Database with a bundled JSON fallback, and orders are simulated and saved in the browser, with no payment taken. Pages are server-rendered and prerendered with Angular SSR and hosted on Firebase Hosting. I built it to practise a realistic shop flow in modern Angular (signals, signal forms and resources), and wrote the order service so it can be swapped for a real API later.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-- **Product catalog:** Category filter, search and sort, all kept in the URL query string so a filtered view can be bookmarked or shared. Each product has its own detail page.
-- **Resilient data loading:** Products load from a session cache, then from Firebase Realtime Database (5-second timeout), then from a bundled `products.json`, so the shop still works if Firebase is down.
-- **Cart:** Signal-based cart with quantity pickers, persisted to `localStorage`.
-- **Checkout:** A signal-forms checkout with validation, a saved draft, cash or bank-transfer payment, and a confirmation dialog before the order is placed.
-- **Order confirmation:** Orders get an ID like `TB-20260925-0421` and are saved in `localStorage` by a stand-in `OrderService`, which keeps the same interface a real API client would have.
-- **Contact form and info pages:** EmailJS contact form, plus delivery, returns and terms pages, with per-page SEO tags.
+- **Product catalog:** Products can be filtered by category, searched by name and sorted by name or price. The filters live in the URL query string (for example `?category=sweets&q=tort&sort=price-asc`), so a filtered view can be bookmarked or shared, and each product has its own detail page.
+- **Resilient data loading:** The catalog is read first from a session cache, then from Firebase Realtime Database with a 5-second timeout, and finally from a bundled `products.json`. The shop keeps working even if Firebase is slow or down, and the Firebase SDK is only downloaded when it's actually needed.
+- **Cart:** The cart is built on signals, with quantity pickers and running totals in RON. It's saved to `localStorage`, and it's restored after hydration so the server-rendered page and the browser agree.
+- **Checkout:** The checkout form is built with Angular signal forms and validates contact and delivery details, with a summary of any invalid fields. The draft is kept while you browse, you choose cash on delivery or bank transfer, and a confirmation dialog shows the exact order before it's placed.
+- **Order confirmation:** Each order gets an ID like `TB-20260925-0421` and its own confirmation page. A stand-in `OrderService` saves orders to `localStorage` after a short simulated delay, behind the same methods a real API client would expose.
+- **Contact form and info pages:** A contact form sends messages through EmailJS, and there are pages for delivery and payment, returns, and terms. Every page sets its own title, meta description and social sharing tags.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Frontend:** Angular 22.2 (standalone components, signals, signal forms, zoneless), TypeScript, Bootstrap Icons, per-component CSS
 - **Backend:** N/A. Server-side rendering and prerendering via `@angular/ssr` with a small Express server
@@ -24,7 +24,7 @@ A storefront demo for a bakery in Sibiu, Romania: browse products, build a cart 
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before running this project, ensure you have the following installed:
 
@@ -33,7 +33,7 @@ Before running this project, ensure you have the following installed:
 
 ---
 
-## ⚙️ Local Setup & Running
+## Local Setup & Running
 
 ### 1. Clone the repository
 
@@ -65,13 +65,13 @@ The dev server uses port 4203 (set in `angular.json`) instead of Angular's defau
 
 ---
 
-## 🗄 Database & Migrations
+## Database & Migrations
 
 There's no schema or migrations. The catalog is read from the `products` node of the Firebase Realtime Database. `public/assets/products.json` is a full offline copy that the app falls back to, and it's the easiest way to see the expected product shape.
 
 ---
 
-## 🔌 API / App Usage
+## API / App Usage
 
 Main routes: `/` (home), `/products` (catalog with `?category=&q=&sort=`), `/products/:id`, `/cart`, `/checkout`, `/order/:id` (confirmation), `/contact`, `/delivery`, `/return` and `/terms`. Unknown URLs show a 404 page.
 
@@ -86,7 +86,7 @@ firebase deploy
 
 ---
 
-## 📝 License & Notes
+## License & Notes
 
 Personal project with no license file.
 
