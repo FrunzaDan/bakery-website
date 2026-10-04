@@ -1,14 +1,14 @@
 .delivery-info-text {
-    font-size: 1.4rem;
-    padding: 3rem;
-    text-align: justify;
-    line-height: 2.4rem;
+  font-size: 1.4rem;
+  padding: 3rem;
+  text-align: justify;
+  line-height: 2.4rem;
 }
 
 @media (max-width: 576px) {
-    .delivery-info-text {
-        font-size: 1rem;
-        padding: 0.2rem;
-        line-height: 1.8rem;
-    }
+  .delivery-info-text {
+    font-size: 1rem;
+    padding: 0.2rem;
+    line-height: 1.8rem;
+  }
 }

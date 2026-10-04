@@ -1,120 +1,120 @@
 label,
 .form-group-title {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 
 .fade-in {
-    transition: opacity 400ms ease-in;
+  transition: opacity 400ms ease-in;
 
-    @starting-style {
-        opacity: 0;
-    }
+  @starting-style {
+    opacity: 0;
+  }
 }
 
 .fade-out {
-    transition: opacity 600ms ease-out;
-    opacity: 0;
+  transition: opacity 600ms ease-out;
+  opacity: 0;
 }
 
 .modal-enter {
-    transition: transform 300ms ease-in;
+  transition: transform 300ms ease-in;
 
-    @starting-style {
-        transform: translate(-50%, -50%) scale(0);
-    }
+  @starting-style {
+    transform: translate(-50%, -50%) scale(0);
+  }
 }
 
 .modal-leave {
-    transition: transform 300ms ease-out;
-    transform: translate(-50%, -50%) scale(0);
+  transition: transform 300ms ease-out;
+  transform: translate(-50%, -50%) scale(0);
 }
 
 #confirm-checkout-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 1rem;
-    border: 4px solid var(--red);
-    border-radius: 1.4rem;
-    box-shadow: 0 0 2rem rgba(255, 255, 255, 0.6);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 92dvw;
-    max-height: 96dvh;
-    z-index: 999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem;
+  border: 4px solid var(--red);
+  border-radius: 1.4rem;
+  box-shadow: 0 0 2rem rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92dvw;
+  max-height: 96dvh;
+  z-index: 999;
 }
 
 #order-content {
-    padding: 1rem;
-    border: 4px solid var(--red);
-    border-radius: 1.4rem;
-    width: 96%;
-    max-height: 90%;
-    white-space: pre-wrap;
-    overflow-y: auto;
+  padding: 1rem;
+  border: 4px solid var(--red);
+  border-radius: 1.4rem;
+  width: 96%;
+  max-height: 90%;
+  white-space: pre-wrap;
+  overflow-y: auto;
 }
 
 @media (max-width: 576px) {
-    label,
-    .form-group-title {
-        font-size: 1rem;
-    }
+  label,
+  .form-group-title {
+    font-size: 1rem;
+  }
 }
 fieldset legend {
-    float: none;
-    font-size: 1.8rem;
+  float: none;
+  font-size: 1.8rem;
 }
 
 .payment-option {
-    font-size: 1.4rem;
-    margin-bottom: 0.6rem;
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
 }
 
 .payment-hint {
-    display: block;
-    font-size: 1rem;
-    opacity: 0.85;
+  display: block;
+  font-size: 1rem;
+  opacity: 0.85;
 }
 
 .payment-option-disabled {
-    opacity: 0.6;
+  opacity: 0.6;
 }
 
 .soon-badge {
-    background-color: var(--white);
-    color: var(--red);
-    font-size: 0.8rem;
-    vertical-align: middle;
+  background-color: var(--white);
+  color: var(--red);
+  font-size: 0.8rem;
+  vertical-align: middle;
 }
 
 .terms-label {
-    font-size: 1.4rem;
+  font-size: 1.4rem;
 }
 
 /* Bootstrap only shows .invalid-feedback after an .is-invalid sibling input; the checkbox has a label in between. */
 .form-check .invalid-feedback {
-    display: block;
+  display: block;
 }
 
 .form-check-input {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .form-check-input:disabled {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 @media (max-width: 576px) {
-    fieldset legend {
-        font-size: 1rem;
-    }
+  fieldset legend {
+    font-size: 1rem;
+  }
 
-    .payment-option,
-    .terms-label {
-        font-size: 1.1rem;
-    }
+  .payment-option,
+  .terms-label {
+    font-size: 1.1rem;
+  }
 }

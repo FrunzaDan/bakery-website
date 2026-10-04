@@ -1,95 +1,95 @@
 .form-group {
-    width: 100%;
+  width: 100%;
 }
 
 .form-control {
-    width: 100%;
+  width: 100%;
 }
 
 .search-box {
-    position: relative;
+  position: relative;
 }
 
 /* Vertically centred on the input, whatever its height or font size. */
 .search-icon {
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: var(--red);
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--red);
 }
 
 .width-100prc {
-    width: 100%;
+  width: 100%;
 }
 
 .product-card {
-    border: 0.2rem solid var(--white);
-    width: 16rem;
-    margin: 1rem 0.4rem;
+  border: 0.2rem solid var(--white);
+  width: 16rem;
+  margin: 1rem 0.4rem;
 }
 
 .search-products-form-control {
-    font-size: 1.4rem;
-    padding-right: 3rem !important;
+  font-size: 1.4rem;
+  padding-right: 3rem !important;
 }
 
 /* Same height as the search box next to it: same font size, padding and border. */
 .toolbar-btn {
-    line-height: 1.5;
+  line-height: 1.5;
 }
 
 .toolbar-btn .cart-icon {
-    height: 1.6rem;
+  height: 1.6rem;
 }
 
 .cart-count-badge {
-    font-size: 1rem;
-    background-color: var(--white);
-    color: var(--red);
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+  font-size: 1rem;
+  background-color: var(--white);
+  color: var(--red);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 @media (pointer: fine) {
-    .toolbar-btn:hover .cart-count-badge {
-        background-color: var(--red);
-        color: var(--white);
-    }
+  .toolbar-btn:hover .cart-count-badge {
+    background-color: var(--red);
+    color: var(--white);
+  }
 }
 
 /* The photo zooms a little inside its frame when the card is hovered. */
 .product-image-link {
-    display: block;
-    overflow: hidden;
-    border-top-left-radius: 1.2rem;
-    border-top-right-radius: 1.2rem;
+  display: block;
+  overflow: hidden;
+  border-top-left-radius: 1.2rem;
+  border-top-right-radius: 1.2rem;
 }
 
 .product-image-link img {
-    transition: transform 0.4s ease;
+  transition: transform 0.4s ease;
 }
 
 @media (pointer: fine) {
-    .product-card:hover .product-image-link img {
-        transform: scale(1.06);
-    }
+  .product-card:hover .product-image-link img {
+    transform: scale(1.06);
+  }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 768px) {
-    .product-card {
-        width: 14rem;
-    }
+  .product-card {
+    width: 14rem;
+  }
 }
 
 @media only screen and (max-width: 576px) {
-    .product-card {
-        width: 18rem;
-        margin-top: 0.6rem;
-        margin-bottom: 0.6rem;
-    }
+  .product-card {
+    width: 18rem;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
 }
 
 /* The title is the card's link; underline it only on hover so cards stay calm. */

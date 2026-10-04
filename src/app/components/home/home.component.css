@@ -1,7 +1,7 @@
 .home-category-card {
-    text-align: center;
-    font-family: var(--bold-font);
-    font-size: 2rem;
-    /* A link would otherwise take the page's text colour instead of the card's. */
-    color: var(--white);
+  text-align: center;
+  font-family: var(--bold-font);
+  font-size: 2rem;
+  /* A link would otherwise take the page's text colour instead of the card's. */
+  color: var(--white);
 }

@@ -1,14 +1,14 @@
 .terms-info-text {
-    font-size: 1.4rem;
-    padding: 3rem;
-    text-align: justify;
-    line-height: 2.4rem;
+  font-size: 1.4rem;
+  padding: 3rem;
+  text-align: justify;
+  line-height: 2.4rem;
 }
 
 @media (max-width: 576px) {
-    .terms-info-text {
-        font-size: 0.8rem;
-        padding: 0.2rem;
-        line-height: 1.2rem;
-    }
+  .terms-info-text {
+    font-size: 0.8rem;
+    padding: 0.2rem;
+    line-height: 1.2rem;
+  }
 }

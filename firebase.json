@@ -41,10 +41,8 @@
       }
     ],
     "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.csr.html"
-      }
+      { "source": "/products/*", "destination": "/index.csr.html" },
+      { "source": "/order/*", "destination": "/index.csr.html" }
     ],
     "trailingSlash": false
   }

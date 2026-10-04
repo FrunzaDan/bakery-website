@@ -81,7 +81,7 @@ npm run build
 firebase deploy
 ```
 
-`firebase.json` serves `dist/testbakery-website/browser`, adds long-lived cache headers for hashed bundles, and sends `X-Robots-Tag: noindex` because this is a demo shop.
+`firebase.json` serves `dist/testbakery-website/browser`, adds long-lived cache headers for hashed bundles, and sends `X-Robots-Tag: noindex` because this is a demo shop. `/products/*` and `/order/*` are rewritten to `index.csr.html`, since those pages render in the browser; any other unknown URL gets the prerendered `404.html` with a real 404 status (`npm run build` copies it from `404/index.html`).
 
 ---
 

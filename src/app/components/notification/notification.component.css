@@ -1,27 +1,27 @@
 .notification {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    box-shadow: 0rem 0rem 6rem rgba(255, 255, 255, 0.9);
-    z-index: 9999;
-    color: var(--white);
-    border: 0.2rem solid var(--white);
-    font-size: 1.4rem;
-    padding: 1rem;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  box-shadow: 0rem 0rem 6rem rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  color: var(--white);
+  border: 0.2rem solid var(--white);
+  font-size: 1.4rem;
+  padding: 1rem;
 }
 
 .notification-action {
-    font-size: 1.4rem;
-    color: var(--red);
-    font-family: var(--bold-font);
+  font-size: 1.4rem;
+  color: var(--red);
+  font-family: var(--bold-font);
 }
 
 @media only screen and (max-width: 576px) {
-    .notification {
-        bottom: 0rem;
-        right: 0rem;
-        font-size: 1.2rem;
-    }
+  .notification {
+    bottom: 0rem;
+    right: 0rem;
+    font-size: 1.2rem;
+  }
 }
 
 .fade-in {

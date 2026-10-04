@@ -1,36 +1,36 @@
 .footer-color {
-    background-color: var(--white);
+  background-color: var(--white);
 }
 
 .nav-link {
-    transition: color 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .nav-link:hover,
 .nav-link:focus-visible {
-    color: var(--red) !important;
+  color: var(--red) !important;
 }
 
 .SAL-col {
-    display: flex;
-    justify-content: right;
-    align-items: center;
+  display: flex;
+  justify-content: right;
+  align-items: center;
 }
 
 .SOL-col {
-    display: flex;
-    justify-content: left;
-    align-items: center;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
 .SAL-SOL {
-    height: auto;
+  height: auto;
 }
 
 @media only screen and (max-width: 576px) {
-    .SAL-SOL {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        width: 10rem;
-    }
+  .SAL-SOL {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    width: 10rem;
+  }
 }

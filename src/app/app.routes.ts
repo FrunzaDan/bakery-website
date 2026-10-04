@@ -85,8 +85,17 @@ export const routes: Routes = [
     title: 'Termeni și condiții - TestBakery Sibiu',
   },
   {
+    path: '404',
+    loadComponent: () =>
+      import('./components/page-not-found/page-not-found.component').then(
+        (m) => m.PageNotFoundComponent,
+      ),
+    title: '404 - TestBakery Sibiu',
+  },
+  // Unknown URLs show the 404 page under the address the visitor typed.
+  // Firebase serves the prerendered /404 page for them with a 404 status.
+  {
     path: '**',
-    pathMatch: 'full',
     loadComponent: () =>
       import('./components/page-not-found/page-not-found.component').then(
         (m) => m.PageNotFoundComponent,

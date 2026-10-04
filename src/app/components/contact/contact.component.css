@@ -1,26 +1,26 @@
 #googleMapsIframe {
-    height: 400px;
+  height: 400px;
 }
 
 .card-contact-text {
-    font-family: var(--bold-font);
-    font-size: 1.4rem;
+  font-family: var(--bold-font);
+  font-size: 1.4rem;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1000px) {
-    .card-contact-text {
-        font-size: 1rem;
-    }
+  .card-contact-text {
+    font-size: 1rem;
+  }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 768px) {
-    .card-contact-text {
-        font-size: 1.4rem;
-    }
+  .card-contact-text {
+    font-size: 1.4rem;
+  }
 }
 
 @media only screen and (max-width: 576px) {
-    .card-contact-text {
-        font-size: 1.2rem;
-    }
+  .card-contact-text {
+    font-size: 1.2rem;
+  }
 }
