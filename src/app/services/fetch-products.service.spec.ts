@@ -4,8 +4,8 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import type { DataSnapshot } from 'firebase/database';
 import { firstValueFrom, of, throwError, TimeoutError } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Product } from '../interfaces/product';
 import { FetchProductsService } from './fetch-products.service';
 import { SessionStorageService } from './session-storage.service';
@@ -33,24 +33,7 @@ describe('FetchProductsService', () => {
   let getProductsSession: ReturnType<typeof vi.fn>;
   let setProductsSession: ReturnType<typeof vi.fn>;
 
-  // The Firebase read is a lazy-loaded SDK call, so the specs replace it with a
-  // snapshot built from plain values.
-  const snapshotOf = (values: unknown[]): DataSnapshot =>
-    ({
-      forEach: (callback: (child: { val: () => unknown }) => void) => {
-        values.forEach((value) => callback({ val: () => value }));
-        return false;
-      },
-    }) as unknown as DataSnapshot;
-  const stubFirebaseRead = (read: () => Promise<DataSnapshot>) =>
-    vi
-      .spyOn(
-        service as unknown as {
-          readProductsSnapshot: () => Promise<DataSnapshot>;
-        },
-        'readProductsSnapshot',
-      )
-      .mockImplementation(read);
+  const productsUrl = `${environment.firebaseConfig.databaseURL}/products.json`;
 
   beforeEach(() => {
     getProductsSession = vi.fn().mockReturnValue([]);
@@ -125,38 +108,53 @@ describe('FetchProductsService', () => {
 
   describe('fetchProductsFromFirebaseRealtimeDB', () => {
     it('keeps the valid products and caches them for the session', async () => {
-      stubFirebaseRead(() =>
-        Promise.resolve(snapshotOf([croissant, { title: 'no id' }, bread])),
-      );
-
-      const products = await firstValueFrom(
+      const result = firstValueFrom(
         service.fetchProductsFromFirebaseRealtimeDB(),
       );
+      httpMock
+        .expectOne(productsUrl)
+        .flush([croissant, { title: 'no id' }, bread]);
 
-      expect(products).toEqual([croissant, bread]);
+      expect(await result).toEqual([croissant, bread]);
       expect(setProductsSession).toHaveBeenCalledWith([croissant, bread]);
     });
 
-    it('does not cache an empty catalog', async () => {
-      stubFirebaseRead(() => Promise.resolve(snapshotOf([])));
+    it('reads a node returned as an array with gaps or as an object', async () => {
+      const fromArray = firstValueFrom(
+        service.fetchProductsFromFirebaseRealtimeDB(),
+      );
+      httpMock.expectOne(productsUrl).flush([null, croissant, bread]);
+      expect(await fromArray).toEqual([croissant, bread]);
 
-      expect(
-        await firstValueFrom(service.fetchProductsFromFirebaseRealtimeDB()),
-      ).toEqual([]);
+      const fromObject = firstValueFrom(
+        service.fetchProductsFromFirebaseRealtimeDB(),
+      );
+      httpMock.expectOne(productsUrl).flush({ croissant, bread });
+      expect(await fromObject).toEqual([croissant, bread]);
+    });
+
+    it('does not cache an empty catalog', async () => {
+      const result = firstValueFrom(
+        service.fetchProductsFromFirebaseRealtimeDB(),
+      );
+      httpMock.expectOne(productsUrl).flush(null);
+
+      expect(await result).toEqual([]);
       expect(setProductsSession).not.toHaveBeenCalled();
     });
 
     it('gives up after 5 seconds without an answer', async () => {
       vi.useFakeTimers();
-      stubFirebaseRead(() => new Promise<DataSnapshot>(() => undefined));
 
       const result = firstValueFrom(
         service.fetchProductsFromFirebaseRealtimeDB(),
       );
       const settled = expect(result).rejects.toBeInstanceOf(TimeoutError);
+      const request = httpMock.expectOne(productsUrl);
       await vi.advanceTimersByTimeAsync(5000);
 
       await settled;
+      expect(request.cancelled).toBe(true);
     });
   });
 

@@ -1,13 +1,13 @@
 # TestBakery Website
 
-TestBakery Website is a demo online shop for a bakery in Sibiu, Romania. Customers can browse products by category, search and sort them, build a cart and place an order through a full checkout flow. There's no custom backend: the product catalog comes from Firebase Realtime Database with a bundled JSON fallback, and orders are simulated and saved in the browser, with no payment taken. Pages are server-rendered and prerendered with Angular SSR and hosted on Firebase Hosting. I built it to practise a realistic shop flow in modern Angular (signals, signal forms and resources), and wrote the order service so it can be swapped for a real API later.
+TestBakery Website is a demo online shop for a bakery in Sibiu, Romania. Customers can browse products by category, search and sort them, build a cart and place an order through a full checkout flow. There's no custom backend: the product catalog comes from Firebase Realtime Database with a bundled JSON fallback, and orders are simulated and saved in the browser, with no payment taken. Pages are prerendered at build time and served as static files from Firebase Hosting; product and order pages render in the browser. I built it to practise a realistic shop flow in modern Angular (signals, signal forms and resources), and wrote the order service so it can be swapped for a real API later.
 
 ---
 
 ## Key Features
 
 - **Product catalog:** Products can be filtered by category, searched by name and sorted by name or price. The filters live in the URL query string (for example `?category=sweets&q=tort&sort=price-asc`), so a filtered view can be bookmarked or shared, and each product has its own detail page.
-- **Resilient data loading:** The catalog is read first from a session cache, then from Firebase Realtime Database with a 5-second timeout, and finally from a bundled `products.json`. The shop keeps working even if Firebase is slow or down, and the Firebase SDK is only downloaded when it's actually needed.
+- **Resilient data loading:** The catalog is read first from a session cache, then from Firebase Realtime Database (its REST API, through `HttpClient`) with a 5-second timeout, and finally from a bundled `products.json`. The shop keeps working even if Firebase is slow or down, and the response fetched while prerendering is handed to the browser instead of being fetched again.
 - **Cart:** The cart is built on signals, with quantity pickers and running totals in RON. It's saved to `localStorage`, and it's restored after hydration so the server-rendered page and the browser agree.
 - **Checkout:** The checkout form is built with Angular signal forms and validates contact and delivery details, with a summary of any invalid fields. The draft is kept while you browse, you choose cash on delivery or bank transfer, and a confirmation dialog shows the exact order before it's placed.
 - **Order confirmation:** Each order gets an ID like `TB-20260925-0421` and its own confirmation page. A stand-in `OrderService` saves orders to `localStorage` after a short simulated delay, behind the same methods a real API client would expose.
@@ -18,9 +18,9 @@ TestBakery Website is a demo online shop for a bakery in Sibiu, Romania. Custome
 ## Tech Stack
 
 - **Frontend:** Angular 22.2 (standalone components, signals, signal forms, zoneless), TypeScript, Bootstrap Icons, per-component CSS
-- **Backend:** N/A. Server-side rendering and prerendering via `@angular/ssr` with a small Express server
+- **Backend:** N/A. Build-time prerendering via `@angular/ssr` (`outputMode: "static"`), no server
 - **Database / Storage:** Firebase Realtime Database (read-only product catalog), browser `localStorage` and `sessionStorage`
-- **Tooling & Other:** Firebase JS SDK (loaded on demand), EmailJS, Vitest + jsdom, Prettier, Firebase Hosting
+- **Tooling & Other:** Firebase JS SDK (Analytics only, loaded after startup), EmailJS, Vitest + jsdom, Prettier, Firebase Hosting
 
 ---
 
@@ -57,8 +57,7 @@ There is a single environment file used for every build.
 npm install
 npm start              # dev server on http://localhost:4203
 npm test               # Vitest unit tests
-npm run build          # production build with prerendering → dist/testbakery-website
-npm run serve:ssr:TestBakery_Website   # run the built SSR server
+npm run build          # prerendered static build → dist/testbakery-website/browser
 ```
 
 The dev server uses port 4203 (set in `angular.json`) instead of Angular's default 4200.
