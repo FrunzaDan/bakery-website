@@ -79,11 +79,18 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "53807824-998d-42e5-a68c-88d4dddad266"
+    "analytics": "53807824-998d-42e5-a68c-88d4dddad266",
+    "schematicCollections": ["angular-eslint"]
   }
 }
