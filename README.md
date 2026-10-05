@@ -8,7 +8,7 @@ TestBakery Website is a demo online shop for a bakery in Sibiu, Romania. Custome
 
 - **Product catalog:** Products can be filtered by category, searched by name and sorted by name or price. The filters live in the URL query string (for example `?category=sweets&q=tort&sort=price-asc`), so a filtered view can be bookmarked or shared, and each product has its own detail page.
 - **Resilient data loading:** The catalog is read first from a session cache, then from Firebase Realtime Database (its REST API, through `HttpClient`) with a 5-second timeout, and finally from a bundled `products.json`. The shop keeps working even if Firebase is slow or down, and the response fetched while prerendering is handed to the browser instead of being fetched again.
-- **Cart:** The cart is built on signals, with quantity pickers and running totals in RON. It's saved to `localStorage`, and it's restored after hydration so the server-rendered page and the browser agree.
+- **Cart:** The cart is built on signals, with quantity pickers and running totals in RON. It's saved to `localStorage`, restored after hydration so the server-rendered page and the browser agree, and kept in sync across open tabs.
 - **Checkout:** The checkout form is built with Angular signal forms and validates contact and delivery details, with a summary of any invalid fields. The draft is kept while you browse, you choose cash on delivery or bank transfer, and a confirmation dialog shows the exact order before it's placed.
 - **Order confirmation:** Each order gets an ID like `TB-20260925-0421` and its own confirmation page. A stand-in `OrderService` saves orders to `localStorage` after a short simulated delay, behind the same methods a real API client would expose.
 - **Contact form and info pages:** A contact form sends messages through EmailJS, and there are pages for delivery and payment, returns, and terms. Every page sets its own title, meta description and social sharing tags.
@@ -17,10 +17,10 @@ TestBakery Website is a demo online shop for a bakery in Sibiu, Romania. Custome
 
 ## Tech Stack
 
-- **Frontend:** Angular 22.2 (standalone components, signals, signal forms, zoneless), TypeScript, Bootstrap Icons, per-component CSS
+- **Frontend:** Angular 22.2 (standalone components, signals, signal forms, zoneless), TypeScript, per-component CSS, a vendored subset of Bootstrap's grid/utility CSS, a subset of the Bootstrap Icons font
 - **Backend:** N/A. Build-time prerendering via `@angular/ssr` (`outputMode: "static"`), no server
 - **Database / Storage:** Firebase Realtime Database (read-only product catalog), browser `localStorage` and `sessionStorage`
-- **Tooling & Other:** Firebase JS SDK (Analytics only, loaded after startup), EmailJS, Vitest + jsdom, Prettier, Firebase Hosting
+- **Tooling & Other:** Firebase JS SDK (Analytics only, loaded after startup), EmailJS, Vitest + jsdom, ESLint (angular-eslint), Prettier, Firebase Hosting
 
 ---
 
@@ -66,6 +66,8 @@ Or run the npm scripts yourself:
 npm install
 npm start              # dev server on http://localhost:4207
 npm test               # Vitest unit tests
+npm run lint           # ESLint
+npm run format         # Prettier, fixes formatting in place (format:check only reports)
 npm run build          # prerendered static build → dist/testbakery-website/browser
 ```
 
@@ -81,7 +83,7 @@ There's no schema or migrations. The catalog is read from the `products` node of
 
 ## API / App Usage
 
-Main routes: `/` (home), `/products` (catalog with `?category=&q=&sort=`), `/products/:id`, `/cart`, `/checkout`, `/order/:id` (confirmation), `/contact`, `/delivery`, `/return` and `/terms`. Unknown URLs show a 404 page.
+Main routes: `/` (home, also at `/home`), `/products` (catalog with `?category=&q=&sort=`), `/products/:id`, `/cart`, `/checkout`, `/order/:id` (confirmation), `/contact`, `/delivery`, `/return` and `/terms`. Unknown URLs show a 404 page.
 
 To deploy to Firebase Hosting (project in `.firebaserc`):
 
