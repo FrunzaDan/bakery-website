@@ -64,12 +64,12 @@ Or run the npm scripts yourself:
 
 ```bash
 npm install
-npm start              # dev server on http://localhost:4203
+npm start              # dev server on http://localhost:4207
 npm test               # Vitest unit tests
 npm run build          # prerendered static build → dist/testbakery-website/browser
 ```
 
-The dev server uses port 4203 (set in `angular.json`) instead of Angular's default 4200.
+The dev server uses port 4207 (set in `angular.json`) instead of Angular's default 4200.
 
 ---
 
